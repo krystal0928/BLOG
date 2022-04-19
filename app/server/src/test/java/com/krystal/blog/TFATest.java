@@ -11,6 +11,7 @@ public class TFATest {
 
     @Test
     public void testTFA() {
+//        String tfaKey = TwoFactorAuthUtil.generateTFAKey();
         String tfaKey = "BMQOORWXIJGIMHHWBUDRFYKVVJTTZYTD";
         String userName = System.currentTimeMillis() + "";
         log.info("tfaKey: {}", tfaKey);
