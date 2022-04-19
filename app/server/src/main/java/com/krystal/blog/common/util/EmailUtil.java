@@ -1,4 +1,4 @@
-package com.krystal.blog.common;
+package com.krystal.blog.common.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.extra.mail.Mail;

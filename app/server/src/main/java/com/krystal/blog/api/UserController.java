@@ -1,26 +1,20 @@
 package com.krystal.blog.api;
 
 import cn.hutool.core.util.RandomUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.krystal.blog.common.EmailUtil;
+import com.krystal.blog.common.util.EmailUtil;
 import com.krystal.blog.common.R;
-import com.krystal.blog.common.SnowFlakeConfig;
 import com.krystal.blog.common.SnowFlakeTemplate;
 import com.krystal.blog.model.User;
 import com.krystal.blog.service.UserService;
-import com.krystal.blog.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.HashMap;
 
 // 接口
 @RestController
