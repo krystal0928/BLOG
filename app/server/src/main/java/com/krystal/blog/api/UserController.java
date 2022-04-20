@@ -1,6 +1,7 @@
 package com.krystal.blog.api;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.krystal.blog.common.util.EmailUtil;
 import com.krystal.blog.common.R;
 import com.krystal.blog.common.SnowFlakeTemplate;
@@ -179,6 +180,8 @@ public class UserController {
                 .one();
         if (null == user)
             return R.error(400,"用户不存在");
+        if (!StrUtil.isBlank(user.getSecret()))
+            return R.error(400,"用户已存在");
         if (!user.getPassword().equals(password))
             return R.error(400,"密码错误，请重新输入！");
         String secret = TwoFactorAuthUtil.generateTFAKey();
