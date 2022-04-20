@@ -18,6 +18,7 @@
         </div>
         <div class="container_right">
           <span class="h" @click.prevent="onLogin">登录/注册</span>
+          <!-- <span class="h" @click.prevent="onLogin">二次验证绑定</span> -->
           <span class="h">收藏</span>
           <span class="h">写文章</span>
         </div>

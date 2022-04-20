@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.krystal.blog.common.util.EmailUtil;
 import com.krystal.blog.common.R;
 import com.krystal.blog.common.SnowFlakeTemplate;
+import com.krystal.blog.common.util.TwoFactorAuthUtil;
 import com.krystal.blog.model.User;
 import com.krystal.blog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -127,6 +128,12 @@ public class UserController {
         return R.ok("验证码已发送！");
     }
 
+
+    /**
+     * 忘记密码的验证码
+     * @param email
+     * @return
+     */
     @PostMapping(value="/api/user/sendForgetEmail")
     public R sendForgetEmail(String email) {
         User user = userService.lambdaQuery()
@@ -142,7 +149,12 @@ public class UserController {
         return R.ok("验证码已发送！");
     }
 
-
+    /**
+     * 校对验证码
+     * @param email
+     * @param value
+     * @return
+     */
     @PostMapping(value="/api/user/confirmEmail")
     public R confirmEmail(String email, String value) {
         Assert.notNull(value, "验证码不能为空！");
@@ -154,5 +166,49 @@ public class UserController {
         return R.ok("校验成功！");
     }
 
+    /**
+     * 二次验证绑定 校验密码
+     * @param username
+     * @param password
+     * @return
+     */
+    @PostMapping(value="/api/user/generateCode")
+    public R generateCode(String username, String password) {
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername,username)
+                .one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        if (!user.getPassword().equals(password))
+            return R.error(400,"密码错误，请重新输入！");
+        String secret = TwoFactorAuthUtil.generateTFAKey();
+        String url = TwoFactorAuthUtil.generateOtpAuthUrl(username, secret);
+        return R.ok("密码正确，请扫描二维码进行绑定！")
+                .put("secret",secret)
+                .put("url", url);
+    }
+
+
+    /**
+     * 二次验证绑定用户
+     * @param username
+     * @param secret
+     * @param code
+     * @return
+     */
+    @PostMapping(value="/api/user/bindTFA")
+    public R bindTFA(String username, String secret, String code){
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername,username)
+                .one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        if (!TwoFactorAuthUtil.validateTFACode(secret, code))
+            return R.error(400,"验证码错误，绑定失败！");
+        user.setSecret(secret);
+        if  (!userService.updateById(user))
+            return R.error(400,"绑定失败，请重试！");
+        return R.ok("绑定成功");
+    }
 
 }

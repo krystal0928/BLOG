@@ -7,6 +7,7 @@ const Register = import('../components/Register.vue')
 const Home = import('../components/Home.vue')
 const Forget = import('../components/Forget.vue')
 const Change = import('../components/Change.vue')
+const BindTFA = import('../components/BindTFA.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -18,6 +19,7 @@ const routes = [
     { path: '/home', component: Home },
     { path: '/forget', component: Forget },
     { path: '/change', component: Change },
+    { path: '/bindTFA', component: BindTFA },
 ]
 
 // 3. 创建路由实例并传递 `routes` 配置

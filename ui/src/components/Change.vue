@@ -17,9 +17,6 @@
       <el-button type="primary" @click.prevent="onSubmit">修改密码</el-button>
     </el-form-item>
   </el-form>
-  
-
-  
 </template>
 
 <script lang="ts" setup>

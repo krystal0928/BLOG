@@ -22,8 +22,7 @@
 import { reactive, ref } from 'vue'
 import { login } from '../api/user.js'
 import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { FormInstance } from 'element-plus/lib/components/form';
+import { ElMessage, FormInstance } from 'element-plus'
 
 const loginFormRef = ref<FormInstance>();
 const router = useRouter()

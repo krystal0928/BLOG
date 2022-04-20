@@ -37,7 +37,6 @@ import { ElMessage, FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue'
 import { confirmEmail, register, sendRegisterEmail } from '../api/user.js'
 import { useRouter } from 'vue-router'
-import { fa } from 'element-plus/lib/locale';
 
 const router = useRouter()
 const registerFormRef = ref<FormInstance>()

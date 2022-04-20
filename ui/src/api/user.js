@@ -47,3 +47,19 @@ export function change(param) {
         data: param
     })
 }
+
+export function generateCode(param) {
+    return axios({
+        url: '/api/user/generateCode',
+        method: 'post',
+        data: param
+    })
+}
+
+export function bindTFA(param) {
+    return axios({
+        url: '/api/user/bindTFA',
+        method: 'post',
+        data: param
+    })
+}

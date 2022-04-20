@@ -21,4 +21,11 @@ public class R extends HashMap {
         r.put(MSG, msg);
         return r;
     }
+
+
+    @Override
+    public R put(Object key, Object value) {
+        super.put(key, value);
+        return this;
+    }
 }
