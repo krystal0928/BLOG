@@ -1,21 +1,29 @@
 <template>
-  <el-form 
-    ref="loginFormRef"
-    :rules="rules"
-    :model="form" 
-    label-width="120px" class="login-form">
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="form.username" placeholder="请输入用户名"/>
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="form.password" placeholder="请输入密码" type="password"/>
-      <span @click="toForget" class="h">忘记密码</span>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click.prevent="onSubmit">登录</el-button>
-      <el-button @click.prevent="onRegister">注册</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <Background/>
+     <!-- login form -->
+    <el-form 
+      ref="loginFormRef"
+      :rules="rules"
+      :model="form" 
+      label-position="left"
+      label-width="80px" 
+      class="login-form">
+      <h1>个人博客登录</h1>
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="form.username" placeholder="请输入用户名"/>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" placeholder="请输入密码" type="password"/>
+        <el-link href="javascript:void(0);" @click="toForget">忘记密码</el-link>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click.prevent="onSubmit">登录</el-button>
+        <el-button @click.prevent="onRegister">注册</el-button>
+      </el-form-item>
+      <el-link href="#/" class="home-text">返回首页</el-link>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -67,11 +75,16 @@ const toForget = () => {
 </script>
 <style scoped>
 .login-form {
-  margin: 50px auto;
-  max-width: 350px
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 380px;
+  border-radius: 8px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
-.h:hover{
-  color: rgba(54, 142, 0, 0.739);
-  cursor: pointer;
+.home-text {
+  float: right;
 }
 </style>

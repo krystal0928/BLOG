@@ -1,22 +1,30 @@
 <template>
-  <el-form 
-    ref="changeFormRef"
-    :rules="rules"
-    :model="form" 
-    label-width="120px" class="login-form">
-    <el-form-item label="用户名" prop="email">
-      <el-input v-model="form.email" placeholder="请输入邮箱" disabled/>
-    </el-form-item>
-    <el-form-item label="新密码" prop="password">
-      <el-input v-model="form.password" placeholder="请输入新密码" type="password"/>
-    </el-form-item>
-    <el-form-item label="确认密码" prop="password2">
-      <el-input v-model="form.password2" placeholder="请再次输入密码" type="password"/>
-    </el-form-item>
-        <el-form-item>
-      <el-button type="primary" @click.prevent="onSubmit">修改密码</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <Background/>
+    <!-- change form -->
+    <el-form 
+      ref="changeFormRef"
+      :rules="rules"
+      :model="form" 
+      label-position="left"
+      label-width="80px"
+      class="change-form">
+      <h1>修改密码</h1>
+      <el-form-item label="用户名" prop="email">
+        <el-input v-model="form.email" placeholder="请输入邮箱" disabled/>
+      </el-form-item>
+      <el-form-item label="新密码" prop="password">
+        <el-input v-model="form.password" placeholder="请输入新密码" type="password"/>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="password2">
+        <el-input v-model="form.password2" placeholder="请再次输入密码" type="password"/>
+      </el-form-item>
+          <el-form-item>
+        <el-button type="primary" @click.prevent="onSubmit">修改密码</el-button>
+      </el-form-item>
+      <el-link href="#/" class="home-text">返回首页</el-link>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -80,8 +88,17 @@ const onSubmit = () => {
 
 </script>
 <style scoped>
-.login-form {
-  margin: 50px auto;
-  max-width: 400px
+.change-form {
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 380px;
+  border-radius: 8px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.home-text {
+  float: right;
 }
 </style>

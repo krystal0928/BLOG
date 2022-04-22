@@ -1,23 +1,31 @@
 <template>
-  <el-form 
-    ref="forgetForm"
-    :rules="rules"
-    :model="form" 
-    label-width="120px" class="forget-form">
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="form.email" placeholder="请输入邮箱">
-        <template #append>
-          <el-button  @click.prevent="sendCode" :disabled="form.checkEmail">{{form.buttonTitle}}</el-button>
-        </template>
-      </el-input>
-    </el-form-item>
-    <el-form-item label="验证码" prop="value">
-      <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password"/>
-    </el-form-item>
-    <el-form-item>
-      <el-button  @click.prevent="toChange" >下一步</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <Background/>
+    <!-- 忘记密码 -->
+    <el-form 
+      ref="forgetForm"
+      :rules="rules"
+      :model="form" 
+      label-position="left"
+      label-width="80px" 
+      class="forget-form">
+      <h1>忘记密码</h1>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="请输入邮箱">
+          <template #append>
+            <el-button  @click.prevent="sendCode" :disabled="form.checkEmail">{{form.buttonTitle}}</el-button>
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="验证码" prop="value">
+        <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password"/>
+      </el-form-item>
+      <el-form-item>
+        <el-button  @click.prevent="toChange" >下一步</el-button>
+      </el-form-item>
+      <el-link href="#/login" class="home-text">返回登录</el-link>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -115,7 +123,16 @@ const toChange = () => {
 </script>
 <style scoped>
 .forget-form {
-  margin: 50px auto;
-  max-width: 450px
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 380px;
+  border-radius: 8px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.home-text {
+  float: right;
 }
 </style>

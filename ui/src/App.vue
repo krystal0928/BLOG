@@ -5,8 +5,7 @@
 </script>
 
 <template>
-  <Layout></Layout>
-  
+  <RouterView></RouterView>
 </template>
 
 <style>

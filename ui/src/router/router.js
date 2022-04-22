@@ -2,21 +2,23 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 // 1. 定义路由组件.
 // 也可以从其他文件导入
-const Login = import ('../components/Login.vue')
-const Register = import('../components/Register.vue')
-const Home = import('../components/Home.vue')
-const Forget = import('../components/Forget.vue')
-const Change = import('../components/Change.vue')
-const BindTFA = import('../components/BindTFA.vue')
+const Login = () => import ('../pages/Login.vue')
+const Register = () => import('../pages/Register.vue')
+const Layout = () => import('../pages/home/Layout.vue')
+const Home = () => import('../pages/home/Home.vue')
+const Forget = () => import('../pages/Forget.vue')
+const Change = () => import('../pages/Change.vue')
+const BindTFA = () => import('../pages/BindTFA.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
 const routes = [
-    { path: '/', redirect: '/home'},
+    { path: '/', component: Layout, redirect: '/home', children: [
+        { path: '/home', component: Home },
+    ]},
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/home', component: Home },
     { path: '/forget', component: Forget },
     { path: '/change', component: Change },
     { path: '/bindTFA', component: BindTFA },
