@@ -34,7 +34,7 @@
       </template>
     </el-dropdown>
     <el-button v-if="logIn" type="primary" class="btn-r" round>收藏</el-button>
-    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round>写文章</el-button>
+    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round @click.prevent="writeArticle">写文章</el-button>
   </div>
 </template> 
 <script lang="ts" setup>
@@ -111,7 +111,12 @@ const toBindTFA = () =>{
       }
     }
   })
+}
 
+const writeArticle = () => {
+  router.push({
+    path: '/article-edit'
+  })
 }
 </script>
 <style scoped>

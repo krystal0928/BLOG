@@ -9,6 +9,7 @@ const Home = () => import('../pages/home/Home.vue')
 const Forget = () => import('../pages/Forget.vue')
 const Change = () => import('../pages/Change.vue')
 const BindTFA = () => import('../pages/BindTFA.vue')
+const ArticleEdit = () => import('../pages/article/ArticleEdit.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -22,6 +23,7 @@ const routes = [
     { path: '/forget', component: Forget },
     { path: '/change', component: Change },
     { path: '/bindTFA', component: BindTFA },
+    { path: '/article-edit', component: ArticleEdit }
 ]
 
 // 3. 创建路由实例并传递 `routes` 配置

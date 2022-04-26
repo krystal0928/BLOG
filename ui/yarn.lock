@@ -285,6 +285,11 @@ debug@^4.3.4:
   dependencies:
     ms "2.1.2"
 
+editor.md@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmmirror.com/editor.md/-/editor.md-1.5.0.tgz#6fe636a88a39b85613f53eee6ecb7b7348ab23bf"
+  integrity sha512-oQBKZdXTkGogGNXV5jomogXZ2v8FNPBDbTC0NOVkicypPGr+NLKeEBfAe/gujCivkDG4Tn5yAGHCr0tsp9o44Q==
+
 element-plus@^2.1.9:
   version "2.1.9"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.1.9.tgz#8779b041f32f871eef2f903ee4c0da16dfb13024"
@@ -574,6 +579,11 @@ magic-string@^0.26.1:
   integrity sha512-ndThHmvgtieXe8J/VGPjG+Apu7v7ItcD5mhEIvOscWjPF/ccOiLxHaSuCAS2G+3x4GKsAbT8u7zdyamupui8Tg==
   dependencies:
     sourcemap-codec "^1.4.8"
+
+md-editor-v3@^1.11.12:
+  version "1.11.12"
+  resolved "https://registry.npmmirror.com/md-editor-v3/-/md-editor-v3-1.11.12.tgz#95fe559442143680d9da914b0010a2da84a5db54"
+  integrity sha512-LWJ2VjbhYYIJu9tSuoDPgVNkaL9+FSo9bbU1/JlnkOoGwfqE9AFNka5igZ2wL4r3Psu/cjTGPHX/ljs5Rfaqrg==
 
 memoize-one@^6.0.0:
   version "6.0.0"

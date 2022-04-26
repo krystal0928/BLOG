@@ -43,6 +43,7 @@ instance.interceptors.response.use(response => {
   return response.data;
 }, (error) => {
   // 对响应错误做点什么
+  ElMessage.error('网络异常，请求失败！');
   return Promise.reject(error);
 });
 
