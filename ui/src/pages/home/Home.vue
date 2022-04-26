@@ -8,19 +8,6 @@
 
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { Search } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
-
-
-const input = ref('')
-const router = useRouter()
-const onLogin = () => {
-  router.push('\login')
-}
-const onHome = () => {
-  router.push('\home')
-}
 
 </script>
 

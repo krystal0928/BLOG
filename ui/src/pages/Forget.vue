@@ -18,7 +18,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="验证码" prop="value">
-        <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password"/>
+        <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password" @keyup.enter.native="toChange"/>
       </el-form-item>
       <el-form-item>
         <el-button  @click.prevent="toChange" >下一步</el-button>

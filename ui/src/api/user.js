@@ -63,3 +63,18 @@ export function bindTFA(param) {
         data: param
     })
 }
+
+export function checkUserStatus() {
+    return axios({
+        url: '/api/user/checkUserStatus',
+        method: 'post'
+    })
+}
+
+export function loginCheck(username) {
+    return axios({
+        url: '/api/user/loginCheck',
+        method: 'post',
+        data: {username}
+    })
+}

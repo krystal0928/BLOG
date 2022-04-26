@@ -14,29 +14,48 @@
     </el-input>
   </div>
   <div class="container_right">
-    <el-button type="primary" class="btn-r" @click="onLogin" round>登录/注册</el-button>
-    <el-dropdown>
-      <el-avatar class="avatar"> user </el-avatar>
+    <el-button v-if="!logIn" type="primary" class="btn-r" @click="onLogin" round>登录/注册</el-button>
+    <el-dropdown v-if="logIn">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        :content="user.username"
+        placement="left-start">
+        <el-avatar class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+      </el-tooltip>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>个人中心</el-dropdown-item>
           <el-dropdown-item>文章管理</el-dropdown-item>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click="toChange">修改密码</el-dropdown-item>
+          <el-dropdown-item @click="toBindTFA">二次验证绑定</el-dropdown-item>
+          <el-dropdown-item @click="logOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <el-button type="primary" class="btn-r" round>收藏</el-button>
-    <el-button type="primary" :icon="Edit" class="btn-r" round>写文章</el-button>
+    <el-button v-if="logIn" type="primary" class="btn-r" round>收藏</el-button>
+    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round>写文章</el-button>
   </div>
 </template> 
 <script lang="ts" setup>
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { computed } from 'vue'
+import { useStore, mapGetters } from 'vuex'
+import { ElMessage,ElMessageBox } from 'element-plus'
+import {checkUserStatus} from '../../api/user'
+
+const store = useStore()
+const logIn = computed(
+  mapGetters(['getLogIn']).getLogIn.bind({ $store: store })
+)
+const user:any = computed(
+  mapGetters(['getUser']).getUser.bind({ $store: store })
+)
 
 const input = ref('')
-
 const router = useRouter()
 const onLogin = () => {
   router.push('/login')
@@ -45,6 +64,55 @@ const onHome = () => {
   router.push('/home')
 }
 
+const logOut = () => {
+  router.push('/home')
+  store.commit('logOut')
+  ElMessage({
+    showClose: true,
+    message: '退出成功！',
+    type: 'success',
+  })
+}
+const toChange = () => {
+  console.log(user.value)
+  router.push({
+    path: '/change',
+    query: {
+      email: user?.value.email
+    }
+  })
+}
+const toBindTFA = () =>{
+  checkUserStatus().then(res => {
+    if (res.code==200 ) {
+      if (res.data==1) {
+        ElMessageBox.confirm('您已绑定二次验证码，点击确认重新绑定',
+          '警告！', 
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        ).then(() => {
+          router.push({
+            path: '/bindTFA',
+            query: {
+              username: user.value.username
+            }
+          })
+        })
+      } else {
+        router.push({
+          path: '/bindTFA',
+          query: {
+            username: user.value.username
+          }
+        })
+      }
+    }
+  })
+
+}
 </script>
 <style scoped>
 .container{
@@ -76,6 +144,7 @@ const onHome = () => {
   padding: 0px 5px 0px 5px ;
   font-size: 1.33rem;
   line-height: 60px;
+  margin-right: 20px;
 }
 .container_right>*{
   padding: 0px 5px 0px 5px ;

@@ -27,7 +27,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="验证码" prop="value">
-        <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password"/>
+        <el-input v-model="form.value" placeholder="请输入验证码,不区分大小写" type="password" @keyup.enter.native="onSubmit"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :disabled="form.disabledRegister" @click.prevent="onSubmit" >注册</el-button>
@@ -41,8 +41,7 @@
 import { ElMessage, FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue'
 import { confirmEmail, register, sendRegisterEmail } from '../api/user.js'
-import { useRouter } from 'vue-router'
-import { fa } from 'element-plus/lib/locale';
+import { useRouter} from 'vue-router'
 
 const router = useRouter()
 const registerFormRef = ref<FormInstance>()
@@ -96,11 +95,11 @@ const checkEmail  = (rule: any, value: any, callback: any) => {
 const rules = reactive({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' },
+    { min: 2, max: 10, message: 'Length should be 2 to 10', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: 'Length should be long than 6', trigger: 'blur' },
+    { min: 6, message: ' be long than 6', trigger: 'blur' },
   ],
    password2: [
     { validator: checkPassword, required: true, trigger: 'blur' },
@@ -129,7 +128,12 @@ const onSubmit = () => {
                 message: '注册成功',
                 type: 'success',
               })
-              router.push('/login')
+              router.push({
+                path: '/login',
+                query:{
+                  username: form.username
+                }
+              })
             }
           })
         }

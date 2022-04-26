@@ -10,14 +10,14 @@
       label-width="80px"
       class="change-form">
       <h1>修改密码</h1>
-      <el-form-item label="用户名" prop="email">
-        <el-input v-model="form.email" placeholder="请输入邮箱" disabled/>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item label="新密码" prop="password">
         <el-input v-model="form.password" placeholder="请输入新密码" type="password"/>
       </el-form-item>
       <el-form-item label="确认密码" prop="password2">
-        <el-input v-model="form.password2" placeholder="请再次输入密码" type="password"/>
+        <el-input v-model="form.password2" placeholder="请再次输入密码" type="password" @keyup.enter.native="onSubmit"/>
       </el-form-item>
           <el-form-item>
         <el-button type="primary" @click.prevent="onSubmit">修改密码</el-button>

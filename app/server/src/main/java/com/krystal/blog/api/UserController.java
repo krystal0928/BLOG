@@ -13,10 +13,13 @@ import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 // 接口
 @RestController
@@ -36,10 +39,10 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/api/user/login")
-    public R login(String username, String password) {
+    public R login(String username, String password, String code) {
         // 1. find User by username
         User user = userService.lambdaQuery()
-                .eq(User::getUsername, username)
+                .eq(User::getUsername, username.trim())
                 .one();
         // 2. null ??
         if (null == user) {
@@ -49,8 +52,19 @@ public class UserController {
         if (!user.getPassword().equals(password)) {
             return R.error(404, "用户名或者密码错误");
         }
-
-        return R.ok("登录成功！");
+        if (StrUtil.isBlank(code) && user.getStatus()==1)
+            return R.error(400,"验证码不能为空");
+        if (!StrUtil.isBlank(code)) {
+            if (!TwoFactorAuthUtil.validateTFACode(user.getSecret(), code)) {
+                return R.error(400, "验证码错误，登录失败！");
+            }
+        }
+        String token = user.getId() + "," + System.currentTimeMillis();
+        HashMap<String,String> map = new HashMap<>();
+        map.put("username",user.getUsername());
+        map.put("token",token);
+        map.put("email",user.getEmail());
+        return R.okMap("登录成功！",map);
     }
 
     /**
@@ -61,14 +75,14 @@ public class UserController {
     @PostMapping(value="/api/user/register")
     public R register(User info){
         User user = userService.lambdaQuery()
-                .eq(User::getUsername,info.getUsername())
+                .eq(User::getUsername,info.getUsername().trim())
                 .one();
 
         if (null != user)
             return R.error(400,"用户已存在，请修改用户名");
 
         user = userService.lambdaQuery()
-                .eq(User::getEmail,info.getEmail())
+                .eq(User::getEmail,info.getEmail().trim())
                 .one();
 
         if (null != user)
@@ -91,7 +105,7 @@ public class UserController {
     @PostMapping(value="/api/user/change")
     public R change(String email, String password){
         User user = userService.lambdaQuery()
-                .eq(User::getEmail,email)
+                .eq(User::getEmail,email.trim())
                 .one();
 
         if (null == user)
@@ -117,7 +131,7 @@ public class UserController {
     @PostMapping(value="/api/user/sendRegisterEmail")
     public R sendRegisterEmail(String email) {
         User user = userService.lambdaQuery()
-                .eq(User::getEmail,email)
+                .eq(User::getEmail,email.trim())
                 .one();
         if (null != user)
             return R.error(400,"该用户已存在！");
@@ -138,7 +152,7 @@ public class UserController {
     @PostMapping(value="/api/user/sendForgetEmail")
     public R sendForgetEmail(String email) {
         User user = userService.lambdaQuery()
-                .eq(User::getEmail,email)
+                .eq(User::getEmail,email.trim())
                 .one();
         if (null == user)
             return R.error(400,"该用户不存在！");
@@ -176,16 +190,15 @@ public class UserController {
     @PostMapping(value="/api/user/generateCode")
     public R generateCode(String username, String password) {
         User user = userService.lambdaQuery()
-                .eq(User::getUsername,username)
+                .eq(User::getUsername,username.trim())
                 .one();
         if (null == user)
             return R.error(400,"用户不存在");
-        if (!StrUtil.isBlank(user.getSecret()))
-            return R.error(400,"用户已存在");
         if (!user.getPassword().equals(password))
             return R.error(400,"密码错误，请重新输入！");
         String secret = TwoFactorAuthUtil.generateTFAKey();
-        String url = TwoFactorAuthUtil.generateOtpAuthUrl(username, secret);
+        String key = String.format("%s_%s",user.getId(),user.getEmail());
+        String url = TwoFactorAuthUtil.generateOtpAuthUrl(key, secret);
         return R.ok("密码正确，请扫描二维码进行绑定！")
                 .put("secret",secret)
                 .put("url", url);
@@ -202,16 +215,43 @@ public class UserController {
     @PostMapping(value="/api/user/bindTFA")
     public R bindTFA(String username, String secret, String code){
         User user = userService.lambdaQuery()
-                .eq(User::getUsername,username)
+                .eq(User::getUsername,username.trim())
                 .one();
         if (null == user)
             return R.error(400,"用户不存在");
         if (!TwoFactorAuthUtil.validateTFACode(secret, code))
             return R.error(400,"验证码错误，绑定失败！");
         user.setSecret(secret);
+        user.setStatus(1);
         if  (!userService.updateById(user))
             return R.error(400,"绑定失败，请重试！");
         return R.ok("绑定成功");
+    }
+
+
+    /**
+     * 二次验证确认用户状态
+     * @param token
+     * @return
+     */
+    @PostMapping(value="/api/user/checkUserStatus")
+    public R checkUserStatus(@RequestHeader("token") String token) {
+        Long id = Long.parseLong(token.split(",")[0]);
+        User user = userService.lambdaQuery()
+                .eq(User::getId,id).one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        return R.okMap("success",user.getStatus());
+    }
+
+    @PostMapping(value = "/api/user/loginCheck")
+    public R loginCheck(String username) {
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername, username.trim())
+                .one();
+        if (null == user)
+            return R.error(400, "用户不存在");
+        return R.okMap("success",user.getStatus());
     }
 
 }

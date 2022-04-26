@@ -12,12 +12,12 @@ public class TFATest {
     @Test
     public void testTFA() {
 //        String tfaKey = TwoFactorAuthUtil.generateTFAKey();
-        String tfaKey = "BMQOORWXIJGIMHHWBUDRFYKVVJTTZYTD";
+        String tfaKey = "AZCGVPPQYETFAOMCMDSVMVRHKJESOHQV";
         String userName = System.currentTimeMillis() + "";
         log.info("tfaKey: {}", tfaKey);
         log.info(TwoFactorAuthUtil.generateOtpAuthUrl(userName, tfaKey));
 
-        String code = "105354";
+        String code = "236036";
         boolean flag = TwoFactorAuthUtil.validateTFACode(tfaKey, code);
         Assertions.assertTrue(flag);
     }

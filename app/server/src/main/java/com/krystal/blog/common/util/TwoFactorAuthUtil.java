@@ -71,13 +71,12 @@ public class TwoFactorAuthUtil {
 	/**
 	 * 生成 Otp Auth Url
 	 *
-	 * @param userName 用户名
+	 * @param key id+email
 	 * @param tfaKey   两步验证 Key
 	 * @return URL
 	 */
-	public static String generateOtpAuthUrl(String userName, final String tfaKey) {
-		String keyId = "krystal-" + userName;
-		return TimeBasedOneTimePasswordUtil.generateOtpAuthUrl(keyId, tfaKey);
+	public static String generateOtpAuthUrl(String key, final String tfaKey) {
+		return TimeBasedOneTimePasswordUtil.generateOtpAuthUrl(key, tfaKey);
 	}
 
 	private static class TimeBasedOneTimePasswordUtil {
@@ -107,6 +106,7 @@ public class TwoFactorAuthUtil {
 			long timeStepMillis = timeStepSeconds * 1000L;
 			for (long millis = fromTimeMillis; millis <= toTimeMillis; millis += timeStepMillis) {
 				int generatedNumber = generateNumber(base32Secret, millis, timeStepSeconds);
+
 				if (generatedNumber == authNumber) {
 					return true;
 				}

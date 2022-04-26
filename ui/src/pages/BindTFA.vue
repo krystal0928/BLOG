@@ -14,7 +14,7 @@
         <el-input v-model="form.username" placeholder="请输入用户名"/>
       </el-form-item>
       <el-form-item label="确认密码" prop="password">
-        <el-input v-model="form.password" placeholder="请输入新密码" type="password"/>
+        <el-input v-model="form.password" placeholder="请输入新密码" type="password" @keyup.enter.native="onConfirm" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click.prevent="onConfirm" >确认</el-button>
@@ -39,9 +39,9 @@
           </el-col>
           <el-col :span="14">
             <p>
-              使用「腾讯身份认证」App，
-              扫码填写动态验证码，
-              完成二次验证绑定
+              使用「腾讯身份认证」App<br/>
+              扫码填写动态验证码<br/>
+              完成二次验证绑定<br/>
             </p>
           </el-col>
         </el-row>
@@ -87,7 +87,7 @@ const state = reactive({
 const rules = reactive({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' },
+    { min: 2, max: 10, message: 'Length should be 2 to 10', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
