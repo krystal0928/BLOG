@@ -5,4 +5,5 @@ import com.krystal.blog.model.User;
 
 public interface UserService  extends IService<User> {
 
+    User getUserByToken(String token) ;
 }

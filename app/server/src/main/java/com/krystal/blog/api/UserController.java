@@ -236,9 +236,7 @@ public class UserController {
      */
     @PostMapping(value="/api/user/checkUserStatus")
     public R checkUserStatus(@RequestHeader("token") String token) {
-        Long id = Long.parseLong(token.split(",")[0]);
-        User user = userService.lambdaQuery()
-                .eq(User::getId,id).one();
+        User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"用户不存在");
         return R.okMap("success",user.getStatus());

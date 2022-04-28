@@ -26,6 +26,7 @@
       v-model="dialogVisible"
       title="二次验证绑定"
       :close-on-click-modal="false"
+      draggable
       width="30%" >
       <div>
         <el-row :gutter="10" class="row">
