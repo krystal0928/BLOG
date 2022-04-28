@@ -24,6 +24,6 @@ import Header from './Header.vue'
   width: auto;
   background-color: rgba(241, 241, 241, 0.739);
   border-bottom: 1px solid rgb(177, 176, 176);
-  box-shadow: 1px 1px 1px rgb(160, 158, 158);
+  /* box-shadow: 1px 1px 1px rgb(160, 158, 158); */
 }
 </style>

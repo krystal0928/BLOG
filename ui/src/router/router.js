@@ -15,15 +15,16 @@ const ArticleEdit = () => import('../pages/article/ArticleEdit.vue')
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
 const routes = [
-    { path: '/', component: Layout, redirect: '/home', children: [
-        { path: '/home', component: Home },
+    { 
+        path: '/', component: Layout, redirect: '/home', children: [
+        { path: '/home', component: Home }
     ]},
+    { path: '/article-edit', component: ArticleEdit },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '/forget', component: Forget },
     { path: '/change', component: Change },
     { path: '/bindTFA', component: BindTFA },
-    { path: '/article-edit', component: ArticleEdit }
 ]
 
 // 3. 创建路由实例并传递 `routes` 配置

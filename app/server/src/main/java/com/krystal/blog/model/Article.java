@@ -1,6 +1,7 @@
 package com.krystal.blog.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
@@ -20,12 +21,14 @@ public class Article extends BaseModel {
 
     @TableId(type = IdType.INPUT)
     private Long id;
-    private String userId;
+    private Long userId;
     private Integer status;
     private String title;
     private String description;
-    private String content;
+    private byte[] content;
     private String filepath;
     private String coverImg;
 
+    @TableField(exist = false, typeHandler = org.apache.ibatis.type.BlobTypeHandler.class)
+    private String contentStr;
 }
