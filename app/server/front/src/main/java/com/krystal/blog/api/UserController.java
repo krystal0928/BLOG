@@ -4,7 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
-import com.krystal.blog.common.util.EmailUtil;
+import com.krystal.blog.common.service.EmailService;
 import com.krystal.blog.common.util.TwoFactorAuthUtil;
 import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.service.UserService;
@@ -30,6 +30,8 @@ public class UserController {
     private SnowFlakeTemplate snowFlakeTemplate;
     @Resource
     private RedissonClient redissonClient;
+    @Resource
+    private EmailService emailService;
 
     /**
      * 登录
@@ -138,7 +140,7 @@ public class UserController {
         RBucket<String> bucket = redissonClient.getBucket(email);
         bucket.set(code);
         bucket.expire(Duration.ofMinutes(1L));
-        EmailUtil.sendNormalEmail(email,"验证码", code);
+        emailService.sendCodeEmail(email,"验证码", code);
         return R.ok("验证码已发送！");
     }
 
@@ -159,7 +161,7 @@ public class UserController {
         RBucket<String> bucket = redissonClient.getBucket(email);
         bucket.set(code);
         bucket.expire(Duration.ofMinutes(1L));
-        EmailUtil.sendNormalEmail(email,"验证码", code);
+        emailService.sendCodeEmail(email,"验证码", code);
         return R.ok("验证码已发送！");
     }
 

@@ -1,4 +1,4 @@
-package com.krystal.blog.common;
+package com.krystal.blog.common.config;
 
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import org.springframework.beans.factory.annotation.Value;
