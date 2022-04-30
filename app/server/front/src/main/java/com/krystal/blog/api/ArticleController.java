@@ -55,8 +55,8 @@ public class ArticleController {
      */
     @PostMapping("/api/article/publishArticle")
     public R publishArticle (Article info) {
-        if (StrUtil.isBlank(info.getTitle()))
-            return R.error(400,"标题不能为空！");
+        Assert.notNull(info.getTitle(),"标题不能为空！");
+        Assert.notNull(info.getContent(),"内容不能为空！");
         info.setId(snowFlakeTemplate.getIdLong());
         info.setStatus(1);
         if (!articleService.save(info))

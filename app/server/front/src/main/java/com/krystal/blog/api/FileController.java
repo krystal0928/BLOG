@@ -33,7 +33,8 @@ public class FileController {
     @PostMapping(value = "/api/file/upload")
     public Object upload(HttpServletRequest httpServletRequest){
         // 根据目录id获取目录路径
-        String uploadPath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), Const.BLOG);
+        String uploadPath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), Const.BLOG_FILE);
+        FileUtil.buildFileByPath(uploadPath);
         log.info("/api/file/upload......upload path: [{}]", uploadPath);
 
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) httpServletRequest;
@@ -49,13 +50,15 @@ public class FileController {
                     String myFileName = file.getOriginalFilename();
                     File destTempFile = new File(uploadPath, myFileName);
 
+                    FileUtil.copyInputStreamToFile(file, destTempFile);
+
                     // 获取文件拓展名
                     String extName = FileUtil.getExtName(myFileName);
                     // 重命名文件
                     String newFileName = System.currentTimeMillis() + RandomUtil.randomString(5) + "." + extName;
                     File finalFile = new File(uploadPath, newFileName);
                     if(destTempFile.renameTo(finalFile)){
-                        log.info("/api/file/upload......rename file.........new file name: [{}]", finalFile.getName());
+                        log.info("/api/file/upload......rename file.........new file name: [{}]", finalFile.getPath());
                     }
 
                     // 计算文件结果

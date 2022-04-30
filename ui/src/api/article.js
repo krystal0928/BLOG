@@ -16,3 +16,5 @@ export function publishArticle(param) {
         data: param
     })
 }
+
+export const uploadUrl = 'http://localhost:8080/blog/api/file/upload'

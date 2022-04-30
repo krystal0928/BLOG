@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.boot.actuate.integration.IntegrationGraphEndpoint;
 
 @Builder
 @Data
@@ -28,6 +29,7 @@ public class Article extends BaseModel {
     private byte[] content;
     private String filepath;
     private String coverImg;
+    private Integer permission;
 
     @TableField(exist = false, typeHandler = org.apache.ibatis.type.BlobTypeHandler.class)
     private String contentStr;

@@ -5,20 +5,19 @@
         <el-row class="head-row">
           <el-col :span="1"></el-col>
           <el-col :span="2">
-            <span class="back" @click="toHome">返回首页</span>
+            <span class="back" @click="backVisible = true">返回首页</span>
           </el-col>
           <el-col :span="17">
             <div class="article-bar__input-box">
-              <input maxlength="100" placeholder="请输入文章标题（5~100个字）" class="article-bar__title article-bar__title--input text-input"> 
-              <span class="article-bar__number"><span class="">5</span>/100</span> 
-              <span class="article-bar__number" aria-hidden="true" style="display: none;">还需要输入0个字</span>
+              <input v-model="form.title"  maxlength="100" :placeholder="titleHolder" class="article-bar__title article-bar__title--input text-input" > 
+              <span class="article-bar__number"><span class="">{{form.title.length}}</span> /100</span> 
             </div>
           </el-col>
           <el-col :span="1.5">
-            <el-button class="draft" @click="saveDraft">保存草稿</el-button>
+            <el-button class="draft" @click="toSaveDraft">保存草稿</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button class="publish">发布文章</el-button>
+            <el-button class="publish" @click="toPublishArticle">发布文章</el-button>
           </el-col>
           <el-col :span="1">
             <el-dropdown v-if="logIn" class="head-img">
@@ -46,12 +45,25 @@
         <div class="common-layout">
           <el-container>
             <el-main class="main" style="margin: 0;padding: 0;">
-              <MdEditor class="editor" v-model="content"/>
+              <MdEditor class="editor" v-model="form.content" placeholder="请输入内容..."/>
             </el-main>
           </el-container>
         </div>
       </el-main>
-       <el-dialog v-model="dialogFormVisible" title="Shipping address">
+      <el-dialog
+        v-model="backVisible"
+        title="确认是否离开此网站？"
+        width="30%"
+      >
+        <span>系统可能不会保存您所做的更改</span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="backVisible = false">取消</el-button>
+            <el-button type="primary" @click="toHome" >确认</el-button >
+          </span>
+        </template>
+      </el-dialog>
+       <el-dialog v-model="dialogFormVisible" title="发布文章">
         <el-form :model="form">
           <el-form-item label="文章封面：" :label-width="formLabelWidth">
             <el-radio-group v-model="form.imgFlag">
@@ -62,7 +74,8 @@
           <el-form-item v-if="form.imgFlag == 1" label="" :label-width="formLabelWidth">
             <el-upload
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadUrl"
+              :headers="headers"
               accept="image/jpeg,image/jpg,image/png"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
@@ -73,7 +86,7 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="文章摘要：" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off" :rows="2" type="textarea" />
+            <el-input v-model="form.description" placeholder="请输入内容！"  autocomplete="off" :rows="2" type="textarea" />
           </el-form-item>
           <!-- 0为公开 1为私密 2为仅粉丝可见 -->
           <el-form-item label="文章权限：" :label-width="formLabelWidth">
@@ -86,10 +99,8 @@
       </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false"
-              >Confirm</el-button
-            >
+            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button type="primary" @click="PublishArticle">确认</el-button>
           </span>
         </template>
       </el-dialog>
@@ -104,31 +115,103 @@ import { useStore, mapGetters } from 'vuex'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useRouter } from 'vue-router';
-import { ElMessage, UploadProps } from 'element-plus'
+import { ElMessage, ElMessageBox, UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+import { publishArticle, saveDraft, uploadUrl } from '../../api/article'
 
-const content = ref("请输入内容...")
 const dialogFormVisible = ref(false)
+const backVisible = ref(false)
 const coverImg = ref('')
+const titleHolder = ref("请输入文章标题（2-100个字）")
 const formLabelWidth = '140px'
 
 const router = useRouter()
 const store = useStore()
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
+const form:any = reactive({
+  title: '',
+  content: '',
+  description: null,
   imgFlag: 0,
-  coverImg: '',
-  desc: '',
-  permission: ''
+  coverImg: null,
+  permission: 0
 })
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (  response, uploadFile ) => {
+const headers = reactive({
+  'token': store.getters.getUser?.token || ''
+})
+const checkArticle = () => {
+  if (form.title.length < 2) {
+    ElMessage({
+      showClose: true,
+      message: "文章标题最少2个字!",
+      type: 'error',
+    })
+    return false;
+  }
+  if (form.content.length == 0) {
+    ElMessage({
+      showClose: true,
+      message: "文章内容不能为空",
+      type: 'error',
+    })
+    return false;
+  }
+  return true
+}
+const toSaveDraft = () => {
+  if (checkArticle()) {
+    saveDraft(form).then(res => {
+      if (res.code == 200) {
+        dialogFormVisible.value = false
+        ElMessage({
+          showClose: true,
+          message: "文章已保存至草稿箱!",
+          type: 'success',
+        })
+      } 
+    })
+  }
+}
+const toPublishArticle = () =>{
+  if (checkArticle()) {
+    dialogFormVisible.value = true
+  }
+}
+const PublishArticle = () => {
+  if (form.description == null) {
+    ElMessage({
+      showClose: true,
+      message: "摘要不能为空!",
+      type: 'error',
+    })
+    return;
+  }
+  publishArticle(form).then(res => {
+    if (res.code ==200) {
+      dialogFormVisible.value = false
+      ElMessage({
+        showClose: true,
+        message: "文章已成功发布!",
+        type: 'success',
+      })
+      router.push({
+        path: '/home'
+      })
+    }
+  })
+  
+}
+const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
   coverImg.value = URL.createObjectURL(uploadFile.raw!)
+  if(response.code == 200) {
+    form.coverImg = response.data[0]
+  } else {
+    ElMessage({
+      showClose: true,
+      message: "图片上传失败，请重试！",
+      type: 'error',
+    })
+  }
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -136,6 +219,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElMessage.error('图片大小需小于3MB!')
     return false
   }
+  // coverImg.value = URL.createObjectURL(rawFile)
   return true
 }
 
@@ -146,16 +230,14 @@ const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+
 const toHome = () => {
   router.push({
     path: '/'
   })
 }
 
-const saveDraft = () =>{
-  dialogFormVisible.value = true
-  console.log(text.value)
-}
+
 </script>
 
 <style>
@@ -254,5 +336,6 @@ const saveDraft = () =>{
 .editor {
   height: calc(100vh - 60px);
   width: 100vw;
+  text-align: left;
 }
 </style>
