@@ -6,8 +6,8 @@ import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.User;
-import com.krystal.blog.common.service.ArticleService;
-import com.krystal.blog.common.service.UserService;
+import com.krystal.blog.common.model.vo.ArticleVo;
+import com.krystal.blog.common.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -25,6 +26,12 @@ public class ArticleController {
     private UserService userService;
     @Resource
     private SnowFlakeTemplate snowFlakeTemplate;
+    @Resource
+    private ArticleCommentService articleCommentService;
+    @Resource
+    private ArticleCollectionService articleCollectionService;
+    @Resource
+    private ArticleLikeService articleLikeService;
 
 
     /**
@@ -64,5 +71,10 @@ public class ArticleController {
         return R.ok("文章已发布！");
     }
 
+
+    public R selectArticleList(){
+        List<ArticleVo> view = articleService.selectArticleList();
+        return R.ok(";;");
+    }
 
 }

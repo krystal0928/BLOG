@@ -1,7 +1,5 @@
 package com.krystal.blog.common.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +14,12 @@ import lombok.experimental.SuperBuilder;
 // 子类对象之间进行比较的时候,equals和hashcode将父类对象属性算进去，根据父类和子类共同的属性去比较。
 @EqualsAndHashCode(callSuper = true)
 //指定表名
-@TableName(value = "user")
-public class User extends BaseModel {
-
-    @TableId(type = IdType.INPUT)
+@TableName(value = "article_comment")
+public class ArticleComment extends BaseModel {
     private Long id;
-    private String username;
-    private String password;
-    private String nickname;
-    private String phone;
-    private String secret;
-    private String email;
-    private Integer status;
-
+    private Long pid;
+    private Long userId;
+    private Long articleId;
+    private String content;
 }
+

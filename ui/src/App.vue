@@ -13,11 +13,25 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 0px;
 }
 body {
   margin: 0px;
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+li {
+    list-style: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: #909090;
+}
+a:hover {
+  color: #007fff;
 }
 </style>
