@@ -35,4 +35,16 @@ a {
 a:hover {
   color: #007fff;
 }
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.card {
+  border-radius: 4px;
+  border: 1px solid #e4e7ed;
+  background-color: #fff;
+  /* box-shadow: 0px 0px 12px rgb(0 0 0 / 12%); */
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+  padding: 15px;
+}
 </style>

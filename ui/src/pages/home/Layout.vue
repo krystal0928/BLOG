@@ -4,10 +4,10 @@
       <el-header class="header">
         <Header></Header>
       </el-header>
-      <el-main>
+      <div>
         <!-- 组件占位 -->
         <RouterView></RouterView>
-      </el-main>
+      </div>
     </el-container>
   </div>
 </template>
@@ -18,9 +18,6 @@ import Header from './Header.vue'
 </script>
 
 <style scoped>
-.common-layout {
-  min-width: 680px;
-}
 .header {
   height: 60px;
   padding: 0px;

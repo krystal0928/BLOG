@@ -107,7 +107,7 @@ onMounted(() => {
 
 <style scoped>
 .wapper {
-  margin: 0 auto;
+  margin: 20px auto 10px;
   width: 70%;
   display: flex;
   flex-wrap: nowrap;
@@ -118,7 +118,7 @@ onMounted(() => {
   margin-right: 20px;
 }
 .list-header {
-  padding: 1.3rem 1rem;
+  padding: 1rem 1rem;
   border-bottom: 1px solid hsla(0,0%,59.2%,.1);
   margin-bottom: 10px;
 }
@@ -317,13 +317,6 @@ onMounted(() => {
 }
 .right-card {
   flex: 1;
-}
-.card {
-  border-radius: 4px;
-  border: 1px solid #e4e7ed;
-  background-color: #fff;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
-  padding: 15px;
 }
 .article-card {
   display: flex;
