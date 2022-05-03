@@ -17,7 +17,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     private ArticleMapper articleMapper;
 
     @Override
-    public List<ArticleVo> selectArticleList() {
-        return articleMapper.selectArticleList();
+    public List<ArticleVo> selectArticleList(Long userId) {
+        return articleMapper.selectArticleList(userId);
     }
 }

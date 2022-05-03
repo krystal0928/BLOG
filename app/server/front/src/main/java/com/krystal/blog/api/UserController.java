@@ -33,6 +33,17 @@ public class UserController {
     @Resource
     private EmailService emailService;
 
+
+    @PostMapping(value = "/api/user/loginCheck")
+    public R loginCheck(String username) {
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername, username.trim())
+                .one();
+        if (null == user)
+            return R.error(400, "用户不存在");
+        return R.okMap("success",user.getStatus());
+    }
+
     /**
      * 登录
      * @param username
@@ -243,14 +254,5 @@ public class UserController {
         return R.okMap("success",user.getStatus());
     }
 
-    @PostMapping(value = "/api/user/loginCheck")
-    public R loginCheck(String username) {
-        User user = userService.lambdaQuery()
-                .eq(User::getUsername, username.trim())
-                .one();
-        if (null == user)
-            return R.error(400, "用户不存在");
-        return R.okMap("success",user.getStatus());
-    }
 
 }

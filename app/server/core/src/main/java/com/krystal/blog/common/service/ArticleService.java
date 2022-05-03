@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ArticleService extends IService<Article> {
 
-    List<ArticleVo> selectArticleList();
+    List<ArticleVo> selectArticleList(Long userId);
 
 }
