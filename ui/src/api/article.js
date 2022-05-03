@@ -16,5 +16,12 @@ export function publishArticle(param) {
         data: param
     })
 }
+export function selectArticleList(param) {
+    return axios({
+        url: '/api/article/selectArticleList',
+        method: 'post',
+        data: param
+    })
+}
 
 export const uploadUrl = 'http://localhost:8080/blog/api/file/upload'

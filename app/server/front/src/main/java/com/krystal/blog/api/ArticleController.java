@@ -71,10 +71,10 @@ public class ArticleController {
         return R.ok("文章已发布！");
     }
 
-
+    @PostMapping("/api/article/selectArticleList")
     public R selectArticleList(){
-        List<ArticleVo> view = articleService.selectArticleList();
-        return R.ok(";;");
+        List<ArticleVo> articleVoList = articleService.selectArticleList();
+        return R.okMap("文章查询成功!",articleVoList);
     }
 
 }

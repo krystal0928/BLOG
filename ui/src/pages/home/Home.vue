@@ -20,53 +20,13 @@
       <div class="article-card card">
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
-            <li data-growing-title="entryList" class="item">
-              <div class="entry" style="margin-bottom: 0px;">
-                <div data-v-78403b6b="" class="meta-container">
-                  <a href="/user/43636194286093" target="_blank" rel="" class="user-message">
-                    <div class="popover-box user-popover">xuyisheng</div>
-                  </a>
-                  <div class="date">11天前</div> 
-                  <div class="tag_list">
-                    <a href="/tag/Flutter" target="_blank" rel="" class="tag">Flutter</a>
-                  </div>
-                </div>
-                <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
-                  <div class="content-main">
-                    <div class="title-row">
-                      <a href="/post/7088864824284676110" target="_blank" rel="" title="为了看Flutter到底有没有人用我竟然" class="title">为了看Flutter到底有没有人用我竟然</a>
-                      </div> 
-                    <div class="abstract">
-                      <a data-v-78403b6b="" href="/post/7088864824284676110" target="_blank" rel="">
-                        <div data-v-78403b6b="">Flutter这个东西出来这么久了，到底市场占有率怎么样呢？为了让大家了解这一真实数据，也为了让大家了解当前Flutter在各大App中的使用情况，我今天下载了几百个App，占了手机将近80G空间，就</div>
-                      </a>
-                      </div>
-                    <ul class="action-list jh-timeline-action-area">
-                      <li class="item view">
-                        <i></i> 
-                        <span>5193</span>
-                      </li>
-                      <li class="item like">
-                        <i data-v-78403b6b=""></i>
-                        <span data-v-78403b6b="">44</span>
-                      </li>
-                      <li class="item comment">
-                        <i data-v-78403b6b=""></i> 
-                        <span data-v-78403b6b="">10</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <img data-v-0808752c="" data-v-78403b6b="" src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
-                </div>
-              </div>
-            </li>
             <li v-for="article in articleList" data-growing-title="entryList" class="item">
               <div class="entry" style="margin-bottom: 0px;">
-                <div data-v-78403b6b="" class="meta-container">
+                <div  class="meta-container">
                   <a href="/user/43636194286093" target="_blank" rel="" class="user-message">
-                    <div class="popover-box user-popover">{{article.username}}</div>
+                    <div class="popover-box user-popover">{{article.userName}}</div>
                   </a>
-                  <div class="date">{{article.date}}</div> 
+                  <div class="date">{{article.createTime.substring(0,10)}}</div> 
                   <div class="tag_list">
                     <a href="/tag/Flutter" target="_blank" rel="" class="tag">Flutter</a>
                   </div>
@@ -77,8 +37,8 @@
                       <a href="/post/7088864824284676110" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
                       </div> 
                     <div class="abstract">
-                      <a data-v-78403b6b="" href="/post/7088864824284676110" target="_blank" rel="">
-                        <div data-v-78403b6b="">{{article.description}}</div>
+                      <a  href="/post/7088864824284676110" target="_blank" rel="">
+                        <div >{{article.description}}</div>
                       </a>
                       </div>
                     <ul class="action-list jh-timeline-action-area">
@@ -87,16 +47,16 @@
                         <span>{{article.view}}</span>
                       </li>
                       <li class="item like">
-                        <i data-v-78403b6b=""></i>
-                        <span data-v-78403b6b="">{{article.like}}</span>
+                        <i ></i>
+                        <span >{{article.like}}</span>
                       </li>
                       <li class="item comment">
-                        <i data-v-78403b6b=""></i> 
-                        <span data-v-78403b6b="">{{article.comment}}</span>
+                        <i ></i> 
+                        <span >{{article.comment}}</span>
                       </li>
                     </ul>
                   </div>
-                  <img data-v-0808752c="" data-v-78403b6b="" src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
+                  <img data-v-0808752c=""  src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
                 </div>
               </div>
             </li>
@@ -107,7 +67,10 @@
 
     <div class="right-card">
       <el-card class="box-card">
-        <div class="signin-tip signin" data-v-68373e0a="" data-v-08a3e345=""><div class="first-line" style="opacity: 1;" data-v-68373e0a=""><div class="icon-text" data-v-68373e0a=""><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon" data-v-68373e0a=""><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C8 1.72386 7.77614 1.5 7.5 1.5H6.5C6.22386 1.5 6 1.72386 6 2L5.9995 3H3C2.44772 3 2 3.47259 2 4.05556V7H22V4.05556C22 3.47259 21.5523 3 21 3H18V2C18 1.72386 17.7761 1.5 17.5 1.5H16.5C16.2239 1.5 16 1.72386 16 2V3H8V2ZM22 8.5H2V20.9444C2 21.5274 2.44772 22 3 22H21C21.5523 22 22 21.5274 22 20.9444V8.5Z" fill="#FFCF8B" data-v-68373e0a=""></path><rect x="5" y="12" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect><rect x="10.5" y="12" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect><rect x="5" y="16" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect><rect x="10.5" y="16" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect><rect x="16" y="12" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect><rect x="16" y="16" width="3" height="2" rx="1" fill="#FF7D00" data-v-68373e0a=""></rect></svg> <span class="title" data-v-68373e0a="">晚上好！</span></div> <button class="btn signin-btn" data-v-68373e0a=""><span class="btn-text" data-v-68373e0a="">去签到</span></button></div> <div class="second-line" style="opacity: 1;" data-v-68373e0a="">点亮你在社区的每一天</div><div class="byte-loading" style="display: none;"><div class="byte-loading__spinner"><i class="circular byte-icon byte-icon--loading"><svg t="1553157954893" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2605" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M980.752 313.697c-25.789-60.972-62.702-115.725-109.713-162.736-47.012-47.011-101.764-83.924-162.736-109.713C645.161 14.542 578.106 1 509 1c-2.242 0-4.48 0.015-6.715 0.043-16.567 0.211-29.826 13.812-29.615 30.38 0.209 16.438 13.599 29.618 29.99 29.618l0.39-0.002c1.98-0.026 3.963-0.039 5.95-0.039 61.033 0 120.224 11.947 175.93 35.508 53.82 22.764 102.162 55.359 143.683 96.879s74.115 89.862 96.88 143.683C949.054 392.776 961 451.967 961 513c0 16.568 13.432 30 30 30s30-13.432 30-30c0-69.106-13.541-136.162-40.248-199.303z" p-id="2606"></path></svg></i><!----></div></div></div>
+        <div class="signin-tip signin" >
+          <div class="first-line" style="opacity: 1;" >
+          </div>
+        </div>
       </el-card>
     </div>
   </div>
@@ -115,12 +78,14 @@
 
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const articleList = ref([
+import { ref, onMounted } from 'vue'
+import { selectArticleList } from '../../api/article'
+
+let articleList = ref([
   {
     id: 1,
-    username: '邹',
-    date: '1天前',
+    userName: '邹',
+    createTime: '1天前',
     title: '为了看Flutter到底有没有人用我竟然222',
     description: 'sdfasdffsd',
     view: 11213,
@@ -129,6 +94,15 @@ const articleList = ref([
     cover: 'https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
   }
 ])
+
+onMounted(() => {
+  selectArticleList().then(res => {
+    if (res.code == 200) {
+      articleList.value = res.data
+    }
+  })
+})
+
 </script>
 
 <style scoped>
