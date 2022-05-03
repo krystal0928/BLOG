@@ -5,12 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.BaseModel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+@NoArgsConstructor
 @Data
 // 将父类中的属性也算到 ToString 中
 @ToString(callSuper = true)
@@ -22,4 +20,6 @@ public class ArticleVo extends Article {
     private Integer collectCount;
     private Integer commentCount;
     private Integer likeCount;
+    private Integer liked;
+    private Integer collected;
 }

@@ -22,7 +22,7 @@ public class ArticleTest extends BlogApplicationTests {
 
     @Test
     public void selectArticleList() {
-        List<ArticleVo> view = articleService.selectArticleList();
+        List<ArticleVo> view = articleService.selectArticleList(1l);
         log.info(view.toString());
     }
 }

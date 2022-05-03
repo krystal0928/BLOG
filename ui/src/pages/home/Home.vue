@@ -42,17 +42,18 @@
                       </a>
                       </div>
                     <ul class="action-list jh-timeline-action-area">
-                      <li class="item view">
-                        <i></i> 
-                        <span>{{article.view}}</span>
+                      <li class="item view" @click="tochangeLike(article.id)">
+                        <img v-if="article.liked == 1" src="../../assets/like.png"  />
+                        <img v-else src="../../assets/unlike.png" />
+                        <span>{{article.likeCount}}</span>
                       </li>
                       <li class="item like">
                         <i ></i>
-                        <span >{{article.like}}</span>
+                        <span >{{article.collectCount}}</span>
                       </li>
                       <li class="item comment">
                         <i ></i> 
-                        <span >{{article.comment}}</span>
+                        <span >{{article.commentCount}}</span>
                       </li>
                     </ul>
                   </div>
@@ -78,8 +79,9 @@
 
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { selectArticleList } from '../../api/article'
+import { ref, onMounted, reactive } from 'vue'
+import { addArticleLike, selectArticleList, deleteArticleLike } from '../../api/article'
+let like_type = ref(false);
 
 let articleList = ref([
   {
@@ -88,9 +90,11 @@ let articleList = ref([
     createTime: '1天前',
     title: '为了看Flutter到底有没有人用我竟然222',
     description: 'sdfasdffsd',
-    view: 11213,
-    like: 123,
-    comment: 123,
+    collectCount: 11213,
+    likeCount: 123,
+    commentCount: 123,
+    liked: 0,
+    collected: 0,
     cover: 'https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
   }
 ])
@@ -102,6 +106,29 @@ onMounted(() => {
     }
   })
 })
+
+const tochangeLike = (articleId) =>{
+  articleList.value.forEach(element => {
+    if(element.id == articleId) {
+      if (element.liked == 0) {
+        addArticleLike(articleId).then(res => {
+          if (res.code == 200) {
+            element.liked = 1;
+            element.likeCount++;
+          }
+        })
+      } 
+      if (element.liked != 0){
+        deleteArticleLike(articleId).then(res => {
+          if (res.code == 200) {
+            element.liked = 0;
+            element.likeCount--;
+          }
+        })
+      }
+    }
+  })
+}
 
 </script>
 
@@ -287,26 +314,12 @@ onMounted(() => {
   color: #4e5969;
   flex-shrink: 0;
 }
-.action-list>.item.view i {
+.action-list>.item.view img {
   display: block;
   width: 16px;
   height: 16px;
   background-size: 100%;
-  background-image: url(//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/img/view.1eda8fa.png);
 }
-.action-list>.item.like i {
-  display: block;
-  width: 16px;
-  height: 16px;
-  background-size: 100%;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJ9SURBVHgB7VZNbtNQEP7GP7AkN8DcoJyA5gRNTwCR2kqsUm9YEKEaoZRl0hUSBLWcAHOCpjdIT1AfIewgTjzM+AccxwHXLRYS/STnvbyxZ743b34e8L+DcEMMhu+fERk7DLTAuAwRjjz3eVD1+xsROD75eARmr7AczDlsVyVhoCbeDt85mXHmqLtkbst0Ko9jk31aVU9tAgvYW7FxYNJ3D85eufuTOZtKYiZu3X4z/LBdRU9tAia4E0+YL7I1z+3OmPEpkWOrip7aBED0RAcb7K8KeBb/alD+LQIa+TI48kxfuAfTVSlVMlybgAafpN1RYgujopwIOzpGEhuogGuloTc8bd2j5TmS8/VfHu7t5uUaeCaRygORPaqi00JFJAVn2UuNa667xXfEeJZ+rePR+Kool7gIQg67+RpBJTvo5QMoZHPXxFLW8Tld2lhoUqMOfg/JlKjdT2Pnpwf0bDlx3worG1EnPlENF0m5OayO5+7NyjRLHXgMfCsNQhumrBviRfRAhnqyu0KAYXmpcX/BfKKekL+dvBIheOUddkuNK7QO6A43ycXDvolYr5OtGTnlD3VU41rVZLdfccvIipMYDdYINAHZZJyicgR+4wQ0hbVH6Px7RBeNE9BM0lGbVxorTRNImhcxf8mvNxcDafOywBM0TUCqqEa/I09QbF6NECDQdjKuN6hGCJSlX2MENqXfGgFKS6hlmA9wi7hvLJ/qWEy/DL96AfMlEXWkU/mD0XiCkjud7kRk56iOltwRYz3ShM7KXlhpx4PheBR3qxzS6zbSi0YtyOZe9919D38ioNC2vIDl6NyQC2bWtzWVomvf93gWwg7KXH+HfwY/AGsn+Lf3Dim6AAAAAElFTkSuQmCC);
-}
-.action-list>.item.comment  i {
-  display: block;
-  width: 16px;
-  height: 16px;
-  background-size: 100%;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKRSURBVHgB7VZNbtpQEJ55BlR15RvUOUHTG5ATJD1BQ9NU6gq8JKiKoyrJ0u2qUmkFOUGaE5TegJwg7gnqLRh7MvMwwiDbYHCUDZ9kHph5M9+bN38AO+zwzEAoiEv3xz4v/KAFiK/0S6J/qPCBoui+Y38cFlC3HgHH7Zk1FTXZUIt/mivEPVY6GFFw4difPNiWwNW3X+dLhj1iA3JqProXq7EQ8TVoz4A1147OWfPkAjYhcO1+twirt7FSEexPiG4+26cDyMEXt1s3AI7Z+LsZ4TEFB1newBzjf2B6Gi8kaqwyvEpHFgmVtjmxcTgm401R44I2G0M2KjpEV5W9KbG0koC+8znrt47d8GFDCAk+gJCQwNyvwqS1LLNwBbHbHuQ7G99bJ4rXgY4LRPGqz4T2koda8EAERl2zIrory7hArlBnDmdSDSbHyf8WrwDVNHKV0YOyQdGNXhAPMwlgnHKjaHQPJUNBOEjamL9fhI7SMt0/Q3uu08wjoJGWLk+FZQKefLyEwIKSETcxwTCbANFfWQLAIygZCFifrjkEQq73WgixCaUziHWi+p1JIC65Hj/mpdt1oCQkq2u7+f4uk4BAGo8minguFQy2hFRXvlonqTuXgK5aRLqHc/m8vXK7LdgCE6hYskolTGtqqWnYsU+dmITJrnCvv/7sOXKSDVCBiScrJgeVBHInIokDuYqEsB5KQqgMl7uk1A4DwrpCkFLLExL0x1HAWfXCr2H4X2TOWh+wEAGB7pBQcRITzgwymvmxEilcVtp+cX1cfs20Drv2VKyDSVUPI4Ij3lRPEfFJclzXEvIQlXhioZ4QYaNjn/Q3IrAMiQmDA0wB+QGEflr/ENK6xXOXFS8QRQdFx/YdnhyP1D0hcwr1KvEAAAAASUVORK5CYII=);  }
 .thumb {
   flex: 0 0 auto;
   width: 120px;

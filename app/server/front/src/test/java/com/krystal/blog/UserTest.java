@@ -2,6 +2,7 @@ package com.krystal.blog;
 
 import com.krystal.blog.common.mapper.UserMapper;
 import com.krystal.blog.common.model.User;
+import com.krystal.blog.common.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RBucket;
@@ -17,10 +18,16 @@ public class UserTest extends BlogApplicationTests {
     private UserMapper userMapper;
     @Autowired
     private RedissonClient redissonClient;
+    @Resource
+    private UserService userService;
 
     @Test
     public void testSelect() {
-        User user = userMapper.selectById(1L);
+//        User user = userMapper.selectById(1L);
+//        log.info(user.toString());
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername, "邹小胖")
+                .one();
         log.info(user.toString());
     }
 

@@ -114,7 +114,7 @@ import { ref, computed, reactive } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import { ElMessage, ElMessageBox, UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { publishArticle, saveDraft, uploadUrl } from '../../api/article'
@@ -126,8 +126,10 @@ const titleHolder = ref("请输入文章标题（2-100个字）")
 const formLabelWidth = '140px'
 
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const form:any = reactive({
+  id: route.query.id,
   title: '',
   content: '',
   description: null,

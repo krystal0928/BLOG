@@ -25,3 +25,18 @@ export function selectArticleList(param) {
 }
 
 export const uploadUrl = 'http://localhost:8080/blog/api/file/upload'
+
+export function addArticleLike(articleId) {
+    return axios({
+        url: '/api/article/addArticleLike',
+        method: 'post',
+        data: {articleId}
+    })
+}
+export function deleteArticleLike(articleId) {
+    return axios({
+        url: '/api/article/deleteArticleLike',
+        method: 'post',
+        data: { articleId }
+    })
+}
