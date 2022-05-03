@@ -18,6 +18,9 @@ import Header from './Header.vue'
 </script>
 
 <style scoped>
+.common-layout {
+  min-width: 680px;
+}
 .header {
   height: 60px;
   padding: 0px;

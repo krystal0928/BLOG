@@ -150,6 +150,7 @@ const writeArticle = () => {
   font-size: 1.33rem;
   line-height: 60px;
   margin-right: 20px;
+  display: flex;
 }
 .container_right>*{
   padding: 0px 5px 0px 5px ;
@@ -161,5 +162,6 @@ const writeArticle = () => {
 }
 .btn-r {
   font-size: 15px;
+  margin: auto 5px;
 }
 </style>

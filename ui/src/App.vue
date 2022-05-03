@@ -18,6 +18,7 @@
 }
 body {
   margin: 0px;
+  min-width: 680px;
 }
 ul {
   padding: 0;

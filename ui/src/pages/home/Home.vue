@@ -56,7 +56,7 @@
                       </li>
                     </ul>
                   </div>
-                  <img data-v-0808752c=""  src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
+                  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
                 </div>
               </div>
             </li>
@@ -107,7 +107,8 @@ onMounted(() => {
 
 <style scoped>
 .wapper {
-  margin: 0 200px; 
+  margin: 0 auto;
+  width: 70%;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -121,7 +122,7 @@ onMounted(() => {
   border-bottom: 1px solid hsla(0,0%,59.2%,.1);
   margin-bottom: 10px;
 }
-.list-nav[data-v-11641108] {
+.list-nav {
   justify-content: flex-start!important;
 }
 .list-header .list-nav, .list-header .nav-list {
@@ -140,6 +141,14 @@ onMounted(() => {
   padding: 0 1.2rem;
   font-size: 1.16rem;
   border-right: 1px solid hsla(0,0%,59.2%,.2);
+}
+.entry-list {
+  width: 100%;
+  background-color: #fff;
+  position: relative;
+}
+.entry-list-wrap {
+  width: 100%;
 }
 .entry {
   cursor: pointer;
@@ -219,6 +228,7 @@ onMounted(() => {
 }
 .content-wrapper .content-main {
   flex: 1 1 auto;
+  min-width: calc(100% - 140px);
 }
 .title-row {
   display: flex;
@@ -239,7 +249,7 @@ onMounted(() => {
 .abstract {
   margin-bottom: 10px;
 }
-.abstract a[data-v-78403b6b] {
+.abstract a {
   color: #86909c;
   font-size: 13px;
   line-height: 22px;
