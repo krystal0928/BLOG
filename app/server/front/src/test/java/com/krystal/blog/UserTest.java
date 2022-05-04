@@ -1,5 +1,6 @@
 package com.krystal.blog;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.krystal.blog.common.mapper.UserMapper;
 import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.service.UserService;
@@ -23,12 +24,35 @@ public class UserTest extends BlogApplicationTests {
 
     @Test
     public void testSelect() {
-//        User user = userMapper.selectById(1L);
-//        log.info(user.toString());
         User user = userService.lambdaQuery()
                 .eq(User::getUsername, "邹小胖")
                 .one();
         log.info(user.toString());
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername, "Krystal")
+                .one();
+        String password = DigestUtil.md5Hex(user.getPassword());
+        log.info(password);
+        userService.lambdaUpdate()
+                .set(User::getPassword,password)
+                .eq(User::getEmail,user.getEmail()).update();
+    }
+
+    @Test
+    public void testCheck() {
+        User user = userService.lambdaQuery()
+                .eq(User::getUsername, "Baboom")
+                .one();
+        if(DigestUtil.md5Hex("123456").equals(user.getPassword())) {
+            log.info("true");
+        }
+        else {
+            log.info("false");
+        }
     }
 
     @Test
@@ -37,7 +61,6 @@ public class UserTest extends BlogApplicationTests {
                 .id(4L)
                 .username("邹小胖4")
                 .password("krystal")
-                .nickname("宝")
                 .build();
         int result = userMapper.insert(user);
         log.info(result + " ");

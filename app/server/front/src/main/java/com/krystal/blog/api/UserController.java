@@ -2,6 +2,7 @@ package com.krystal.blog.api;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.service.EmailService;
@@ -61,7 +62,7 @@ public class UserController {
             return R.error(400, "用户不存在");
         }
         // 3. password match
-        if (!user.getPassword().equals(password)) {
+        if ( !user.getPassword().equals(DigestUtil.md5Hex(password)) ) {
             return R.error(404, "用户名或者密码错误");
         }
         if (StrUtil.isBlank(code) && user.getStatus()==1)
@@ -100,6 +101,7 @@ public class UserController {
         if (null != user)
             return R.error(400,"该邮箱已绑定其他用户，请修改邮箱");
 
+        info.setPassword(DigestUtil.md5Hex(info.getPassword()));
         info.setId(snowFlakeTemplate.getIdLong());
 
         if (!userService.save(info))
@@ -127,7 +129,7 @@ public class UserController {
             return R.error(400,"与先前密码一致，修改失败！");
 
         if (!userService.lambdaUpdate()
-                .set(User::getPassword,password)
+                .set(User::getPassword,DigestUtil.md5Hex(password))
                 .eq(User::getEmail,email)
                 .update())
             return R.error(400,"密码修改失败！");
@@ -206,7 +208,7 @@ public class UserController {
                 .one();
         if (null == user)
             return R.error(400,"用户不存在");
-        if (!user.getPassword().equals(password))
+        if (!user.getPassword().equals(DigestUtil.md5Hex(password)))
             return R.error(400,"密码错误，请重新输入！");
         String secret = TwoFactorAuthUtil.generateTFAKey();
         String key = String.format("%s_%s",user.getId(),user.getEmail());

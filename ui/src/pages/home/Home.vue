@@ -81,7 +81,6 @@
 
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { tr } from 'element-plus/lib/locale';
 import { ref, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router';
 import { addArticleLike, selectArticleList, deleteArticleLike, addArticleCollect, deleteArticleCollect } from '../../api/article'
