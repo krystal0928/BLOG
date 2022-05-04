@@ -48,4 +48,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
         info.setUpdateTime(new Date());
         return this.updateById(info);
     }
+
+    @Override
+    public ArticleVo selectArticle(Long id, Long userId) {
+        return articleMapper.selectArticle(id,userId);
+    }
 }

@@ -1,5 +1,7 @@
 package com.krystal.blog.api;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.krystal.blog.common.beans.ApplicationTemplate;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -121,26 +124,34 @@ public class ArticleController {
 
 
     @PostMapping("/api/article/{id}")
-    public R getArticleById(HttpServletRequest httpServletRequest,
+    public R getArticleById(@RequestHeader("token") String token,
+                            HttpServletRequest httpServletRequest,
                             @PathVariable("id") Long id) {
-        Article article = articleService.getById(id);
-        if (null == article || StrUtil.isEmpty(article.getFilepath())) {
+        Long userId = 0L;
+        if (!StrUtil.isEmpty(token)) {
+            User user = userService.getUserByToken(token);
+            if (null == user)
+                return R.error(400,"该用户不存在！");
+            userId = user.getId();
+        }
+        ArticleVo articleVo = articleService.selectArticle(id, userId);
+
+        if (null == articleVo || StrUtil.isEmpty(articleVo.getFilepath())) {
             return R.error(400, "文章信息不存在");
         }
         // 获取发布文章文件内容
-        String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
-        log.info("filePath: {}", filePath);
+        String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), articleVo.getFilepath());
+
         if (!cn.hutool.core.io.FileUtil.exist(filePath)) {
             return R.error(400, "文章发布信息不存在");
         }
         // 读取文件
         FileReader reader = new FileReader(filePath);
         String content = reader.readString();
-        FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), article.getFilepath());
-        Map map = new HashMap<>();
-        map.put("title", article.getTitle());
-        map.put("content", content);
-        return R.okMap("success", map);
+        FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), articleVo.getFilepath());
+
+        articleVo.setContent(content);
+        return R.okMap("success", articleVo);
     }
 
 

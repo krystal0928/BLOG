@@ -16,4 +16,7 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     boolean publish(Article info);
+
+    ArticleVo selectArticle(Long id, Long userId);
+
 }

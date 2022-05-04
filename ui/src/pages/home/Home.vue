@@ -107,9 +107,16 @@ const headers = reactive({
 })
 
 const router = useRouter()
+
+onMounted(() => {
+  selectArticleList().then(res => {
+    if (res.code == 200) {
+      articleList.value = res.data
+    }
+  })
+})
 const checkToken = () => {
   console.log(headers.token)
-
   if (headers.token == '') {
     ElMessageBox.confirm('登录已过期，请重新登录！',
       '警告！',
@@ -129,14 +136,6 @@ const checkToken = () => {
   }
   return true
 }
-
-onMounted(() => {
-  selectArticleList().then(res => {
-    if (res.code == 200) {
-      articleList.value = res.data
-    }
-  })
-})
 
 const tochangeLike = (articleId) =>{
   if (checkToken()) {
