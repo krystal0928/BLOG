@@ -189,7 +189,7 @@ const tochangeCollect = (articleId) =>{
 .container {
   position: relative;
   margin: 0 auto;
-  width: 80%;
+  width: 70%;
 }
 .view {
   margin-top: 1.767rem;
