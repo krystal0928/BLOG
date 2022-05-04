@@ -21,7 +21,7 @@
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
             <li v-for="article in articleList" data-growing-title="entryList" class="item">
-              <div class="entry" style="margin-bottom: 0px;">
+              <div class="entry" style="margin-bottom: 10px;">
                 <div  class="meta-container">
                   <a href="/user/43636194286093" target="_blank" rel="" class="user-message">
                     <div class="popover-box user-popover">{{article.userName}}</div>
@@ -67,14 +67,14 @@
       </div>
     </div>
 
-    <div class="right-card">
+    <!-- <div class="right-card">
       <el-card class="box-card">
         <div class="signin-tip signin" >
           <div class="first-line" style="opacity: 1;" >
           </div>
         </div>
       </el-card>
-    </div>
+    </div> -->
   </div>
 </template>
 

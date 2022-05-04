@@ -141,13 +141,14 @@ const writeArticle = () => {
   margin: 10px;
 }
 .search {
-  width: 200px;
+  flex: auto;
+  min-width: 200px;
   float: left;
   line-height: 60px;
-  margin: 0px 40px;
+  margin: 0px 20px;
 }
 .container_right{
-  float: right;
+  /* float: right; */
   padding: 0px 5px 0px 5px ;
   font-size: 1.33rem;
   line-height: 60px;
