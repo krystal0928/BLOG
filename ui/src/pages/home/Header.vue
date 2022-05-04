@@ -100,6 +100,8 @@ const toBindTFA = () =>{
               username: user.value.username
             }
           })
+        }).catch(() => {
+        
         })
       } else {
         router.push({

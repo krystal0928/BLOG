@@ -115,7 +115,7 @@ import { useStore, mapGetters } from 'vuex'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useRouter,useRoute } from 'vue-router';
-import { ElMessage, ElMessageBox, UploadProps } from 'element-plus'
+import { ElMessage,  UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { publishArticle, saveDraft, uploadUrl } from '../../api/article'
 
@@ -141,6 +141,8 @@ const form:any = reactive({
 const headers = reactive({
   'token': store.getters.getUser?.token || ''
 })
+
+
 const checkArticle = () => {
   if (form.title.length < 2) {
     ElMessage({

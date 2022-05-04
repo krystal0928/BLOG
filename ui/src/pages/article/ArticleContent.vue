@@ -258,7 +258,7 @@
 .container {
   position: relative;
   margin: 0 auto;
-  width: 100%;
+  width: 80%;
 }
 .view {
   margin-top: 1.767rem;

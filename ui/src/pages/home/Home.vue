@@ -41,18 +41,19 @@
                         <div >{{article.description}}</div>
                       </a>
                       </div>
-                    <ul class="action-list jh-timeline-action-area">
-                      <li class="item view" @click="tochangeLike(article.id)">
+                    <ul class="action-list">
+                      <li class="item" @click="tochangeLike(article.id)">
                         <img v-if="article.liked == 1" src="../../assets/like.png"  />
                         <img v-else src="../../assets/unlike.png" />
                         <span>{{article.likeCount}}</span>
                       </li>
-                      <li class="item like">
-                        <i ></i>
+                      <li class="item" @click="tochangeCollect(article.id)">
+                        <img v-if="article.collected == 1" src="../../assets/collect.png"  />
+                        <img v-else src="../../assets/uncollect.png" />
                         <span >{{article.collectCount}}</span>
                       </li>
-                      <li class="item comment">
-                        <i ></i> 
+                      <li class="item">
+                        <img src="../../assets/comment.png"  />
                         <span >{{article.commentCount}}</span>
                       </li>
                     </ul>
@@ -79,9 +80,13 @@
 
 
 <script lang="ts" setup>
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { tr } from 'element-plus/lib/locale';
 import { ref, onMounted, reactive } from 'vue'
-import { addArticleLike, selectArticleList, deleteArticleLike } from '../../api/article'
-let like_type = ref(false);
+import { useRouter } from 'vue-router';
+import { addArticleLike, selectArticleList, deleteArticleLike, addArticleCollect, deleteArticleCollect } from '../../api/article'
+import store from '../../store/store';
+
 
 let articleList = ref([
   {
@@ -98,6 +103,31 @@ let articleList = ref([
     cover: 'https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
   }
 ])
+const headers = reactive({
+  'token': store.getters.getUser?.token || ''
+})
+
+const router = useRouter()
+const checkToken = () => {
+  if (headers.token == '') {
+    ElMessageBox.confirm('登录已过期，请重新登录！',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({
+        path: '/login'
+      })
+    }).catch(() => {
+    
+    })
+    return false
+  }
+  return true
+}
 
 onMounted(() => {
   selectArticleList().then(res => {
@@ -108,21 +138,46 @@ onMounted(() => {
 })
 
 const tochangeLike = (articleId) =>{
+  if (checkToken()) {
+    articleList.value.forEach(element => {
+      if(element.id == articleId) {
+        if (element.liked == 0) {
+          addArticleLike(articleId).then(res => {
+            if (res.code == 200) {
+              element.liked = 1;
+              element.likeCount++;
+            }
+          })
+        } 
+        if (element.liked != 0){
+          deleteArticleLike(articleId).then(res => {
+            if (res.code == 200) {
+              element.liked = 0;
+              element.likeCount--;
+            }
+          })
+        }
+      }
+    })
+  }
+}
+
+const tochangeCollect = (articleId) =>{
   articleList.value.forEach(element => {
     if(element.id == articleId) {
-      if (element.liked == 0) {
-        addArticleLike(articleId).then(res => {
+      if (element.collected == 0) {
+        addArticleCollect(articleId).then(res => {
           if (res.code == 200) {
-            element.liked = 1;
-            element.likeCount++;
+            element.collected = 1;
+            element.collectCount++;
           }
         })
       } 
-      if (element.liked != 0){
-        deleteArticleLike(articleId).then(res => {
+      if (element.collected != 0){
+        deleteArticleCollect(articleId).then(res => {
           if (res.code == 200) {
-            element.liked = 0;
-            element.likeCount--;
+            element.collected = 0;
+            element.collectCount--;
           }
         })
       }
@@ -290,6 +345,7 @@ const tochangeLike = (articleId) =>{
   display: flex;
   align-items: center;
 }
+
 .action-list>.item {
   position: relative;
   margin-right: 20px;
@@ -298,27 +354,15 @@ const tochangeLike = (articleId) =>{
   color: #4e5969;
   flex-shrink: 0;
 }
-.action-list>.item {
-  position: relative;
-  margin-right: 20px;
-  font-size: 13px;
-  line-height: 20px;
-  color: #4e5969;
-  flex-shrink: 0;
-}
-.action-list>.item {
-  position: relative;
-  margin-right: 20px;
-  font-size: 13px;
-  line-height: 20px;
-  color: #4e5969;
-  flex-shrink: 0;
-}
-.action-list>.item.view img {
+.action-list>.item img {
   display: block;
   width: 16px;
   height: 16px;
+  margin-right: 5px;
   background-size: 100%;
+}
+.action-list>.item:hover {
+  color: #007fff;
 }
 .thumb {
   flex: 0 0 auto;

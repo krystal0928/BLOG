@@ -142,7 +142,7 @@ public class ArticleController {
             return R.error(400,"该文章目前已不存在！");
         User user = userService.getUserByToken(token);
         if (null == user)
-            return R.error(400,"登录已过期，请重新登录！");
+            return R.error(400,"该用户不存在！");
         ArticleLike articleLike = articleLikeService.lambdaQuery()
                 .eq(ArticleLike::getArticleId,articleId)
                 .eq(ArticleLike::getUserId,user.getId())
@@ -166,7 +166,7 @@ public class ArticleController {
             return R.error(400,"该文章目前已不存在！");
         User user = userService.getUserByToken(token);
         if (null == user)
-            return R.error(400,"登录已过期，请重新登录！");
+            return R.error(400,"该用户不存在！");
         ArticleCollection articleCollection = ArticleCollection.builder()
                 .id(snowFlakeTemplate.getIdLong())
                 .articleId(articleId)
@@ -191,7 +191,7 @@ public class ArticleController {
             return R.error(400,"该文章目前已不存在！");
         User user = userService.getUserByToken(token);
         if (null == user)
-            return R.error(400,"登录已过期，请重新登录！");
+            return R.error(400,"该用户不存在！");
         ArticleCollection articleCollection = articleCollectionService.lambdaQuery()
                 .eq(ArticleCollection::getArticleId,articleId)
                 .eq(ArticleCollection::getUserId,user.getId())
@@ -217,7 +217,7 @@ public class ArticleController {
             return R.error(400,"该文章目前已不存在！");
         User user = userService.getUserByToken(token);
         if (null == user)
-            return R.error(400,"登录已过期，请重新登录！");
+            return R.error(400,"该用户不存在！");
         info.setUserId(user.getId());
         if (null != info.getPid()) {
             ArticleComment comment = articleCommentService.getById(info.getPid());

@@ -21,8 +21,9 @@ public class LoginInterceptor implements HandlerInterceptor{
         excludeUrl.add("/api/user/register");
         excludeUrl.add("/api/user/sendRegisterEmail");
         excludeUrl.add("/api/user/sendForgetEmail");
-        excludeUrl.add("/api/user/confirmEmail");
         excludeUrl.add("/api/user/loginCheck");
+        excludeUrl.add("/api/user/confirmEmail");
+        excludeUrl.add("/api/article/selectArticleList");
     }
 
     @Override

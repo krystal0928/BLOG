@@ -17,10 +17,10 @@ instance.interceptors.request.use((config) => {
     config.data = qs.stringify(config.data)
   }
 
-  if (localStorage.getItem('user')) {
-    const token = JSON.parse(localStorage.getItem('user'))?.token
+  // if (localStorage.getItem('user')) {
+    const token = JSON.parse(localStorage.getItem('user'))?.token || ''
     config.headers['token'] = token
-  }
+  // }
 
   return config;
 }, (error) => {

@@ -40,3 +40,17 @@ export function deleteArticleLike(articleId) {
         data: { articleId }
     })
 }
+export function addArticleCollect(articleId) {
+    return axios({
+        url: '/api/article/addArticleCollection',
+        method: 'post',
+        data: { articleId }
+    })
+}
+export function deleteArticleCollect(articleId) {
+    return axios({
+        url: '/api/article/deleteArticleCollection',
+        method: 'post',
+        data: { articleId }
+    })
+}
