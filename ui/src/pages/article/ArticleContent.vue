@@ -5,15 +5,15 @@
         <div class="main-area article-area">
           <article class="article card">
             <h1 class="article-title">
-              Go 和 Rust 我都要！
+              {{article.title}}
             </h1>
             <div class="author-info-block">
-              <a href="/user/149189280670478" target="_blank" rel class="avatar-link">
+              <a href="/user/149189280670478" target="_blank" class="avatar-link">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" alt loading="lazy" class="lazy avatar avatar">
               </a> 
               <div class="author-info-box">
                 <div class="author-name">
-                  <a href="/user/149189280670478" target="_blank" rel class="username username ellipsis">
+                  <a href="/user/149189280670478" target="_blank" class="username username ellipsis">
                     <span class="name" style="max-width: 128px;"> 张晋涛</span> 
                     <span blank="true" class="rank">
                       <img src="//lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/e108c685147dfe1fb03d4a37257fb417.svg" alt="lv-3"></span> 
@@ -32,151 +32,7 @@
                 <span data-text="取消关注" class="text">关注</span>
               </button>
             </div>
-            <div data-v-3fbea7fe class="article-content" itemprop="articleBody"><div class="markdown-body">
-            
-                        <p>「这是我参与11月更文挑战的第5天，活动详情查看：<a href="https://juejin.cn/post/7023643374569816095/" title="https://juejin.cn/post/7023643374569816095/" target="_blank">2021最后一次更文挑战</a>」。</p>
-            <p>大家好，我是张晋涛。</p>
-            <p>近期 Rust 社区/团队有些变动，所以再一次将 Rust 拉到大多数人眼前。</p>
-            <p>我最近看到很多小伙伴说的话：</p>
-            <blockquote>
-            <p>Rust 还值得学吗？社区是不是不稳定呀</p>
-            </blockquote>
-            <blockquote>
-            <p>Rust 和 Go 哪个好？</p>
-            </blockquote>
-            <blockquote>
-            <p>Rust 还值得学吗？</p>
-            </blockquote>
-            <p>这些问题如果有人来问我，那我的回答是：</p>
-            <p><strong>小孩子才做选择，我都要！</strong></p>
-            <p>当然，关于 Rust 和 Go 的问题也不算新，比如之前的一条推文：</p>
-            <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a567d101dc00434da0e65c9afa1009e7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp" alt loading="lazy" class="medium-zoom-image"></p>
-            <p>我在本篇中就来介绍下如何用 Go 调用 Rust。</p>
-            <p><strong>当然，这篇中我基本上不会去比较 Go 和 Rust 的功能，或者这种方式的性能之类的，Just for Fun</strong></p>
-            <h1 data-id="heading-0">FFI 和 Binding</h1>
-            <p>FFI (Foreign Function Interface) 翻译过来叫做外部函数接口（为了比较简单，下文中都将使用 FFI 指代）。最早来自于 Common Lisp 的规范，这是在 wiki 上写的，我并没有去考证。
-            不过我所使用过的绝大多数语言中都有 FFI 的概念/术语存在，比如：Python、Ruby, Haskell、Go、Rust、LuaJIT 等。</p>
-            <p>FFI 的作用简单来说就是允许一种语言去调用另一种语言，有时候我们也会用 Binding 来表示类似的能力。</p>
-            <p>在不同的语言中会有不同的实现，比如在 Go 中的 cgo , Python 中的 ctypes ， Haskell 中的 CAPI （之前还有一个 ccall）等。
-            我个人感觉 Haskell 中用 FFI 相比其他语言要更简单&amp;方便的多，不过这不是本篇的重点就不展开了。</p>
-            <p>在本文中，对于 Go 和 Rust 而言，它们的 FFI 需要与 C 语言对象进行通信，而这部分其实是由操作系统根据 API 中的调用约定来完成的。</p>
-            <p>我们来进入正题。</p>
-            <h1 data-id="heading-1">准备 Rust 示例程序</h1>
-            <p>Rust 的安装和 Cargo 工具的基本使用，这里就不介绍了。大家可以去 Rust 的官网进行了解。</p>
-            <h2 data-id="heading-2">用 Cargo 创建项目</h2>
-            <p>我们先准备一个目录用来放本次示例的代码。（我创建的目录叫做 <code>go-rust</code> ）</p>
-            <p>然后使用 Rust 的 Cargo 工具创建一个名叫 <code>rustdemo</code> 的项目，这里由于我增加了 <code>--lib</code> 的选项，使用其内置的 library 模板。</p>
-            <pre><code class="hljs language-bash copyable" lang="bash">➜  go-rust git:(master) ✗ mkdir lib &amp;&amp; <span class="hljs-built_in">cd</span> lib
-            ➜  go-rust git:(master) ✗ cargo new --lib rustdemo
-                Created library `rustdemo` package
-            ➜  go-rust git:(master) ✗ tree rustdemo 
-            rustdemo
-            ├── Cargo.toml
-            └── src
-                └── lib.rs
-
-            1 directory, 2 files
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <h2 data-id="heading-3">准备 Rust 代码</h2>
-            <pre><code class="hljs language-rust copyable" lang="rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> libc;
-            <span class="hljs-keyword">use</span> std::ffi::{CStr, CString};
-
-            <span class="hljs-meta">#[no_mangle]</span> 
-            <span class="hljs-keyword">pub</span> <span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">rustdemo</span></span>(name: *<span class="hljs-keyword">const</span> libc::c_char) -&gt; *<span class="hljs-keyword">const</span> libc::c_char {
-                <span class="hljs-keyword">let</span> cstr_name = <span class="hljs-keyword">unsafe</span> { CStr::from_ptr(name) };
-                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> str_name = cstr_name.to_str().unwrap().to_string();
-                <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Rust get Input:  \"{}\""</span>, str_name);
-                <span class="hljs-keyword">let</span> r_string: &amp;<span class="hljs-built_in">str</span> = <span class="hljs-string">" Rust say: Hello Go "</span>;
-                str_name.push_str(r_string);
-                CString::new(str_name).unwrap().into_raw()
-            }
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>代码比较简单，Rust 暴露出来的函数名叫做 <code>rustdemo</code> ，接收一个外部的参数，并将其打印出来。之后从 Rust 这边再设置一个字符串。</p>
-            <p><code>CString::new(str_name).unwrap().into_raw()</code> 被转换为原始指针，以便之后由 C 语言处理。</p>
-            <h2 data-id="heading-4">编译 Rust 代码</h2>
-            <p>我们需要修改下 <code>Cargo.toml</code> 文件以便进行编译。注意，这里我们增加了 <code>crate-type = ["cdylib"]</code> 和 <code>libc</code> 。</p>
-            <pre><code class="hljs language-toml copyable" lang="toml"><span class="hljs-section">[package]</span>
-            <span class="hljs-attr">name</span> = <span class="hljs-string">"rustdemo"</span>
-            <span class="hljs-attr">version</span> = <span class="hljs-string">"0.1.0"</span>
-            <span class="hljs-attr">edition</span> = <span class="hljs-string">"2021"</span>
-
-            <span class="hljs-section">[lib]</span>
-            <span class="hljs-attr">crate-type</span> = [<span class="hljs-string">"cdylib"</span>]
-
-            <span class="hljs-section">[dependencies]</span>
-            <span class="hljs-attr">libc</span> = <span class="hljs-string">"0.2"</span>
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>然后进行编译</p>
-            <pre><code class="hljs language-bash copyable" lang="bash">➜  rustdemo git:(master) ✗ cargo build --release
-              Compiling rustdemo v0.1.0 (/home/tao/go/src/github.com/tao12345666333/go-rust/lib/rustdemo)
-                Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 0.22s
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>查看生成的文件，这是一个 <code>.so</code> 文件（这是因为我在 Linux 环境下，你如果在其他系统环境下会不同)</p>
-            <pre><code class="hljs language-bash copyable" lang="bash">➜  rustdemo git:(master) ✗ ls target/release/librustdemo.so 
-            target/release/librustdemo.so
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <h1 data-id="heading-5">准备 Go 代码</h1>
-            <p>Go 环境的安装之类的这里也不再赘述了，继续在我们的 go-rust 目录操作即可。</p>
-            <h2 data-id="heading-6">编写 main.go</h2>
-            <pre><code class="hljs language-go copyable" lang="go"><span class="hljs-keyword">package</span> main
-
-            <span class="hljs-comment">/*
-            #cgo LDFLAGS: -L./lib -lrustdemo
-            #include &lt;stdlib.h&gt;
-            #include "./lib/rustdemo.h"
-            */</span>
-            <span class="hljs-keyword">import</span> <span class="hljs-string">"C"</span>
-
-            <span class="hljs-keyword">import</span> (
-              <span class="hljs-string">"fmt"</span>
-              <span class="hljs-string">"unsafe"</span>
-            )
-
-            <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
-              s := <span class="hljs-string">"Go say: Hello Rust"</span>
-
-              input := C.CString(s)
-              <span class="hljs-keyword">defer</span> C.free(unsafe.Pointer(input))
-              o := C.rustdemo(input)
-              output := C.GoString(o)
-              fmt.Printf(<span class="hljs-string">"%s\n"</span>, output)
-            }
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>在这里我们使用了 cgo ，在 <code>import "C"</code> 之前的注释内容是一种特殊的语法，这里是正常的 C 代码，其中需要声明使用到的头文件之类的。</p>
-            <p>下面的代码很简单，定义了一个字符串，传递给 rustdemo 函数，然后打印 C 处理后的字符串。</p>
-            <p>同时，为了能够让 Go 程序能正常调用 Rust 函数，这里我们还需要声明其头文件，在 <code>lib/rustdemo.h</code> 中写入如下内容：</p>
-            <pre><code class="hljs language-c copyable" lang="c"><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">rustdemo</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *name)</span></span>;
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <h2 data-id="heading-7">编译代码</h2>
-            <p>在 Go 编译的时候，我们需要开启 CGO （默认都是开启的），同时需要链接到 Rust 构建出来的 <code>rustdemo.so</code> 文件，所以我们将该文件和它的头文件放到 <code>lib</code> 目录下。</p>
-            <pre><code class="hljs language-bash copyable" lang="bash">➜  go-rust git:(master) ✗ cp lib/rustdemo/target/release/librustdemo.so lib
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>所以完整的目录结构就是：</p>
-            <pre><code class="copyable">➜  go-rust git:(master) ✗ tree -L 2 .
-            .
-            ├── go.mod
-            ├── lib
-            │&nbsp;&nbsp; ├── librustdemo.so
-            │&nbsp;&nbsp; ├── rustdemo
-            │&nbsp;&nbsp; └── rustdemo.h
-            └── main.go
-
-            2 directories, 5 files
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>编译：</p>
-            <pre><code class="hljs language-bash copyable" lang="bash">➜  go-rust git:(master) ✗ go build -o go-rust  -ldflags=<span class="hljs-string">"-r ./lib"</span> main.go
-            ➜  go-rust git:(master) ✗ ./go-rust 
-            Rust get Input:  <span class="hljs-string">"Go say: Hello Rust"</span>
-            Go say: Hello Rust Rust say: Hello Go
-            <span class="copy-code-btn">复制代码</span></code></pre>
-            <p>可以看到，第一行的输出是由 Go 传入了 Rust ， 第二行中则是从 Rust 再传回 Go 的了。符合我们的预期。</p>
-            <h1 data-id="heading-8">总结</h1>
-            <p>本篇介绍了如何使用 Go 与 Rust 进行结合，介绍了其前置关于 FFI 相关的知识，后续通过一个小的实践演示了其完整过程。
-            感兴趣的小伙伴可以自行实践下。</p>
-            <hr>
-            <p>欢迎订阅我的文章公众号【MoeLove】</p>
-            <!--  -->
-            </div></div>
+            <div v-html="article.content" class="article-content"></div>
           </article>
         </div>
         <div class="sidebar">
@@ -253,6 +109,24 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { ref, onMounted, reactive } from 'vue'
+import { useRoute } from 'vue-router'
+import { getArticleById } from '../../api/article'
+
+const route = useRoute()
+let article = ref({
+  title: '',
+  content: ''
+})
+
+onMounted(() => {
+  getArticleById(route.params.id).then(res => {
+    if (res.code == 200) {
+      article.value = res.data
+      console.log(article)
+    }
+  })
+})
 </script>
 <style scoped>
 .container {

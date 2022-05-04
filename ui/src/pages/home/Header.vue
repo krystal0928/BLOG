@@ -35,6 +35,7 @@
     </el-dropdown>
     <el-button v-if="logIn" type="primary" class="btn-r" round>收藏</el-button>
     <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round @click.prevent="writeArticle">写文章</el-button>
+    <div class="btn-r" style="height:60px"></div>
   </div>
 </template> 
 <script lang="ts" setup>

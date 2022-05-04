@@ -4,7 +4,7 @@
       <el-header class="header">
         <Header></Header>
       </el-header>
-      <div>
+      <div class="div-body">
         <!-- 组件占位 -->
         <RouterView></RouterView>
       </div>
@@ -19,11 +19,16 @@ import Header from './Header.vue'
 
 <style scoped>
 .header {
+  position: fixed;
+  z-index: 3;
   height: 60px;
-  padding: 0px;
-  width: auto;
-  background-color: rgba(241, 241, 241, 0.739);
+  padding: 0px 15%;
+  width: 100%;
+  background-color: rgba(241, 241, 241, 1);
   border-bottom: 1px solid rgb(177, 176, 176);
   /* box-shadow: 1px 1px 1px rgb(160, 158, 158); */
+}
+.div-body {
+  padding-top: 60px;
 }
 </style>

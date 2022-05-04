@@ -34,10 +34,10 @@
                 <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
                   <div class="content-main">
                     <div class="title-row">
-                      <a href="#/article/7088864824284676110" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
+                      <a :href="`#/article/${article.id}`" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
                       </div> 
                     <div class="abstract">
-                      <a  href="#/article/7088864824284676110" target="_blank" rel="">
+                      <a :href="`#/article/${article.id}`" target="_blank" rel="">
                         <div >{{article.description}}</div>
                       </a>
                       </div>
