@@ -14,7 +14,7 @@
         <el-input v-model="form.username" placeholder="请输入用户名"/>
       </el-form-item>
       <el-form-item label="确认密码" prop="password">
-        <el-input v-model="form.password" placeholder="请输入新密码" type="password" @keyup.enter.native="onConfirm" />
+        <el-input v-model="form.password" placeholder="请输入密码" type="password" @keyup.enter.native="onConfirm" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click.prevent="onConfirm" >确认</el-button>

@@ -841,11 +841,6 @@ magic-string@^0.26.1:
   dependencies:
     sourcemap-codec "^1.4.8"
 
-md-editor-v3@^1.11.12:
-  version "1.11.12"
-  resolved "https://registry.npmmirror.com/md-editor-v3/-/md-editor-v3-1.11.12.tgz#95fe559442143680d9da914b0010a2da84a5db54"
-  integrity sha512-LWJ2VjbhYYIJu9tSuoDPgVNkaL9+FSo9bbU1/JlnkOoGwfqE9AFNka5igZ2wL4r3Psu/cjTGPHX/ljs5Rfaqrg==
-
 memoize-one@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmmirror.com/memoize-one/-/memoize-one-6.0.0.tgz#b2591b871ed82948aee4727dc6abceeeac8c1045"
