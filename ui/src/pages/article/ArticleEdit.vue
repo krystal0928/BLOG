@@ -5,7 +5,10 @@
         <el-row class="head-row">
           <el-col :span="1"></el-col>
           <el-col :span="2">
-            <span class="back" @click="backVisible = true">返回首页</span>
+            <span class="back" @click="backVisible = true">
+              <img src="../../assets/back.png"/>
+              返回首页
+            </span>
           </el-col>
           <el-col :span="17">
             <div class="article-bar__input-box">
@@ -346,5 +349,11 @@ const toHome = () => {
   height: calc(100vh - 60px);
   width: 100vw;
   text-align: left;
+}
+
+img {
+  width: 16px;
+  height: 13px;
+  background-size: 100%;
 }
 </style>
