@@ -108,6 +108,8 @@ const headers = reactive({
 
 const router = useRouter()
 const checkToken = () => {
+  console.log(headers.token)
+
   if (headers.token == '') {
     ElMessageBox.confirm('登录已过期，请重新登录！',
       '警告！',

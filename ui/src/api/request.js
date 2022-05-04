@@ -18,7 +18,7 @@ instance.interceptors.request.use((config) => {
   }
 
   // if (localStorage.getItem('user')) {
-    const token = JSON.parse(localStorage.getItem('user'))?.token || ''
+    const token = JSON.parse(localStorage.getItem('user'))?.token || ' '
     config.headers['token'] = token
   // }
 

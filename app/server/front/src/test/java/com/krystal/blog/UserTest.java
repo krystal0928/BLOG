@@ -35,7 +35,7 @@ public class UserTest extends BlogApplicationTests {
         User user = userService.lambdaQuery()
                 .eq(User::getUsername, "Krystal")
                 .one();
-        String password = DigestUtil.md5Hex(user.getPassword());
+        String password = DigestUtil.md5Hex("choubao");
         log.info(password);
         userService.lambdaUpdate()
                 .set(User::getPassword,password)
