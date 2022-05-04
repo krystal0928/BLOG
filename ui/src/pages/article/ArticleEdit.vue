@@ -131,7 +131,12 @@ const store = useStore()
 const form:any = reactive({
   id: route.query.id,
   title: '',
-  content: '',
+  content: `p>大家好，我是张晋涛。</p>
+<p>近期 Rust 社区/团队有些变动，所以再一次将 Rust 拉到大多数人眼前。</p>
+<p>我最近看到很多小伙伴说的话：</p>
+<blockquote>
+<p>Rust 还值得学吗？社区是不是不稳定呀</p>
+</blockquote>`,
   description: null,
   imgFlag: 0,
   coverImg: null,

@@ -6,6 +6,7 @@ import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.util.Const;
 import com.krystal.blog.common.util.FileUtil;
+import com.krystal.blog.common.util.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,7 @@ public class FileController {
 
                     // 计算文件结果
                     String result = FileUtil.removeBaseDirectory(applicationTemplate.getBaseDirectory(), finalFile.getPath());
-                    result = FileUtil.addPathSeparate(getServerPath(httpServletRequest), result);
+                    result = FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), result);
                     log.info("/api/file/upload...file path result: [{}]", result);
                     fileList.add(result);
                 }
@@ -77,11 +78,4 @@ public class FileController {
         }
     }
 
-    // 获取服务地址
-    private String getServerPath(HttpServletRequest httpServletRequest) {
-        return String.format("%s://%s:%s",
-                httpServletRequest.getScheme(),
-                httpServletRequest.getServerName(),
-                httpServletRequest.getServerPort() + httpServletRequest.getContextPath());
-    }
 }

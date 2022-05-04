@@ -27,11 +27,10 @@ public class Article extends BaseModel {
     private String title;
     private String description;
     private String pubDescription;
-    private byte[] content;
+//    @TableField(typeHandler = org.apache.ibatis.type.BlobTypeHandler.class)
+    private String content;
     private String filepath;
     private String coverImg;
     private Integer permission;
-
-    @TableField(exist = false, typeHandler = org.apache.ibatis.type.BlobTypeHandler.class)
-    private String contentStr;
+//    private String contentStr;
 }

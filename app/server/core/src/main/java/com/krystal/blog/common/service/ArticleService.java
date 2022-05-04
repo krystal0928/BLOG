@@ -10,4 +10,10 @@ public interface ArticleService extends IService<Article> {
 
     List<ArticleVo> selectArticleList(Long userId);
 
+    /**
+     * 发布文章
+     * @param info
+     * @return
+     */
+    boolean publish(Article info);
 }

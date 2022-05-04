@@ -1,20 +1,29 @@
 package com.krystal.blog.api;
 
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
+import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.model.*;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.*;
+import com.krystal.blog.common.util.FileUtil;
+import com.krystal.blog.common.util.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -31,6 +40,8 @@ public class ArticleController {
     private ArticleCollectionService articleCollectionService;
     @Resource
     private ArticleLikeService articleLikeService;
+    @Resource
+    private ApplicationTemplate applicationTemplate;
 
 
     /**
@@ -60,27 +71,32 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/api/article/publishArticle")
-    public R publishArticle (@RequestHeader("token") String token,Article info) {
+    public R publishArticle (@RequestHeader("token") String token,
+                             Article info) {
         Assert.notNull(info.getTitle(),"标题不能为空！");
         Assert.notNull(info.getContent(),"内容不能为空！");
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
-        Article article = articleService.getById(info.getId());
-        if (null != article) {
-            if (article.getUserId() != user.getId())
-                return R.error(400, "用户不匹配");
-            if (article.getStatus() == 1 || article.getStatus() == 2) {
-                //删除源文件
-            }
-        } else if (null != article) {
+
+        // 设置参数
+        if (null == info.getUserId()){
             info.setUserId(user.getId());
-            info.setId(snowFlakeTemplate.getIdLong());
         }
-        //发布文件
-        info.setPubDescription(info.getDescription());
-        info.setStatus(1);
-        if (!articleService.save(info))
+
+        // 如果不存在 ID 表示新增
+        if (null == info.getId()) {
+            info.setId(snowFlakeTemplate.getIdLong());
+            info.setCreateTime(new Date());
+            articleService.save(info);
+        }
+
+        // 查询数据库
+        Article article = articleService.getById(info.getId());
+        if (null == article) {
+            return R.error(400,"原文章不存在！");
+        }
+        if (!articleService.publish(info))
             return R.error(400,"文章发布失败！");
         return R.ok("文章已发布！");
     }
@@ -100,6 +116,29 @@ public class ArticleController {
         }
         List<ArticleVo> articleVoList = articleService.selectArticleList(userId);
         return R.okMap("文章查询成功!",articleVoList);
+    }
+
+    @PostMapping("/api/article/{id}")
+    public R getArticleById(HttpServletRequest httpServletRequest,
+                            @PathVariable("id") Long id) {
+        Article article = articleService.getById(id);
+        if (null == article || StrUtil.isEmpty(article.getFilepath())) {
+            return R.error(400, "文章信息不存在");
+        }
+        // 获取发布文章文件内容
+        String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
+        log.info("filePath: {}", filePath);
+        if (!cn.hutool.core.io.FileUtil.exist(filePath)) {
+            return R.error(400, "文章发布信息不存在");
+        }
+        // 读取文件
+        FileReader reader = new FileReader(filePath);
+        String content = reader.readString();
+        FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), article.getFilepath());
+        Map map = new HashMap<>();
+        map.put("title", article.getTitle());
+        map.put("content", content);
+        return R.okMap("success", map);
     }
 
 
