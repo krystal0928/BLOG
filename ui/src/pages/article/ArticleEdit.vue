@@ -7,12 +7,12 @@
           <el-col :span="2">
             <span class="back" @click="backVisible = true">返回首页</span>
           </el-col>
-          <el-col :span="17">
+          <!-- <el-col :span="17">
             <div class="article-bar__input-box">
               <input v-model="form.title"  maxlength="100" :placeholder="titleHolder" class="article-bar__title article-bar__title--input text-input" > 
               <span class="article-bar__number"><span class="">{{form.title.length}}</span> /100</span> 
             </div>
-          </el-col>
+          </el-col> -->
           <el-col :span="1.5">
             <el-button class="draft" @click="toSaveDraft">保存草稿</el-button>
           </el-col>
@@ -45,7 +45,7 @@
         <div class="common-layout">
           <el-container>
             <el-main class="main" style="margin: 0;padding: 0;">
-              <MdEditor class="editor" v-model="form.content" placeholder="请输入内容..."/>
+              <WangEditor :title="form.title" :content="form.content" @update:title="onTitle" @update:content="onContent"/>
             </el-main>
           </el-container>
         </div>
@@ -112,12 +112,11 @@
 <script lang="ts" setup>
 import { ref, computed, reactive } from 'vue'
 import { useStore, mapGetters } from 'vuex'
-import MdEditor from 'md-editor-v3'
-import 'md-editor-v3/lib/style.css'
 import { useRouter,useRoute } from 'vue-router';
 import { ElMessage,  UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { publishArticle, saveDraft, uploadUrl } from '../../api/article'
+import WangEditor from '../../components/WangEditor.vue'
 
 const dialogFormVisible = ref(false)
 const backVisible = ref(false)
@@ -131,17 +130,20 @@ const store = useStore()
 const form:any = reactive({
   id: route.query.id,
   title: '',
-  content: `p>大家好，我是张晋涛。</p>
-<p>近期 Rust 社区/团队有些变动，所以再一次将 Rust 拉到大多数人眼前。</p>
-<p>我最近看到很多小伙伴说的话：</p>
-<blockquote>
-<p>Rust 还值得学吗？社区是不是不稳定呀</p>
-</blockquote>`,
+  content: '',
   description: null,
   imgFlag: 0,
   coverImg: null,
   permission: 0
 })
+
+const onTitle = (valueTitle) => {
+  form.title = valueTitle
+}
+
+const onContent = (content) => {
+  form.content = content
+}
 
 const headers = reactive({
   'token': store.getters.getUser?.token || ''
@@ -341,10 +343,5 @@ const toHome = () => {
 }
 .publish:hover {
   background: #fc1944;
-}
-.editor {
-  height: calc(100vh - 60px);
-  width: 100vw;
-  text-align: left;
 }
 </style>

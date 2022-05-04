@@ -315,19 +315,20 @@ svg:not(:root) {
   overflow: hidden;
 }
 .panel-btn.share-btn .share-popup {
-    display: block;
-    position: absolute;
-    top: 0;
-    flex-direction: column;
-    left: calc(100% + 14px);
-    z-index: 30;
-    background: #fff;
-    border-radius: 4px;
-    padding: 9px 0;
-    width: -webkit-max-content;
-    width: -moz-max-content;
-    width: max-content;
-    box-shadow: 0 8px 24px rgb(81 87 103 / 16%);
+  /* display: block; */
+  display: none;
+  position: absolute;
+  top: 0;
+  flex-direction: column;
+  left: calc(100% + 14px);
+  z-index: 30;
+  background: #fff;
+  border-radius: 4px;
+  padding: 9px 0;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  box-shadow: 0 8px 24px rgb(81 87 103 / 16%);
 }
 .panel-btn.share-btn .share-popup .share-item .share-item-title {
   margin-left: 8px;
