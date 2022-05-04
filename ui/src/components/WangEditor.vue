@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { defineProps, defineEmits, onBeforeUnmount, shallowRef, ref } from 'vue'
+import { onBeforeUnmount, shallowRef, ref } from 'vue'
 import { IEditorConfig, IDomEditor } from '@wangeditor/core';
 
 const props = defineProps(['title', 'content'])
