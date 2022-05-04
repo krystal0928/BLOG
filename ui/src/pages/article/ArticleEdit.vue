@@ -162,7 +162,7 @@ const checkArticle = () => {
     })
     return false;
   }
-  if (form.content.length == 0) {
+  if (form.content == '<p><br></p>') {
     ElMessage({
       showClose: true,
       message: "文章内容不能为空",
