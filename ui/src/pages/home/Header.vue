@@ -148,7 +148,7 @@ const writeArticle = () => {
   margin: 0px 20px;
 }
 .container_right{
-  /* float: right; */
+  float: right;
   padding: 0px 5px 0px 5px ;
   font-size: 1.33rem;
   line-height: 60px;

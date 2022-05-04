@@ -3,26 +3,19 @@
     <el-container>
       <el-header class="header">
         <el-row class="head-row">
-          <el-col :span="1"></el-col>
-          <el-col :span="2">
+          <div class="back-home">
             <span class="back" @click="backVisible = true">
               <img src="../../assets/back.png"/>
               返回首页
             </span>
-          </el-col>
-          <!-- <el-col :span="17">
-            <div class="article-bar__input-box">
-              <input v-model="form.title"  maxlength="100" :placeholder="titleHolder" class="article-bar__title article-bar__title--input text-input" > 
-              <span class="article-bar__number"><span class="">{{form.title.length}}</span> /100</span> 
-            </div>
-          </el-col> -->
-          <el-col :span="1.5">
+          </div>
+          <div class="draft-box">
             <el-button class="draft" @click="toSaveDraft">保存草稿</el-button>
-          </el-col>
-          <el-col :span="1.5">
+          </div>
+          <div>
             <el-button class="publish" @click="toPublishArticle">发布文章</el-button>
-          </el-col>
-          <el-col :span="1">
+          </div>
+          <div class="user">
             <el-dropdown v-if="logIn" class="head-img">
               <el-tooltip
                 class="box-item"
@@ -41,7 +34,7 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-          </el-col>
+          </div>
         </el-row>
       </el-header>
       <el-main>
@@ -161,7 +154,7 @@ const checkArticle = () => {
     })
     return false;
   }
-  if (form.content.length == 0) {
+  if (form.content == '<p><br></p>') {
     ElMessage({
       showClose: true,
       message: "文章内容不能为空",
@@ -289,6 +282,10 @@ const toHome = () => {
   background-color: rgba(241, 241, 241, 0.739);
   border-bottom: 1px solid rgb(177, 176, 176);
 }
+.back-home {
+  margin: 0 40px;
+  flex: auto;
+}
 .back {
   cursor: pointer;
 }
@@ -319,6 +316,7 @@ const toHome = () => {
   right: 0;
 }
 .head-row, .head-img{
+  display: flex;
   line-height: 60px;
 }
 .draft {
@@ -345,6 +343,9 @@ const toHome = () => {
 }
 .publish:hover {
   background: #fc1944;
+}
+.user {
+  margin: 0 40px 0 20px;
 }
 img {
   width: 16px;
