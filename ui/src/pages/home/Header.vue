@@ -25,7 +25,7 @@
       </el-tooltip>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item @click="toUser">个人中心</el-dropdown-item>
           <el-dropdown-item>文章管理</el-dropdown-item>
           <el-dropdown-item @click="toChange">修改密码</el-dropdown-item>
           <el-dropdown-item @click="toBindTFA">二次验证绑定</el-dropdown-item>
@@ -63,6 +63,35 @@ const onLogin = () => {
 }
 const onHome = () => {
   router.push('/home')
+}
+
+const checkToken = () => {
+  if (!user.value.token) {
+    ElMessageBox.confirm('登录已过期，请重新登录！',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({
+        path: '/login'
+      })
+    }).catch(() => {
+    
+    })
+    return false
+  }
+  return true
+}
+const toUser = () => {
+  if (checkToken()) {
+    const userId = user.value.token?.split(',')[0]
+    router.push({
+      path: `/user/${userId}`
+    })
+  }
 }
 
 const logOut = () => {
@@ -131,6 +160,9 @@ const writeArticle = () => {
   font-size: 1.33rem;
   line-height: 60px;
 }
+.h {
+  width: 50px;
+}
 .h:hover{
   background-color: rgba(145, 141, 141, 0.739);
   cursor: pointer;
@@ -145,7 +177,7 @@ const writeArticle = () => {
   min-width: 200px;
   float: left;
   line-height: 60px;
-  margin: 0px 20px;
+  margin: 0px 0 0 20px;
 }
 .container_right{
   float: right;

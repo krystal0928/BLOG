@@ -19,6 +19,7 @@ import Header from './Header.vue'
 
 <style scoped>
 .header {
+  display: flex;
   min-width: 800px;
   position: fixed;
   z-index: 3;

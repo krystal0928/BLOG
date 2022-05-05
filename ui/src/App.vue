@@ -36,8 +36,7 @@ a:hover {
   color: #007fff;
 }
 h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
+  margin: 0;
 }
 .card {
   border-radius: 4px;

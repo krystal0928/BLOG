@@ -23,7 +23,7 @@
             <li v-for="article in articleList" data-growing-title="entryList" class="item">
               <div class="entry" style="margin-bottom: 10px;">
                 <div  class="meta-container">
-                  <a href="/user/43636194286093" target="_blank" rel="" class="user-message">
+                  <a :href="`#/user/${article.userId}`" target="_blank" rel="" class="user-message">
                     <div class="popover-box user-popover">{{article.userName}}</div>
                   </a>
                   <div class="date">{{article.createTime.substring(0,10)}}</div> 
@@ -87,7 +87,7 @@ import { addArticleLike, selectArticleList, deleteArticleLike, addArticleCollect
 import store from '../../store/store';
 
 
-let articleList = ref([
+let articleList:any = ref([
   {
     id: 1,
     userName: '邹',
@@ -116,7 +116,6 @@ onMounted(() => {
   })
 })
 const checkToken = () => {
-  console.log(headers.token)
   if (headers.token == '') {
     ElMessageBox.confirm('登录已过期，请重新登录！',
       '警告！',
