@@ -105,7 +105,7 @@ public class ArticleController {
     @PostMapping("/api/article/selectArticleList")
     public R selectArticleList(@RequestHeader("token") String token,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                               @RequestParam(value = "pageNo",defaultValue = "10") Integer pageSize){
+                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Long userId = 0L;
         if (!StrUtil.isEmpty(token)) {
             User user = userService.getUserByToken(token);
@@ -205,10 +205,15 @@ public class ArticleController {
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
+
         ArticleLike articleLike = articleLikeService.lambdaQuery()
                 .eq(ArticleLike::getArticleId,articleId)
                 .eq(ArticleLike::getUserId,user.getId())
                 .one();
+        if (null == articleLike) {
+            return R.error(400,"收藏失败，请重新尝试！");
+        }
+
         if (!articleLikeService.removeById(articleLike.getId())) {
             return R.error(400,"取消点赞失败，请重新尝试！");
         }
@@ -264,10 +269,15 @@ public class ArticleController {
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
+
         ArticleCollection articleCollection = articleCollectionService.lambdaQuery()
                 .eq(ArticleCollection::getArticleId,articleId)
                 .eq(ArticleCollection::getUserId,user.getId())
                 .one();
+        if (null == articleCollection) {
+            return R.error(400,"收藏失败，请重新尝试！");
+        }
+
         if (!articleCollectionService.removeById(articleCollection.getId())) {
             return R.error(400,"取消收藏失败，请重新尝试！");
         }

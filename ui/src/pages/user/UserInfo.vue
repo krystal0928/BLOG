@@ -67,10 +67,10 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   display: flex;
 }
 .left {
-  flex: 2 1 auto;
+  flex: 1 0 400px;
 }
 .right {
-  flex: 1 1 auto;
+  flex: 0 0 150px;
   margin-left: 20px;
 }
 .user-info {

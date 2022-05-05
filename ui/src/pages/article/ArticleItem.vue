@@ -42,11 +42,21 @@
         </div>
       </div>
     </li>
+    <el-pagination
+      small
+      background
+      layout="prev, pager, next"
+      :total="pagination.total"
+      :current-page="pagination.pageNo"
+      :page-size="pagination.pageSize"
+      @current-change="handleCurrentChange"
+      class="mt-4"
+    />
   </div>
 </template>
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, selectArticleList } from '../../api/article';
@@ -57,15 +67,31 @@ const user: any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+ const pagination = reactive({
+  pageNo: 1,
+  pageSize: 3,
+  total: 0
+})
 const articleList = ref([])
+const total = ref(0)
 
 onMounted(() => {
-  selectArticleList().then(res => {
+  loadArticclelList()
+})
+
+const loadArticclelList = () => {
+  selectArticleList({...pagination}).then(res => {
     if (res.code == 200) {
       articleList.value = res.data
+      pagination.total = Number(res.total)
     }
   })
-})
+}
+
+const handleCurrentChange = (val) => {
+  pagination.pageNo = val
+  loadArticclelList()
+}
 
 const toArticle = (id) =>{
   router.push({
