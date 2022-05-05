@@ -53,7 +53,7 @@
                         <span >{{article.collectCount}}</span>
                       </li>
                       <li class="item">
-                        <img src="../../assets/comment.png"  @click="toArticle(article.id)"/>
+                        <img src="../../assets/comment.png"  @click="toArticle(article.id,article.userId)"/>
                         <span >{{article.commentCount}}</span>
                       </li>
                     </ul>
@@ -116,9 +116,10 @@ onMounted(() => {
   })
 })
 
-const toArticle = (id) =>{
+const toArticle = (id,userId) =>{
   router.push({
-    path: `/article/${id}`
+    path: `/article/${id}`,
+    query: {userId}
   })
 }
 

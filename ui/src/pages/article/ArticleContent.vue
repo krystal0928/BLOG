@@ -108,6 +108,7 @@ import { ref, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getArticleById } from '../../api/article'
+import { getUserVoById } from '../../api/user';
 import router from '../../router/router';
 
 const route = useRoute()
@@ -118,12 +119,20 @@ let article:any = ref({
   creatTime: '',
   liked: 0
 })
+let writer:any = ref({
 
+})
 onMounted(() => {
   getArticleById(route.params.id).then(res => {
     if (res.code == 200) {
       article.value = res.data
       console.log(article)
+    }
+  })
+  getUserVoById(route.query.userId).then(res => {
+    if (res.code == 200) {
+      writer.value = res.data
+      console.log(writer)
     }
   })
 })

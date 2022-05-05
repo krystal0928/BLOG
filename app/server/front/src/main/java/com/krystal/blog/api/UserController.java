@@ -5,7 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
+import com.krystal.blog.common.model.ArticleLike;
+import com.krystal.blog.common.model.UserFocus;
+import com.krystal.blog.common.model.vo.UserVo;
 import com.krystal.blog.common.service.EmailService;
+import com.krystal.blog.common.service.UserFocusService;
 import com.krystal.blog.common.util.TwoFactorAuthUtil;
 import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.service.UserService;
@@ -33,6 +37,8 @@ public class UserController {
     private RedissonClient redissonClient;
     @Resource
     private EmailService emailService;
+    @Resource
+    private UserFocusService userFocusService;
 
 
     @PostMapping(value = "/api/user/loginCheck")
@@ -254,6 +260,56 @@ public class UserController {
         if (null == user)
             return R.error(400,"用户不存在");
         return R.okMap("success",user.getStatus());
+    }
+
+    /**
+     * 关注用户
+     * @param token
+     * @param focusId
+     * @return
+     */
+    @PostMapping(value="/api/user/addUserFocus")
+    public R addUserFocus(@RequestHeader("token") String token, Long focusId) {
+        User user = userService.getUserByToken(token);
+        User focusUser = userService.lambdaQuery()
+                .eq(User::getId,focusId)
+                .one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        if (null == focusUser)
+            return R.error(400,"关注的用户已不存在！");
+        UserFocus userFocus = userFocusService.lambdaQuery()
+                .eq(UserFocus::getUserId,user.getId())
+                .eq(UserFocus::getFocusId,focusId)
+                .one();
+        if (null != userFocus)
+            return R.error(400,"您已关注该用户，请勿重复操作！");
+        userFocus = UserFocus.builder()
+                .id(snowFlakeTemplate.getIdLong())
+                .userId(user.getId())
+                .focusId(focusId)
+                .build();
+        if (!userFocusService.save(userFocus)) {
+            return R.error(400,"点赞失败，请重新尝试！");
+        }
+        return R.ok("关注成功！");
+    }
+
+
+
+    @PostMapping(value="/api/user/getUserVoById")
+    public R getUserVoById(@RequestHeader("token") String token, Long focusId) {
+        User user = userService.getUserByToken(token);
+        User focusUser = userService.lambdaQuery()
+                .eq(User::getId,focusId)
+                .one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        if (null == focusUser)
+            return R.error(400,"关注的用户已不存在！");
+
+        UserVo userVo = userService.selectUser(user.getId(),focusId);
+        return R.okMap("用户查询成功!",userVo);
     }
 
 

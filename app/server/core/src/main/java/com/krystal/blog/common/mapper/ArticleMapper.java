@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
-    @Select({" select a.*, u.username userName, ",
+    @Select({" select a.*, u.username userName,  ",
             " ifnull(count(al.id), 0) likeCount, ifnull(count(ac.id), 0) commentCount, ifnull(count(acl.id), 0) collectCount, ",
             " (select count(id) from article_like where article_id = a.id and user_id = #{userId}) as liked, ",
             " (select count(id) from article_collection where article_id = a.id and user_id = #{userId}) as collected ",

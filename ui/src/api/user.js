@@ -78,3 +78,11 @@ export function loginCheck(username) {
         data: {username}
     })
 }
+
+export function getUserVoById(focusId) {
+    return axios({
+        url: '/api/user/getUserVoById',
+        method: 'post',
+        data: {focusId}
+    })
+}
