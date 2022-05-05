@@ -1,6 +1,7 @@
 package com.krystal.blog.common.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,7 +23,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " where a.status = 1 ",
             " GROUP BY a.id ",
             " order by a.create_time desc "})
-    List<ArticleVo> selectArticleList(@Param("userId") Long userId);
+    Page<ArticleVo> selectArticleList(Page<ArticleVo> page, @Param("userId") Long userId);
 
 
     @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,u.username userName, " ,

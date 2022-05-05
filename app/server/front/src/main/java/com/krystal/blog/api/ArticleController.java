@@ -1,9 +1,8 @@
 package com.krystal.blog.api;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
@@ -15,18 +14,12 @@ import com.krystal.blog.common.util.FileUtil;
 import com.krystal.blog.common.util.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -109,7 +102,9 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/api/article/selectArticleList")
-    public R selectArticleList(@RequestHeader("token") String token){
+    public R selectArticleList(@RequestHeader("token") String token,
+                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                               @RequestParam(value = "pageNo",defaultValue = "10") Integer pageSize){
         Long userId = 0L;
         if (!StrUtil.isEmpty(token)) {
             User user = userService.getUserByToken(token);
@@ -117,7 +112,8 @@ public class ArticleController {
                 return R.error(400,"该用户不存在！");
             userId = user.getId();
         }
-        List<ArticleVo> articleVoList = articleService.selectArticleList(userId);
+        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleVo> articleVoList = articleService.selectArticleList(page, userId);
         return R.okMap("文章查询成功!",articleVoList);
     }
 
