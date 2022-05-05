@@ -48,7 +48,7 @@ public class UserController {
                 .one();
         if (null == user)
             return R.error(400, "用户不存在");
-        return R.okMap("success",user.getStatus());
+        return R.okData("success",user.getStatus());
     }
 
     /**
@@ -83,7 +83,7 @@ public class UserController {
         map.put("username",user.getUsername());
         map.put("token",token);
         map.put("email",user.getEmail());
-        return R.okMap("登录成功！",map);
+        return R.okData("登录成功！",map);
     }
 
     /**
@@ -259,7 +259,7 @@ public class UserController {
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"用户不存在");
-        return R.okMap("success",user.getStatus());
+        return R.okData("success",user.getStatus());
     }
 
     /**
@@ -309,7 +309,7 @@ public class UserController {
             return R.error(400,"关注的用户已不存在！");
 
         UserVo userVo = userService.selectUser(user.getId(),focusId);
-        return R.okMap("用户查询成功!",userVo);
+        return R.okData("用户查询成功!",userVo);
     }
 
 

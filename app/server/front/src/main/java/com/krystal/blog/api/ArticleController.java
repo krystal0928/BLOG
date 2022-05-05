@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -114,7 +115,9 @@ public class ArticleController {
         }
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleVo> articleVoList = articleService.selectArticleList(page, userId);
-        return R.okMap("文章查询成功!",articleVoList);
+
+        return R.okData("文章查询成功!", articleVoList.getRecords())
+                .put("total", articleVoList.getTotal());
     }
 
 
@@ -147,7 +150,7 @@ public class ArticleController {
         FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), articleVo.getFilepath());
 
         articleVo.setContent(content);
-        return R.okMap("success", articleVo);
+        return R.okData("success", articleVo);
     }
 
 
@@ -158,13 +161,24 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/api/article/addArticleLike")
-    public R addArticleLike(@RequestHeader("token") String token,Long articleId){
+    public R addArticleLike(@RequestHeader("token") String token,
+                            Long articleId){
         Article article = articleService.getById(articleId);
         if (null == article)
             return R.error(400,"该文章目前已不存在！");
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"登录已过期，请重新登录！");
+
+        // 查询是否点赞
+        ArticleLike info = articleLikeService.lambdaQuery()
+                .eq(ArticleLike::getArticleId, articleId)
+                .eq(ArticleLike::getUserId, user.getId())
+                .one();
+        if (null != info) {
+            return R.error(400, "您已经点赞过了");
+        }
+
         ArticleLike articleLike = ArticleLike.builder()
                 .id(snowFlakeTemplate.getIdLong())
                 .articleId(articleId)
@@ -215,6 +229,16 @@ public class ArticleController {
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
+
+        // 查询是否收藏
+        ArticleCollection info = articleCollectionService.lambdaQuery()
+                .eq(ArticleCollection::getArticleId, articleId)
+                .eq(ArticleCollection::getUserId, user.getId())
+                .one();
+        if (null != info) {
+            return R.error(400, "您已经收藏过了");
+        }
+
         ArticleCollection articleCollection = ArticleCollection.builder()
                 .id(snowFlakeTemplate.getIdLong())
                 .articleId(articleId)
