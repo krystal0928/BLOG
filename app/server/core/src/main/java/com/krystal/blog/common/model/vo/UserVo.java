@@ -15,7 +15,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class UserVo extends User {
 
-    private Integer collectCount;
+    private Integer focusCount;
     private Integer likeCount;
+    private Integer CollectCount;
 
 }
