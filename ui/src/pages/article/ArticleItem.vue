@@ -3,7 +3,7 @@
     <li v-for="article in articleList" data-growing-title="entryList" class="item">
       <div class="entry" style="margin-bottom: 10px;">
         <div  class="meta-container">
-          <a :href="`#/user/${article.userId}`" target="_blank" rel="" class="user-message">
+          <a href="#"  target="_blank" rel="" class="user-message">
             <div class="popover-box user-popover">{{article.userName}}</div>
           </a>
           <div class="date">{{article.createTime}}</div> 
@@ -14,10 +14,10 @@
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
           <div class="content-main">
             <div class="title-row">
-              <a :href="`#/article/${article.id}`" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
+              <a :href="`#/article/${article.id}?userId=${article.userId}`" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
               </div> 
             <div class="abstract">
-              <a :href="`#/article/${article.id}`" target="_blank" rel="">
+              <a :href="`#/article/${article.id}?userId=${article.userId}`" target="_blank" rel="">
                 <div >{{article.description}}</div>
               </a>
               </div>
@@ -33,7 +33,7 @@
                 <span >{{article.collectCount}}</span>
               </li>
               <li class="item">
-                <img src="../../assets/comment.png"  @click="toArticle(article.id)"/>
+                <img src="../../assets/comment.png"  @click="toArticle(article.id,article.userId)"/>
                 <span >{{article.commentCount}}</span>
               </li>
             </ul>
@@ -72,8 +72,7 @@ const user: any = computed(
   pageSize: 3,
   total: 0
 })
-const articleList = ref([])
-const total = ref(0)
+const articleList: any = ref([])
 
 onMounted(() => {
   loadArticclelList()
@@ -93,9 +92,11 @@ const handleCurrentChange = (val) => {
   loadArticclelList()
 }
 
-const toArticle = (id) =>{
+const toArticle = (id,userId) =>{
+  console.log(id)
   router.push({
-    path: `/article/${id}`
+    path: `/article/${id}`,
+    query: {userId}
   })
 }
 

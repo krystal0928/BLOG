@@ -20,7 +20,10 @@
                 <div class="meta-box">
                   <time datetime="2021-11-26T02:56:50.000Z" class="time">{{article.creatTime}}</time> 
                   <span class="views-count">
-                    ·&nbsp;&nbsp;点赞 {{article.likeCount}}
+                    &nbsp;点赞 {{article.likeCount}}
+                  </span> 
+                  <span class="views-count">
+                    &nbsp;&nbsp;收藏 {{article.likeCount}}
                   </span> 
                 </div> 
               </div> 
@@ -38,16 +41,19 @@
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
                 <div class="info-box" >
                   <a href="/user/149189280670478" target="_blank"  class="username">
-                    <span class="name" style="max-width: 128px;">{{article.userName}}</span> 
+                    <span class="name" style="max-width: 128px;">{{writer.username}}</span> 
                   </a>
-                  <div title="云原生技术专家 @ API7.AI" class="position" >云原生技术专家 @ API7.AI</div>
+                  <div title="{{writer.motto}}" class="position" >{{writer.motto}}</div>
                 </div>
               </a>
               <div class="stat-item item" >
-                <span class="content" >获得点赞<span class="count">&nbsp;1</span></span>
+                <span class="content" >获得点赞&nbsp;{{writer.likeCount}}</span>
               </div>
               <div class="stat-item item">
-                <span class="content">文章被收藏<span class="count">&nbsp;21</span></span>
+                <span class="content">文章被收藏&nbsp;{{writer.collectCount}}</span>
+              </div>
+              <div class="stat-item item">
+                <span class="content">粉丝&nbsp;{{writer.focusCount}}</span>
               </div>
             </div>
           </div>
@@ -170,6 +176,7 @@ const tochangeLike = (articleId) =>{
             if (res.code == 200) {
               article.value.liked = 1;
               article.value.likeCount++;
+              writer.value.likeCount++;
             }
           })
         } 
@@ -178,6 +185,7 @@ const tochangeLike = (articleId) =>{
             if (res.code == 200) {
               article.value.liked = 0;
               article.value.likeCount--;
+              writer.value.likeCount--;
             }
           })
         }
@@ -192,6 +200,7 @@ const tochangeCollect = (articleId) =>{
           if (res.code == 200) {
             article.value.collected = 1;
             article.value.collectCount++;
+            writer.value.collectCount++;
           }
         })
       } 
@@ -200,6 +209,7 @@ const tochangeCollect = (articleId) =>{
           if (res.code == 200) {
             article.value.collected = 0;
             article.value.collectCount--;
+            writer.value.collectCount--;
           }
         })
       }
@@ -306,6 +316,10 @@ const tochangeCollect = (articleId) =>{
   display: flex;
   align-items: center;
 }
+.author-name {
+  margin-left: 0.5rem;
+  height: 1.5rem;
+}
 .author-info-block .avatar {
   flex: 0 0 auto;
   margin-right: 1rem;
@@ -378,20 +392,13 @@ const tochangeCollect = (articleId) =>{
 .stat-item {
   margin-top: 0.667rem;
 }
-.item {
-  display: flex;
-  align-items: center;
-}
+
 .stat-item .content {
   font-size: 1.167rem;
   color: #252933;
   font-weight: 400;
 }
-.stat-item .content {
-  font-size: 1.167rem;
-  color: #252933;
-  font-weight: 400;
-}
+
 .article-suspended-panel {
   position: fixed;
   margin-left: -1rem;

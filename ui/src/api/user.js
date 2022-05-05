@@ -80,6 +80,7 @@ export function loginCheck(username) {
 }
 
 export function getUserVoById(focusId) {
+    console.log(focusId)
     return axios({
         url: '/api/user/getUserVoById',
         method: 'post',
