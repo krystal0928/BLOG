@@ -133,6 +133,10 @@ const toForget = () => {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+h1 {
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
 .home-text {
   float: right;
 }

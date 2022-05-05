@@ -53,7 +53,7 @@
                         <span >{{article.collectCount}}</span>
                       </li>
                       <li class="item">
-                        <img src="../../assets/comment.png"  />
+                        <img src="../../assets/comment.png"  @click="toArticle(article.id)"/>
                         <span >{{article.commentCount}}</span>
                       </li>
                     </ul>
@@ -115,6 +115,13 @@ onMounted(() => {
     }
   })
 })
+
+const toArticle = (id) =>{
+  router.push({
+    path: `/article/${id}`
+  })
+}
+
 const checkToken = () => {
   if (headers.token == '') {
     ElMessageBox.confirm('登录已过期，请重新登录！',

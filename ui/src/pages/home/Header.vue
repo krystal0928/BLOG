@@ -96,12 +96,16 @@ const toUser = () => {
 
 const logOut = () => {
   store.commit('logOut')
-  ElMessage({
-    showClose: true,
-    message: '退出成功！',
-    type: 'success',
+  // ElMessage({
+  //   showClose: true,
+  //   message: '退出成功！',
+  //   type: 'success',
+  // })
+  
+  router.push({
+    path: '/home'
   })
-  location.reload()
+  // location.reload()
 }
 const toChange = () => {
   router.push({

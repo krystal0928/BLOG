@@ -74,6 +74,13 @@ const handleChange = (editor: IDomEditor) => {
 }
 </script>
 <style scoped>
+::v-deep .w-e-text-container ul li {
+  list-style: disc;
+}
+
+::v-deep .w-e-text-container ol li {
+  list-style: auto;
+}
 .editor-wrap {
   width: 100vw;
 }

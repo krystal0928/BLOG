@@ -25,7 +25,7 @@ ul {
   margin: 0;
 }
 li {
-    list-style: none;
+  list-style: none;
 }
 a {
   text-decoration: none;

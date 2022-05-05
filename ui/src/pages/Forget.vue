@@ -122,6 +122,10 @@ const toChange = () => {
 }
 </script>
 <style scoped>
+h1 {
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
 .forget-form {
   padding: 30px;
   background-color: rgba(255, 255, 255, 0.6);
