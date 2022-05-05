@@ -53,15 +53,22 @@
           </div>
         </div>
       </div>
-      <div class="article-suspended-panel article-suspended-panel">
-        <div badge="44" class="panel-btn with-badge" @click="tochangeLike(article.id)" >
-          <img class="sprite-icon" v-if="article.liked == 1" src="../../assets/like.png"  />
-          <img class="sprite-icon" v-else src="../../assets/unlike.png" />
+      <div class="article-suspended-panel">
+        
+        <div class="panel-btn with-badge" @click="tochangeLike(article.id)" >
+          <el-badge :value="article.likeCount" class="badge" type="info">
+            <img class="sprite-icon" v-if="article.liked == 1" src="../../assets/like.png"  />
+            <img class="sprite-icon" v-else src="../../assets/unlike.png" />
+          </el-badge>
         </div> 
-        <div badge="10" class="panel-btn with-badge" @click="tochangeCollect(article.id)" >
-          <img class="sprite-icon" v-if="article.collected == 1" src="../../assets/collect.png"  />
-          <img class="sprite-icon" v-else src="../../assets/uncollect.png" />
+        
+        <div class="panel-btn with-badge" @click="tochangeCollect(article.id)" >
+          <el-badge :value="article.collectCount" class="badge" type="info">
+            <img class="sprite-icon" v-if="article.collected == 1" src="../../assets/collect.png"  />
+            <img class="sprite-icon" v-else src="../../assets/uncollect.png" />
+          </el-badge>
         </div> 
+        
         <div class="share-btn panel-btn" >
         <svg class="sprite-icon icon-share" ><use xlink:href="#icon-share"></use></svg> 
           <div class="share-popup" >
@@ -85,7 +92,10 @@
             </ul>
           </div>
         </div> 
-        <div class="divider" ></div> 
+        <div class="divider" >
+          
+        </div> 
+        <el-backtop  class="backtop" visibility-height="180">UP </el-backtop>
       </div>
     </div>
   </div>
@@ -313,7 +323,7 @@ const tochangeCollect = (articleId) =>{
 }
 .article-suspended-panel {
   position: fixed;
-  margin-left: 0rem;
+  margin-left: -1rem;
   top: 140px;
   z-index: 2;
 }
@@ -331,12 +341,16 @@ const tochangeCollect = (articleId) =>{
   text-align: center;
   font-size: 1.67rem;
 }
-.sprite-icon {
-  width: 45px;
-  color: #8a919f;
-  height: 45px;
-  margin-top: 10px;
+
+.badge {
+  margin-top: 20px;
 }
+.sprite-icon {
+  width: 30px;
+  color: #8a919f;
+  height: 30px;
+}
+
 .panel-btn.share-btn .share-popup .share-item {
   display: flex;
   align-items: center;
