@@ -15,7 +15,7 @@ public class R extends HashMap {
         return r;
     }
 
-    public static R okMap(String msg, Object data) {
+    public static R okData(String msg, Object data) {
         R r = new R();
         r.put(CODE, 200);
         r.put(MSG, msg);

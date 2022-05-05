@@ -17,7 +17,9 @@
           </div>
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
-          <el-tab-pane label="文章" name="first">文章</el-tab-pane>
+          <el-tab-pane label="文章" name="first">
+            <ArticleItem></ArticleItem>
+          </el-tab-pane>
           <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
           <el-tab-pane label="关注" name="third">关注</el-tab-pane>
         </el-tabs>
@@ -32,7 +34,7 @@
           </div>
         </div>
         <div class="follow card">
-          <a href="#">
+          <a href="#" class="border-r">
             关注了
             <span class="follow-text">10</span>
           </a>
@@ -48,6 +50,7 @@
 <script lang="ts" setup>
 import type { TabsPaneContext } from 'element-plus'
 import { ref } from 'vue';
+import ArticleItem from '../article/ArticleItem.vue';
 
 const activeName = ref('first')
 
@@ -133,7 +136,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   font-weight: 500;
   color: #31445b;
 }
-.follow a:first {
+.border-r {
   border-right: 1px solid #efefef;
 }
 .follow-text {
