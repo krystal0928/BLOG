@@ -1,6 +1,6 @@
 package com.krystal.blog;
 
-import com.krystal.blog.common.model.Article;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.ArticleService;
 import com.krystal.blog.common.util.HtmlUtil;
@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Slf4j
 public class ArticleTest extends BlogApplicationTests {
@@ -23,8 +22,8 @@ public class ArticleTest extends BlogApplicationTests {
 
     @Test
     public void selectArticleList() {
-        List<ArticleVo> view = articleService.selectArticleList(1l);
-        log.info(view.toString());
+        Page<ArticleVo> view = articleService.selectArticleList(new Page<>(1, 1), 1l);
+        log.info("{}", view.getSize());
     }
 
     @Test

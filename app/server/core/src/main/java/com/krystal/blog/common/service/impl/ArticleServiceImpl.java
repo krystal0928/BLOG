@@ -1,5 +1,6 @@
 package com.krystal.blog.common.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
@@ -25,8 +26,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     private ApplicationTemplate applicationTemplate;
 
     @Override
-    public List<ArticleVo> selectArticleList(Long userId) {
-        return articleMapper.selectArticleList(userId);
+    public Page<ArticleVo> selectArticleList(Page<ArticleVo> page, Long userId) {
+        return articleMapper.selectArticleList(page, userId);
     }
 
     @Override
