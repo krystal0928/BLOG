@@ -127,13 +127,11 @@ onMounted(() => {
   getArticleById(route.params.id).then(res => {
     if (res.code == 200) {
       article.value = res.data
-      console.log(article)
     }
   })
   getUserVoById(route.query.userId).then(res => {
     if (res.code == 200) {
       reader.value = res.data
-      console.log(reader)
     }
   })
 })
@@ -166,7 +164,6 @@ const checkToken = () => {
 const toChangeFocus = (articleUserId) => {
  
   if (checkToken()) {
-     console.log(articleUserId)
     if(reader.value.Id != articleUserId) {
       if (reader.value.focused == 0) {
         addUserFocus(articleUserId).then(res => {
