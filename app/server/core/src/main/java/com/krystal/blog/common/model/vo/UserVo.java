@@ -17,6 +17,6 @@ public class UserVo extends User {
 
     private Integer focusCount;
     private Integer likeCount;
-    private Integer CollectCount;
-
+    private Integer collectCount;
+    private Integer focused;
 }

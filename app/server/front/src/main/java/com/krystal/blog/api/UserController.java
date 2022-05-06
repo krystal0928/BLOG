@@ -285,6 +285,8 @@ public class UserController {
             return R.error(400,"用户不存在");
         if (null == focusUser)
             return R.error(400,"关注的用户已不存在！");
+        if (user.getId() == focusId)
+            return R.error(400,"不支持该操作！");
         UserFocus userFocus = userFocusService.lambdaQuery()
                 .eq(UserFocus::getUserId,user.getId())
                 .eq(UserFocus::getFocusId,focusId)
@@ -297,13 +299,43 @@ public class UserController {
                 .focusId(focusId)
                 .build();
         if (!userFocusService.save(userFocus)) {
-            return R.error(400,"点赞失败，请重新尝试！");
+            return R.error(400,"关注失败，请重新尝试！");
         }
         return R.ok("关注成功！");
     }
 
 
+    @PostMapping(value="/api/user/deleteUserFocus")
+    public R deleteUserFocus(@RequestHeader("token") String token, Long focusId) {
+        User user = userService.getUserByToken(token);
+        User focusUser = userService.lambdaQuery()
+                .eq(User::getId,focusId)
+                .one();
+        if (null == user)
+            return R.error(400,"用户不存在");
+        if (null == focusUser)
+            return R.error(400,"关注的用户已不存在！");
+        if (user.getId() == focusId)
+            return R.error(400,"不支持该操作！");
 
+        UserFocus userFocus = userFocusService.lambdaQuery()
+                .eq(UserFocus::getUserId,user.getId())
+                .eq(UserFocus::getFocusId,focusId)
+                .one();
+        if (null == userFocus)
+            return R.error(400,"您未关注该用户，取关操作不允许！");
+        if (!userFocusService.removeById(userFocus.getId())) {
+            return R.error(400,"取消关注失败，请重新尝试！");
+        }
+        return R.ok("取关成功！");
+    }
+
+    /**
+     * 根据用户id获取用户信息
+     * @param token
+     * @param focusId
+     * @return
+     */
     @PostMapping(value="/api/user/getUserVoById")
     public R getUserVoById(@RequestHeader("token") String token, Long focusId) {
         User user = userService.getUserByToken(token);
@@ -314,8 +346,9 @@ public class UserController {
             return R.error(400,"用户不存在");
         if (null == focusUser)
             return R.error(400,"关注的用户已不存在！");
-
         UserVo userVo = userService.selectUser(user.getId(),focusId);
+        if (user.getId().equals(focusId))
+            userVo.setFocused(2);
         return R.okData("用户查询成功!",userVo);
     }
 

@@ -188,7 +188,7 @@ public class ArticleController {
                 .eq(ArticleLike::getUserId, user.getId())
                 .one();
         if (null != info) {
-            return R.error(400, "您已经点赞过了");
+            return R.error(400, "您已点赞，请勿重复操作！");
         }
 
         ArticleLike articleLike = ArticleLike.builder()
@@ -223,7 +223,7 @@ public class ArticleController {
                 .eq(ArticleLike::getUserId,user.getId())
                 .one();
         if (null == articleLike) {
-            return R.error(400,"收藏失败，请重新尝试！");
+            return R.error(400,"您未点赞该文章，取消点赞操作不允许！");
         }
 
         if (!articleLikeService.removeById(articleLike.getId())) {
@@ -253,7 +253,7 @@ public class ArticleController {
                 .eq(ArticleCollection::getUserId, user.getId())
                 .one();
         if (null != info) {
-            return R.error(400, "您已经收藏过了");
+            return R.error(400, "您已收藏，请勿重复操作！");
         }
 
         ArticleCollection articleCollection = ArticleCollection.builder()
@@ -287,7 +287,7 @@ public class ArticleController {
                 .eq(ArticleCollection::getUserId,user.getId())
                 .one();
         if (null == articleCollection) {
-            return R.error(400,"收藏失败，请重新尝试！");
+            return R.error(400,"您未点赞该文章，取消收藏 操作不允许！");
         }
 
         if (!articleCollectionService.removeById(articleCollection.getId())) {
