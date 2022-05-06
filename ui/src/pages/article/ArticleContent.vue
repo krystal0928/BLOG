@@ -10,18 +10,18 @@
             <div class="author-info-block">
               <a href="/user/149189280670478" target="_blank" class="avatar-link">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" loading="lazy" class="lazy avatar avatar">
-              </a> 
+              </a>
               <div class="author-info-box">
                 <div class="author-name">
                   <a href="/user/149189280670478" target="_blank" class="username ellipsis">
                     <span class="name" style="max-width: 128px;">{{article.userName}}</span> 
                   </a>
-                </div> 
+                </div>
                 <div class="meta-box">
                   <time datetime="2021-11-26T02:56:50.000Z" class="time">{{article.creatTime}}</time> 
                   <span class="views-count">
                     &nbsp;点赞 {{article.likeCount}}
-                  </span> 
+                  </span>
                   <span class="views-count">
                     &nbsp;&nbsp;收藏 {{article.collectCount}}
                   </span> 
@@ -306,13 +306,14 @@ const tochangeCollect = (articleId) =>{
 }
 .column-view {
   padding: 0 0 8rem;
+  display: flex;
 }
 
 .article-area {
   margin-bottom: 1.5rem;
 }
 .main-area {
-  width: calc(100% - 24.67rem);
+  flex: 1 0 45vw;
   position: relative;
   max-width: 100%;
   box-sizing: border-box;
