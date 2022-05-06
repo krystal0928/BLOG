@@ -10,4 +10,6 @@ public interface UserService  extends IService<User> {
     User getUserByToken(String token) ;
 
     UserVo selectUser(Long userId,Long focusId);
+
+    Long getUserIdFromToken(String token);
 }

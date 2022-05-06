@@ -3,6 +3,7 @@ package com.krystal.blog.api;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.krystal.blog.common.annotation.NoNeedLogIn;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.model.ArticleLike;
@@ -41,6 +42,7 @@ public class UserController {
     private UserFocusService userFocusService;
 
 
+    @NoNeedLogIn
     @PostMapping(value = "/api/user/loginCheck")
     public R loginCheck(String username) {
         User user = userService.lambdaQuery()
@@ -57,6 +59,7 @@ public class UserController {
      * @param password
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value = "/api/user/login")
     public R login(String username, String password, String code) {
         // 1. find User by username
@@ -91,6 +94,7 @@ public class UserController {
      * @param info
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value="/api/user/register")
     public R register(User info){
         User user = userService.lambdaQuery()
@@ -148,6 +152,7 @@ public class UserController {
      * @param email
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value="/api/user/sendRegisterEmail")
     public R sendRegisterEmail(String email) {
         User user = userService.lambdaQuery()
@@ -169,6 +174,7 @@ public class UserController {
      * @param email
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value="/api/user/sendForgetEmail")
     public R sendForgetEmail(String email) {
         User user = userService.lambdaQuery()
@@ -190,6 +196,7 @@ public class UserController {
      * @param value
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value="/api/user/confirmEmail")
     public R confirmEmail(String email, String value) {
         Assert.notNull(value, "验证码不能为空！");

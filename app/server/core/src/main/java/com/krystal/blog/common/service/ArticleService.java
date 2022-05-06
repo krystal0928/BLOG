@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface ArticleService extends IService<Article> {
 
-    Page<ArticleVo> selectArticleList(Page<ArticleVo> page, Long userId);
+    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long userId);
+
+    Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long userId);
 
     /**
      * 发布文章

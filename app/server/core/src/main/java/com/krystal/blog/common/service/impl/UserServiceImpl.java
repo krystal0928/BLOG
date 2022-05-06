@@ -1,6 +1,8 @@
 package com.krystal.blog.common.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.mapper.UserMapper;
 import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.model.UserFocus;
@@ -27,5 +29,15 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
     @Override
     public UserVo selectUser(Long userId,Long focusId) {
         return userMapper.selectUser(userId, focusId);
+    }
+
+    @Override
+    public Long getUserIdFromToken(String token) {
+        if (!StrUtil.isEmpty(token)) {
+            User user = this.getUserByToken(token);
+            if (null != user)
+                return user.getId();
+        }
+        return 0L;
     }
 }

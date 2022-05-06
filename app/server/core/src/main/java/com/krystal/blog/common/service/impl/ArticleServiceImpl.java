@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> implements ArticleService {
@@ -26,8 +25,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     private ApplicationTemplate applicationTemplate;
 
     @Override
-    public Page<ArticleVo> selectArticleList(Page<ArticleVo> page, Long userId) {
-        return articleMapper.selectArticleList(page, userId);
+    public Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long userId) {
+        return articleMapper.selectArticleListPublic(page, userId);
+    }
+
+    @Override
+    public Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long userId) {
+        return articleMapper.selectArticleListPersonal(page, userId);
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.krystal.blog.common;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.krystal.blog.common.annotation.NoNeedLogIn;
 import com.krystal.blog.common.beans.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,17 +16,21 @@ import java.util.List;
 
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor{
-    private static List<String> excludeUrl = new ArrayList<>();
 
-    static {
-        excludeUrl.add("/api/user/login");
-        excludeUrl.add("/api/user/register");
-        excludeUrl.add("/api/user/sendRegisterEmail");
-        excludeUrl.add("/api/user/sendForgetEmail");
-        excludeUrl.add("/api/user/loginCheck");
-        excludeUrl.add("/api/user/confirmEmail");
-        excludeUrl.add("/api/article/selectArticleList");
+    private boolean checkNoNeedLogIn(Object handler) {
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            // 获取方法上的注解
+            NoNeedLogIn noNeedLogIn = handlerMethod.getMethod().getAnnotation(NoNeedLogIn.class);
+
+            // 如果标记了注解，则判断权限
+            if (noNeedLogIn != null && noNeedLogIn.value()) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -34,10 +40,9 @@ public class LoginInterceptor implements HandlerInterceptor{
         response.setHeader("Content-Type", "text/html;charset=UTF-8");
 
         // 不需要拦截
-        String servletPath = request.getServletPath();
-        log.info(servletPath);
-        if (excludeUrl.contains(servletPath))
+        if (checkNoNeedLogIn(handler)) {
             return true;
+        }
 
         // token 存在才允许访问接口
         String token = request.getHeader("token");

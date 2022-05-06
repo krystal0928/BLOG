@@ -3,6 +3,7 @@ package com.krystal.blog.api;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.krystal.blog.common.annotation.NoNeedLogIn;
 import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -102,26 +101,39 @@ public class ArticleController {
      * 首页加载文章
      * @return
      */
-    @PostMapping("/api/article/selectArticleList")
-    public R selectArticleList(@RequestHeader("token") String token,
+    @NoNeedLogIn
+    @PostMapping("/api/article/list/public")
+    public R articleListPublic(@RequestHeader("token") String token,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        Long userId = 0L;
-        if (!StrUtil.isEmpty(token)) {
-            User user = userService.getUserByToken(token);
-            if (null == user)
-                return R.error(400,"该用户不存在！");
-            userId = user.getId();
-        }
+        Long userId = userService.getUserIdFromToken(token);
+
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleList(page, userId);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, userId);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
     }
 
+    /**
+     * 加载个人文章
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping("/api/article/list/personal")
+    public R articleListPersonal(@RequestHeader("token") String token,
+                                 @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                 @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        Long userId = userService.getUserIdFromToken(token);
 
+        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPersonal(page, userId);
 
+        return R.okData("文章查询成功!", articleVoList.getRecords())
+                .put("total", articleVoList.getTotal());
+    }
+
+    @NoNeedLogIn
     @PostMapping("/api/article/{id}")
     public R getArticleById(@RequestHeader("token") String token,
                             HttpServletRequest httpServletRequest,

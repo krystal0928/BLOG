@@ -1,2 +1,11 @@
-package com.krystal.blog.common.annotation;public @interface NoNeedLogIn {
+package com.krystal.blog.common.annotation;
+
+import java.lang.annotation.*;
+
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+public @interface NoNeedLogIn {
+    boolean value() default true;
 }
