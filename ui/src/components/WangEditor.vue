@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { onBeforeUnmount, shallowRef, ref } from 'vue'
+import { onBeforeUnmount, shallowRef, ref, watch, watchEffect } from 'vue'
 import { IEditorConfig, IDomEditor } from '@wangeditor/core';
 
 const props = defineProps(['title', 'content'])
@@ -39,6 +39,11 @@ const editorRef = shallowRef()
 
 let valueHtml = ref(props.content)
 let valueTitle = ref(props.title)
+
+watchEffect(() => {
+  valueTitle.value = props.title
+  valueHtml.value = props.content
+})
 
 const toolbarConfig = {
   excludeKeys: ['fullScreen'],
@@ -69,7 +74,7 @@ const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
 }
 const handleChange = (editor: IDomEditor) => {
-  valueHtml = editor.getHtml()
+  valueHtml.value = editor.getHtml()
   emit('update:content', valueHtml)
 }
 </script>

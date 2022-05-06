@@ -36,9 +36,20 @@
                 <img src="../../assets/comment.png"  @click="toArticle(article.id,article.userId)"/>
                 <span >{{article.commentCount}}</span>
               </li>
+              <li class="item">
+                <el-dropdown>
+                  <el-icon><more-filled /></el-icon>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="toEditArticle(article.id)">编辑</el-dropdown-item>
+                      <el-dropdown-item @click="toDeleteArticle(article.id)">删除</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </li>
             </ul>
           </div>
-          <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" alt="程序员全职接单一个月的感触" class="lazy thumb" data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?" loading="lazy" style="">
+          <img :src="article.coverImg" loading="lazy" style="height:84px;">
         </div>
       </div>
     </li>
@@ -55,6 +66,9 @@
   </div>
 </template>
 <script lang="ts" setup>
+import {
+  MoreFilled,
+} from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -178,6 +192,19 @@ const tochangeCollect = (articleId) =>{
       }
     })
   }
+}
+
+// 编辑文章
+const toEditArticle = (id) => {
+  router.push({
+    path: '/article-edit',
+    query: {id}
+  })
+}
+
+// 删除文章
+const toDeleteArticle = (id) => {
+  console.log('删除文章' + id)
 }
 
 </script>

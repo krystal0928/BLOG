@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div class="container main-container">
-      <div class="view column-view">
+    <div class="container">
+      <div class="column-view">
         <div class="main-area article-area">
           <article class="article card">
             <h1 class="article-title">
               {{article.title}}
             </h1>
             <div class="author-info-block">
-              <a href="/user/149189280670478" target="_blank" class="avatar-link">
+              <a :href="`#/user/${article.userId}`" class="avatar-link">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" loading="lazy" class="lazy avatar avatar">
               </a>
               <div class="author-info-box">
                 <div class="author-name">
-                  <a href="/user/149189280670478" target="_blank" class="username ellipsis">
+                  <a :href="`#/user/${article.userId}`" class="username ellipsis">
                     <span class="name" style="max-width: 128px;">{{article.userName}}</span> 
                   </a>
                 </div>
@@ -24,12 +24,11 @@
                   </span>
                   <span class="views-count">
                     &nbsp;&nbsp;收藏 {{article.collectCount}}
-                  </span> 
-                </div> 
-              </div> 
+                  </span>
+                </div>
+              </div>
               <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
               <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
-              
             </div>
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
@@ -37,13 +36,13 @@
         <div class="sidebar">
           <div class="sidebar-block author-block pure card">
             <div class="sidebar-block author-block pure">
-              <a href="/user/149189280670478" target="_blank" class="user-item item">
+              <a :href="`#/user/${article.userId}`" class="user-item item">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
                 <div class="info-box" >
-                  <a href="/user/149189280670478" target="_blank"  class="username">
-                    <span class="name" style="max-width: 128px;">{{reader.username}}</span> 
+                  <a :href="`#/user/${article.userId}`" class="username">
+                    <span class="name" style="max-width: 128px;">{{reader.username}}</span>
                   </a>
-                  <div title="{{reader.motto}}" class="position" >{{reader.motto}}</div>
+                  <div :title="reader.motto" class="motto" >{{reader.motto}}</div>
                 </div>
               </a>
               <div class="stat-item item" >
@@ -99,10 +98,8 @@
               </li>
             </ul>
           </div>
-        </div> 
-        <div class="divider" >
-          
-        </div> 
+        </div>
+        <div class="divider" ></div>
         <el-backtop  class="backtop" visibility-height="180">UP </el-backtop>
       </div>
     </div>
@@ -113,7 +110,7 @@ import { ElMessageBox } from 'element-plus';
 import { ref, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
-import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getArticleById } from '../../api/article'
+import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getPublishArticleById } from '../../api/article'
 import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
 import router from '../../router/router';
 
@@ -124,7 +121,7 @@ let reader:any = ref({
 
 })
 onMounted(() => {
-  getArticleById(route.params.id).then(res => {
+  getPublishArticleById(route.params.id).then(res => {
     if (res.code == 200) {
       article.value = res.data
     }
@@ -295,26 +292,21 @@ const tochangeCollect = (articleId) =>{
 <style scoped>
 .container {
   position: relative;
-  margin: 0 auto;
+  margin: 20px auto;
   width: 70%;
-}
-.view {
-  margin-top: 1.767rem;
 }
 .column-view {
   padding: 0 0 8rem;
   display: flex;
 }
-
 .article-area {
   margin-bottom: 1.5rem;
 }
 .main-area {
-  flex: 1 0 45vw;
+  flex: 1 0 400px;
   position: relative;
   max-width: 100%;
   box-sizing: border-box;
-  margin-left: 4rem;
 }
 .article {
   position: relative;
@@ -366,10 +358,9 @@ const tochangeCollect = (articleId) =>{
   align-items: center;
 }
 .sidebar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20rem;
+  flex: 0 1 240px;
+  position: relative;
+  margin-left: 20px;
 }
 .sidebar .sidebar-block {
   margin-bottom: 20px;
@@ -382,7 +373,6 @@ const tochangeCollect = (articleId) =>{
 .author-block {
   border-radius: 4px;
   background: #fff;
-  padding: 1.667rem;
 }
 .user-item {
   border-bottom: 1px solid #e4e6eb;
@@ -400,8 +390,14 @@ const tochangeCollect = (articleId) =>{
 }
 .user-item .info-box {
   flex: 1 1 auto;
-  min-width: 0;
   margin-left: 1.333rem;
+}
+.username, .motto {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 .stat-item:first-of-type {
   margin-top: 1.416rem;
@@ -418,15 +414,15 @@ const tochangeCollect = (articleId) =>{
 
 .article-suspended-panel {
   position: fixed;
-  margin-left: -1rem;
+  margin-left: -45px;
   top: 140px;
   z-index: 2;
 }
 .panel-btn {
   position: relative;
-  margin-bottom: 1.667rem;
-  width: 4rem;
-  height: 4rem;
+  margin-bottom: 30px;
+  width: 30px;
+  height: 30px;
   background-color: #fff;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -435,10 +431,6 @@ const tochangeCollect = (articleId) =>{
   cursor: pointer;
   text-align: center;
   font-size: 1.67rem;
-}
-
-.badge {
-  margin-top: 20px;
 }
 .sprite-icon {
   width: 30px;

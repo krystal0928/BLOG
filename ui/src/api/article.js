@@ -39,6 +39,13 @@ export function getArticleById(id) {
   })
 }
 
+export function getPublishArticleById(id) {
+  return axios({
+    url: `/api/article/publish/${id}`,
+    method: 'post'
+  })
+}
+
 export const uploadUrl = 'http://localhost:8080/blog/api/file/upload'
 
 export function addArticleLike(articleId) {

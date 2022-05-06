@@ -105,39 +105,40 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, toRefs } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import { useRouter,useRoute } from 'vue-router';
 import { ElMessage,  UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import { publishArticle, saveDraft, uploadUrl } from '../../api/article'
+import { getArticleById, publishArticle, saveDraft, uploadUrl } from '../../api/article'
 import WangEditor from '../../components/WangEditor.vue'
 
 const dialogFormVisible = ref(false)
 const backVisible = ref(false)
 const coverImg = ref('')
-const titleHolder = ref("请输入文章标题（2-100个字）")
 const formLabelWidth = '140px'
 
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
-const form:any = reactive({
-  id: route.query.id,
-  title: '',
-  content: '',
-  description: null,
-  imgFlag: 0,
-  coverImg: null,
-  permission: 0
+
+const form: any = ref({})
+
+onMounted(() => {
+  getArticleById(route.query.id).then(res => {
+    if (res.code == 200) {
+      form.value = res.data
+      console.log(form.value.title)
+    }
+  })
 })
 
 const onTitle = (valueTitle) => {
-  form.title = valueTitle
+  form.value.title = valueTitle
 }
 
 const onContent = (content) => {
-  form.content = content
+  form.value.content = content
 }
 
 const headers = reactive({
@@ -146,7 +147,7 @@ const headers = reactive({
 
 
 const checkArticle = () => {
-  if (form.title.length < 2) {
+  if (form.value.title.length < 2) {
     ElMessage({
       showClose: true,
       message: "文章标题最少2个字!",
@@ -154,7 +155,7 @@ const checkArticle = () => {
     })
     return false;
   }
-  if (form.content == '<p><br></p>') {
+  if (form.value.content == '<p><br></p>') {
     ElMessage({
       showClose: true,
       message: "文章内容不能为空",
@@ -174,7 +175,7 @@ const toSaveDraft = () => {
           message: "文章已保存至草稿箱!",
           type: 'success',
         })
-      } 
+      }
     })
   }
 }
@@ -184,7 +185,7 @@ const toPublishArticle = () =>{
   }
 }
 const PublishArticle = () => {
-  if (form.description == null) {
+  if (form.value.description == null) {
     ElMessage({
       showClose: true,
       message: "摘要不能为空!",
@@ -205,12 +206,11 @@ const PublishArticle = () => {
       })
     }
   })
-  
 }
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
   coverImg.value = URL.createObjectURL(uploadFile.raw!)
   if(response.code == 200) {
-    form.coverImg = response.data[0]
+    form.value.coverImg = response.data[0]
   } else {
     ElMessage({
       showClose: true,

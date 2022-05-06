@@ -133,18 +133,34 @@ public class ArticleController {
                 .put("total", articleVoList.getTotal());
     }
 
-    @NoNeedLogIn
+    /**
+     * 获取数据库存储文章信息
+     * @param id
+     * @return
+     */
     @PostMapping("/api/article/{id}")
-    public R getArticleById(@RequestHeader("token") String token,
-                            HttpServletRequest httpServletRequest,
-                            @PathVariable("id") Long id) {
-        Long userId = 0L;
-        if (!StrUtil.isEmpty(token)) {
-            User user = userService.getUserByToken(token);
-            if (null == user)
-                return R.error(400,"该用户不存在！");
-            userId = user.getId();
+    public R getArticleById(@PathVariable("id") Long id) {
+        Article article = articleService.getById(id);
+        if (null == article) {
+            return R.error(400, "文章信息不存在");
         }
+        return R.okData("success", article);
+    }
+
+    /**
+     * 获取发布文章信息
+     * @param token
+     * @param httpServletRequest
+     * @param id
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping("/api/article/publish/{id}")
+    public R getPublishArticleById(@RequestHeader("token") String token,
+                                   HttpServletRequest httpServletRequest,
+                                   @PathVariable("id") Long id) {
+        Long userId = userService.getUserIdFromToken(token);
+
         ArticleVo articleVo = articleService.selectArticle(id, userId);
 
         if (null == articleVo || StrUtil.isEmpty(articleVo.getFilepath())) {
