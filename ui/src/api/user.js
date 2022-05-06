@@ -87,3 +87,21 @@ export function getUserVoById(focusId) {
         data: {focusId}
     })
 }
+
+export function addUserFocus(focusId) {
+    console.log(focusId)
+    return axios({
+        url: '/api/user/addUserFocus',
+        method: 'post',
+        data: {focusId}
+    })
+}
+
+export function deleteUserFocus(focusId) {
+    console.log(focusId)
+    return axios({
+        url: '/api/user/deleteUserFocus',
+        method: 'post',
+        data: {focusId}
+    })
+}

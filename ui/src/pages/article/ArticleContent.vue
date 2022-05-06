@@ -23,13 +23,13 @@
                     &nbsp;点赞 {{article.likeCount}}
                   </span> 
                   <span class="views-count">
-                    &nbsp;&nbsp;收藏 {{article.likeCount}}
+                    &nbsp;&nbsp;收藏 {{article.collectCount}}
                   </span> 
                 </div> 
               </div> 
-              <button class="follow-button follow">
-                <span data-text="取消关注" class="text">关注</span>
-              </button>
+              <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
+              <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
+              
             </div>
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
@@ -41,19 +41,19 @@
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
                 <div class="info-box" >
                   <a href="/user/149189280670478" target="_blank"  class="username">
-                    <span class="name" style="max-width: 128px;">{{writer.username}}</span> 
+                    <span class="name" style="max-width: 128px;">{{reader.username}}</span> 
                   </a>
-                  <div title="{{writer.motto}}" class="position" >{{writer.motto}}</div>
+                  <div title="{{reader.motto}}" class="position" >{{reader.motto}}</div>
                 </div>
               </a>
               <div class="stat-item item" >
-                <span class="content" >获得点赞&nbsp;{{writer.likeCount}}</span>
+                <span class="content" >获得点赞&nbsp;{{reader.likeCount}}</span>
               </div>
               <div class="stat-item item">
-                <span class="content">文章被收藏&nbsp;{{writer.collectCount}}</span>
+                <span class="content">文章被收藏&nbsp;{{reader.collectCount}}</span>
               </div>
               <div class="stat-item item">
-                <span class="content">粉丝&nbsp;{{writer.focusCount}}</span>
+                <span class="content">粉丝&nbsp;{{reader.focusCount}}</span>
               </div>
             </div>
           </div>
@@ -114,18 +114,13 @@ import { ref, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getArticleById } from '../../api/article'
-import { getUserVoById } from '../../api/user';
+import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
 import router from '../../router/router';
 
 const route = useRoute()
 let article:any = ref({
-  title: '',
-  content: '',
-  userName: '',
-  creatTime: '',
-  liked: 0
 })
-let writer:any = ref({
+let reader:any = ref({
 
 })
 onMounted(() => {
@@ -137,8 +132,8 @@ onMounted(() => {
   })
   getUserVoById(route.query.userId).then(res => {
     if (res.code == 200) {
-      writer.value = res.data
-      console.log(writer)
+      reader.value = res.data
+      console.log(reader)
     }
   })
 })
@@ -168,52 +163,76 @@ const checkToken = () => {
   return true
 }
 
-const tochangeLike = (articleId) =>{
+const toChangeFocus = (articleUserId) => {
+ 
   if (checkToken()) {
-      if(article.value.id == articleId) {
-        if (article.value.liked == 0) {
-          addArticleLike(articleId).then(res => {
-            if (res.code == 200) {
-              article.value.liked = 1;
-              article.value.likeCount++;
-              writer.value.likeCount++;
-            }
-          })
-        } 
-        if (article.value.liked != 0){
-          deleteArticleLike(articleId).then(res => {
-            if (res.code == 200) {
-              article.value.liked = 0;
-              article.value.likeCount--;
-              writer.value.likeCount--;
-            }
-          })
-        }
-      }
-  }
-}
-
-const tochangeCollect = (articleId) =>{
-    if(article.value.id == articleId) {
-      if (article.value.collected == 0) {
-        addArticleCollect(articleId).then(res => {
+     console.log(articleUserId)
+    if(reader.value.Id != articleUserId) {
+      if (reader.value.focused == 0) {
+        addUserFocus(articleUserId).then(res => {
           if (res.code == 200) {
-            article.value.collected = 1;
-            article.value.collectCount++;
-            writer.value.collectCount++;
+            reader.value.focused = 1;
+            reader.value.focusCount++;
           }
         })
       } 
-      if (article.value.collected != 0){
-        deleteArticleCollect(articleId).then(res => {
+      if (reader.value.focused == 1){
+        deleteUserFocus(articleUserId).then(res => {
           if (res.code == 200) {
-            article.value.collected = 0;
-            article.value.collectCount--;
-            writer.value.collectCount--;
+            reader.value.focused = 0;
+            reader.value.focusCount--;
           }
         })
       }
     }
+  }
+}
+const tochangeLike = (articleId) =>{
+  if (checkToken()) {
+    if(article.value.id == articleId) {
+      if (article.value.liked == 0) {
+        addArticleLike(articleId).then(res => {
+          if (res.code == 200) {
+            article.value.liked = 1;
+            article.value.likeCount++;
+            reader.value.likeCount++;
+          }
+        })
+      } 
+      if (article.value.liked != 0){
+        deleteArticleLike(articleId).then(res => {
+          if (res.code == 200) {
+            article.value.liked = 0;
+            article.value.likeCount--;
+            reader.value.likeCount--;
+          }
+        })
+      }
+    }
+  }
+}
+
+const tochangeCollect = (articleId) =>{
+  if(article.value.id == articleId) {
+    if (article.value.collected == 0) {
+      addArticleCollect(articleId).then(res => {
+        if (res.code == 200) {
+          article.value.collected = 1;
+          article.value.collectCount++;
+          reader.value.collectCount++;
+        }
+      })
+    } 
+    if (article.value.collected != 0){
+      deleteArticleCollect(articleId).then(res => {
+        if (res.code == 200) {
+          article.value.collected = 0;
+          article.value.collectCount--;
+          reader.value.collectCount--;
+        }
+      })
+    }
+  }
 }
 </script>
 <style>

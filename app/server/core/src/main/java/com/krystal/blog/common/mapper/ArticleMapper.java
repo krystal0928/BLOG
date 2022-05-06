@@ -26,7 +26,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
     Page<ArticleVo> selectArticleList(Page<ArticleVo> page, @Param("userId") Long userId);
 
 
-    @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,u.username userName, " ,
+    @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,u.username userName, u.id userId, " ,
             " ifnull(count(al.id), 0) likeCount, ifnull(count(ac.id), 0) commentCount, ifnull(count(acl.id), 0) collectCount, ",
             " (select count(id) from article_like where article_id = a.id and user_id = #{userId}) as liked, ",
             " (select count(id) from article_collection where article_id = a.id and user_id = #{userId}) as collected ",
