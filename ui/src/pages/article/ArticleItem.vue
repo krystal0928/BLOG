@@ -104,8 +104,7 @@ const handleCurrentChange = (val) => {
   loadArticclelList()
 }
 
-const toArticle = (id,userId) =>{
-  console.log(id)
+const toArticle = (id, userId) =>{
   router.push({
     path: `/article/${id}`,
     query: {userId}

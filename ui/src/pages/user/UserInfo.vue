@@ -55,7 +55,6 @@ import ArticleItem from '../article/ArticleItem.vue';
 const activeName = ref('first')
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
 }
 </script>
 <style scoped>

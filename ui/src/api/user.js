@@ -80,7 +80,6 @@ export function loginCheck(username) {
 }
 
 export function getUserVoById(focusId) {
-    console.log(focusId)
     return axios({
         url: '/api/user/getUserVoById',
         method: 'post',
@@ -89,7 +88,6 @@ export function getUserVoById(focusId) {
 }
 
 export function addUserFocus(focusId) {
-    console.log(focusId)
     return axios({
         url: '/api/user/addUserFocus',
         method: 'post',
@@ -98,7 +96,6 @@ export function addUserFocus(focusId) {
 }
 
 export function deleteUserFocus(focusId) {
-    console.log(focusId)
     return axios({
         url: '/api/user/deleteUserFocus',
         method: 'post',
