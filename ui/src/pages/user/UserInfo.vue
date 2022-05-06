@@ -18,7 +18,7 @@
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
           <el-tab-pane label="文章" name="first">
-            <ArticleItem></ArticleItem>
+            <ArticleItem permission="personal"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
           <el-tab-pane label="关注" name="third">关注</el-tab-pane>

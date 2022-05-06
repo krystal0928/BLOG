@@ -15,7 +15,7 @@
           <div class="content-main">
             <div class="title-row">
               <a :href="`#/article/${article.id}?userId=${article.userId}`" target="_blank" rel="" :title="article.title" class="title">{{article.title}}</a>
-              </div> 
+              </div>
             <div class="abstract">
               <a :href="`#/article/${article.id}?userId=${article.userId}`" target="_blank" rel="">
                 <div >{{article.description}}</div>
@@ -59,7 +59,9 @@ import { ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, selectArticleList } from '../../api/article';
+import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal } from '../../api/article';
+
+const props = defineProps(['permission'])
 
 const router = useRouter()
 const store = useStore()
@@ -79,12 +81,22 @@ onMounted(() => {
 })
 
 const loadArticclelList = () => {
-  selectArticleList({...pagination}).then(res => {
-    if (res.code == 200) {
-      articleList.value = res.data
-      pagination.total = Number(res.total)
-    }
-  })
+  if (props.permission === 'public') {
+    articleListPublic({...pagination}).then(res => {
+      if (res.code == 200) {
+        articleList.value = res.data
+        pagination.total = Number(res.total)
+      }
+    })
+  }
+  if (props.permission === 'personal') {
+    articleListPersonal({...pagination}).then(res => {
+      if (res.code == 200) {
+        articleList.value = res.data
+        pagination.total = Number(res.total)
+      }
+    })
+  }
 }
 
 const handleCurrentChange = (val) => {

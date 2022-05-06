@@ -13,14 +13,14 @@
             <li class="nav-item" >
               <a href="/?sort=three_days_hottest" >热榜</a>
             </li>
-          </ul> 
+          </ul>
           <div class="dorp-down-area"></div>
         </nav>
       </header>
       <div class="article-card card">
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
-            <ArticleItem></ArticleItem>
+            <ArticleItem permission="public"></ArticleItem>
           </div>
         </div>
       </div>
