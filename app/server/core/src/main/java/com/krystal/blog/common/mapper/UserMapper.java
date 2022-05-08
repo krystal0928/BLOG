@@ -15,6 +15,7 @@ public interface UserMapper extends BaseMapper<User> {
             " count(f.id) focusCount, ",
             " (select count(ac.id) from article_collection ac where ac.article_id  in(select id from article where user_id = #{focusId})) collectCount, ",
             " (select count(al.id) from article_like al where al.article_id in (select id from article where user_id = #{focusId})) likeCount, ",
+            " (select count(id) from user_focus where user_id = #{focusId}) fansCount, ",
             " (select count(id) from user_focus where user_id = #{userId} and focus_id = #{focusId}) as focused ",
             " from user u ",
             " left join user_focus f on u.id = f.focus_id ",
