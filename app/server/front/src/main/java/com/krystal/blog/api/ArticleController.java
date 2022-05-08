@@ -103,10 +103,10 @@ public class ArticleController {
      */
     @NoNeedLogIn
     @PostMapping("/api/article/list/public")
-    public R articleListPublic(@RequestHeader("token") String token,
+    public R articleListPublic(@RequestParam(value = "userId", defaultValue = "0") Long userId,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        Long userId = userService.getUserIdFromToken(token);
+//        Long userId = userService.getUserIdFromToken(token);
 
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, userId);
@@ -121,10 +121,10 @@ public class ArticleController {
      */
     @NoNeedLogIn
     @PostMapping("/api/article/list/personal")
-    public R articleListPersonal(@RequestHeader("token") String token,
+    public R articleListPersonal(@RequestParam(value = "userId") Long userId,
                                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        Long userId = userService.getUserIdFromToken(token);
+//        Long userId = userService.getUserIdFromToken(token);
 
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleVo> articleVoList = articleService.selectArticleListPersonal(page, userId);

@@ -36,7 +36,7 @@
                 <img src="../../assets/comment.png"  @click="toArticle(article.id,article.userId)"/>
                 <span >{{article.commentCount}}</span>
               </li>
-              <li class="item">
+              <li v-if="editAble" class="item">
                 <el-dropdown>
                   <el-icon><more-filled /></el-icon>
                   <template #dropdown>
@@ -75,22 +75,32 @@ import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal } from '../../api/article';
 
-const props = defineProps(['permission'])
+const props = defineProps(['permission', 'userId'])
 
 const router = useRouter()
 const store = useStore()
+
 const user: any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
- const pagination = reactive({
+let editAble = ref(false)
+
+const checkEditAble = () => {
+  const logInUserId = user.value.token?.split(',')[0]
+  editAble.value = (logInUserId == props.userId)
+}
+
+const pagination = reactive({
   pageNo: 1,
   pageSize: 3,
-  total: 0
+  total: 0,
+  userId: props.userId || 0
 })
 const articleList: any = ref([])
 
 onMounted(() => {
+  checkEditAble()
   loadArticclelList()
 })
 

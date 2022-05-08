@@ -18,7 +18,7 @@
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
           <el-tab-pane label="文章" name="first">
-            <ArticleItem permission="personal"></ArticleItem>
+            <ArticleItem permission="personal" :user-id="userId"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
           <el-tab-pane label="关注" name="third">关注</el-tab-pane>
@@ -50,7 +50,12 @@
 <script lang="ts" setup>
 import type { TabsPaneContext } from 'element-plus'
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import ArticleItem from '../article/ArticleItem.vue';
+
+const route = useRoute()
+
+const userId = ref(route.params.id)
 
 const activeName = ref('first')
 
