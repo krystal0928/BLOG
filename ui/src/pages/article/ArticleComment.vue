@@ -165,6 +165,7 @@ const loadCommentList = () => {
 .box {
   display: inline-flex;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 .user {
   display: inline-flex;
