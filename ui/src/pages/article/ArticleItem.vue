@@ -86,8 +86,9 @@ const user: any = computed(
 
 let editAble = ref(false)
 
+const logInUserId = user.value.token?.split(',')[0]
+
 const checkEditAble = () => {
-  const logInUserId = user.value.token?.split(',')[0]
   editAble.value = (logInUserId == props.userId)
 }
 
@@ -95,6 +96,7 @@ const pagination = reactive({
   pageNo: 1,
   pageSize: 3,
   total: 0,
+  loginUserId: logInUserId,
   userId: props.userId || 0
 })
 const articleList: any = ref([])
@@ -165,7 +167,7 @@ const tochangeLike = (articleId) =>{
               element.likeCount++;
             }
           })
-        } 
+        }
         if (element.liked != 0){
           deleteArticleLike(articleId).then(res => {
             if (res.code == 200) {

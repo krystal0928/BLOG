@@ -23,8 +23,12 @@
             <ArticleItem permission="personal" :user-id="userId"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
-          <el-tab-pane label="关注" name="third">关注</el-tab-pane>
-          <el-tab-pane label="粉丝" name="fouth">粉丝</el-tab-pane>
+          <el-tab-pane label="关注" name="third">
+            <UserItem></UserItem>
+          </el-tab-pane>
+          <el-tab-pane label="粉丝" name="fouth">
+            <UserItem></UserItem>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="right">
@@ -55,6 +59,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
 import ArticleItem from '../article/ArticleItem.vue';
+import UserItem from './UserItem.vue';
 
 const route = useRoute()
 const router = useRouter()

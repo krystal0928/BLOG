@@ -34,8 +34,8 @@
           </article>
         </div>
         <div class="sidebar">
-          <div class="sidebar-block author-block pure card">
-            <div class="sidebar-block author-block pure">
+          <div class="fixed card">
+            <div class="sidebar-block author-block">
               <a :href="`#/user/${article.userId}`" class="user-item item">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
                 <div class="info-box" >
@@ -320,6 +320,9 @@ const tochangeCollect = (articleId) =>{
   font-weight: 600;
   line-height: 1.31;
   color: #252933;
+}
+.fixed {
+  position: fixed;
 }
 .author-info-block {
   display: flex;
