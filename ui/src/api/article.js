@@ -92,3 +92,12 @@ export function addComment(param) {
     data: param
   })
 }
+
+// 评论列表
+export function getCommentList(articleId) {
+  return axios({
+    url: '/api/article/getCommentList',
+    method: 'post',
+    data: {articleId}
+  })
+}

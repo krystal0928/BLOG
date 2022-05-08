@@ -9,21 +9,21 @@
     <el-divider />
     <span class="title">评论列表</span>
     <div class="comment-list">
-      <div class="level1">
-        <img class="comment-head-img" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+      <div class="level1" v-for="comment in commentList">
+        <img class="comment-head-img1" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
         <div class="context">
           <div class="box">
             <div class="user">
-              <span class="name">名称</span>
-              <time class="time">时间</time>
+              <span class="name">{{ comment.userId }}</span>
+              <time class="time">{{ comment.createTime }}</time>
             </div>
-            <p class="content">评论内容.......</p>
+            <p class="content">{{ comment.content }}</p>
             <div class="action">
               <el-button>回复评论</el-button>
             </div>
           </div>
           <div class="level2">
-            <img class="comment-head-img" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+            <img class="comment-head-img2" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
             <div class="context">
               <div class="box">
                 <div class="user">
@@ -31,6 +31,7 @@
                   <time class="time">时间</time>
                 </div>
                 <p class="content">评论内容.......</p>
+                <p class="parent">引用内容（父级评论）</p>
                 <div class="action">
                   <el-button>回复评论</el-button>
                 </div>
@@ -43,11 +44,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ElMessageBox } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { computed, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addComment } from '../../api/article';
+import { addComment, getCommentList } from '../../api/article';
 
 const props = defineProps(['articleId'])
 const router = useRouter()
@@ -61,9 +62,14 @@ const user:any = computed(
 )
 
 const comment: any = ref({})
+const commentList: any = ref([])
 
-onMounted(() => {
+watchEffect(() => {
   comment.value.articleId = props.articleId
+
+  if (props.articleId) {
+    loadCommentList()
+  }
 })
 
 // 检查用户是否登录
@@ -96,6 +102,17 @@ const sendComment = () => {
   addComment(comment.value).then(res => {
     if (res.code == 200) {
       // 评论成功, 刷新评论列表
+      ElMessage.success(res.msg)
+      loadCommentList()
+    }
+  })
+}
+
+// 刷新评论列表
+const loadCommentList = () => {
+  getCommentList(props.articleId).then(res => {
+    if (res.code == 200) {
+      commentList.value = res.data
     }
   })
 }
@@ -131,9 +148,10 @@ const sendComment = () => {
 .level1 {
   display: inline-flex;
   width: 100%;
+  margin-top: 10px;
 }
 
-.comment-head-img {
+.comment-head-img1 {
   flex: 0 0 auto;
   height: 40px;
   border-radius: 50%;
@@ -159,7 +177,7 @@ const sendComment = () => {
 }
 .time {
   color: #8a919f;
-  flex: 0 0 50px;
+  flex: 0 0 auto;
   place-items: top;
 }
 .content {
@@ -170,9 +188,28 @@ const sendComment = () => {
   margin: 8px;
 }
 .level2 {
-  margin-top: 10px;
+  display: inline-flex;
+  margin: 10px 0 20px;
   padding: 16px;
   background: rgba(247,248,250,.7);
   border-radius: 4px;
+}
+.comment-head-img2 {
+  flex: 0 0 auto;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.parent {
+  background: #f2f3f5;
+  border: 1px solid #e4e6eb;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 0 12px;
+  line-height: 36px;
+  height: 36px;
+  font-size: 14px;
+  color: #8a919f;
+  margin: 0 0 8px;
 }
 </style>
