@@ -11,7 +11,7 @@
             <span class="text">{{ userInfo.motto }}</span>
           </div>
           <div class="user-edit">
-            <el-button v-if="editAble" type="primary" @click="editUserInfo">编辑资料</el-button>
+            <el-button v-if="editAble" type="primary" @click="toEditUserInfo">编辑资料</el-button>
             <div v-else>
               <el-button v-if="userInfo.focused == 0" type="primary" @click="follow(userInfo.id)">关注</el-button>
               <el-button v-if="userInfo.focused == 1" type="primary" @click="follow(userInfo.id)">取消关注</el-button>
@@ -62,25 +62,64 @@
         </div>
       </div>
     </div>
+    <el-dialog v-model="dialogFormVisible" title="编辑资料">
+      <el-form :model="userInfo">
+        <el-form-item label="头像" :label-width="formLabelWidth">
+          <el-radio-group v-model="userInfo.imgFlag">
+            <el-radio :label="0">不添加</el-radio>
+            <el-radio :label="1">添加</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="userInfo.imgFlag == 1" label="" :label-width="formLabelWidth">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :headers="headers"
+            accept="image/jpeg,image/jpg,image/png"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            >
+            <img v-if="img" :src="img" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="座右铭" :label-width="formLabelWidth">
+          <el-input v-model="userInfo.motto" placeholder="请输入内容！"  autocomplete="off" :rows="2" type="textarea" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { ElMessageBox, TabsPaneContext } from 'element-plus'
-import { computed, onMounted, ref } from 'vue';
+import { ElMessage, ElMessageBox, TabsPaneContext, UploadProps } from 'element-plus'
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
+import { uploadUrl } from '../../api/article'
 import ArticleItem from '../article/ArticleItem.vue';
 import UserItem from './UserItem.vue';
 
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+const dialogFormVisible = ref(false)
+const img = ref('')
+const formLabelWidth = '140px'
 
 const user: any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
-
+const headers = reactive({
+  'token': store.getters.getUser?.token || ''
+})
 const userId = route.params.id
 
 const activeName = ref('first')
@@ -128,8 +167,8 @@ const checkToken = () => {
 }
 
 // 编辑资料
-const editUserInfo = () => {
-
+const toEditUserInfo = () => {
+  dialogFormVisible.value = true
 }
 
 // 关注
@@ -168,8 +207,57 @@ const tabPannel = (pannel) => {
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
+
+const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
+  img.value = URL.createObjectURL(uploadFile.raw!)
+  if(response.code == 200) {
+    userInfo.value.img = response.data[0]
+  } else {
+    ElMessage({
+      showClose: true,
+      message: "图片上传失败，请重试！",
+      type: 'error',
+    })
+  }
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (rawFile.size / 1024 / 1024 > 3) {
+    ElMessage.error('图片大小需小于3MB!')
+    return false
+  }
+  // coverImg.value = URL.createObjectURL(rawFile)
+  return true
+}
+
+
 </script>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>
 <style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 .user-wrap {
   width: 70%;
   margin: 20px auto;

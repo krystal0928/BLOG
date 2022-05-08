@@ -17,6 +17,5 @@ public interface UserService  extends IService<User> {
 
     Page<UserVo> selectFansUserList(Page<UserVo> page,Long userId, Long loginUserId);
 
-
     Long getUserIdFromToken(String token);
 }

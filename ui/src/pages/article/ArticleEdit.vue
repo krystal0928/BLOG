@@ -59,7 +59,7 @@
           </span>
         </template>
       </el-dialog>
-       <el-dialog v-model="dialogFormVisible" title="发布文章">
+      <el-dialog v-model="dialogFormVisible" title="发布文章">
         <el-form :model="form">
           <el-form-item label="文章封面：" :label-width="formLabelWidth">
             <el-radio-group v-model="form.imgFlag">
@@ -92,7 +92,7 @@
               <el-radio :label="2">粉丝可见</el-radio>
             </el-radio-group>
           </el-form-item>
-      </el-form>
+        </el-form>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取消</el-button>
