@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -364,6 +365,19 @@ public class ArticleController {
         return R.ok("评论发布成功！");
     }
 
-
+    /**
+     * 查询评论
+     * @param articleId
+     * @return
+     */
+    @PostMapping("/api/article/getCommentList")
+    public R getCommentList(Long articleId){
+        if (null == articleService.getById(articleId))
+            return R.error(400,"该文章目前已不存在！");
+        List<ArticleComment> articleComment = articleCommentService.lambdaQuery()
+                .eq(ArticleComment::getArticleId,articleId)
+                .list();
+        return R.okData("查询评论成功",articleComment);
+    }
 
 }

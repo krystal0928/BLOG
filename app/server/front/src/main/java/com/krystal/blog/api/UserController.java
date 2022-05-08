@@ -308,12 +308,7 @@ public class UserController {
         return R.ok("关注成功！");
     }
 
-    /**
-     *  取关
-     * @param token
-     * @param focusId
-     * @return
-     */
+
     @PostMapping(value="/api/user/deleteUserFocus")
     public R deleteUserFocus(@RequestHeader("token") String token, Long focusId) {
         User user = userService.getUserByToken(token);
