@@ -20,14 +20,24 @@
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
           <el-tab-pane label="文章" name="first">
-            <ArticleItem permission="personal" :user-id="userId"></ArticleItem>
+            <ArticleItem permission="personal" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
           <el-tab-pane label="关注" name="third">
-            <UserItem></UserItem>
+            <template #label>
+              <el-badge :value="userInfo.focusCount" class="badge" type="info">
+                <span>关注</span>
+              </el-badge>
+            </template>
+            <UserItem action="follow" :user-id="userId"></UserItem>
           </el-tab-pane>
           <el-tab-pane label="粉丝" name="fouth">
-            <UserItem></UserItem>
+            <template #label>
+              <el-badge :value="userInfo.fansCount" class="badge" type="info">
+                <span>粉丝</span>
+              </el-badge>
+            </template>
+            <UserItem action="fans" :user-id="userId"></UserItem>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -108,7 +118,7 @@ const checkToken = () => {
         path: '/login'
       })
     }).catch(() => {
-    
+
     })
     return false
   }
@@ -128,7 +138,7 @@ const follow = (userId) => {
         addUserFocus(userId).then(res => {
           if (res.code == 200) {
             userInfo.value.focused = 1;
-            userInfo.value.focusCount++;
+            userInfo.value.fansCount++;
           }
         })
       }
@@ -136,7 +146,7 @@ const follow = (userId) => {
         deleteUserFocus(userId).then(res => {
           if (res.code == 200) {
             userInfo.value.focused = 0;
-            userInfo.value.focusCount--;
+            userInfo.value.fansCount--;
           }
         })
       }
@@ -210,6 +220,10 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 .user-tabs {
   margin-top: 20px
+}
+::v-deep .badge .el-badge__content.is-fixed {
+  top: 10px;
+  right: 0px;
 }
 .text {
   color: #72777b;

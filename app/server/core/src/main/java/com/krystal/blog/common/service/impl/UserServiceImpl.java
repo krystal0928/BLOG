@@ -1,11 +1,10 @@
 package com.krystal.blog.common.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.mapper.UserMapper;
 import com.krystal.blog.common.model.User;
-import com.krystal.blog.common.model.UserFocus;
 import com.krystal.blog.common.model.vo.UserVo;
 import com.krystal.blog.common.service.UserService;
 import org.springframework.stereotype.Service;
@@ -33,13 +32,13 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
     }
 
     @Override
-    public List<UserVo> selectFocusUserList(Long userId, Long tokenUserId) {
-        return userMapper.selectFocusUserList(userId, tokenUserId);
+    public Page<UserVo> selectFocusUserList(Page<UserVo> page, Long userId, Long loginUserId) {
+        return userMapper.selectFocusUserList(page, userId, loginUserId);
     }
 
     @Override
-    public List<UserVo> selectFansUserList(Long userId, Long tokenUserId) {
-        return userMapper.selectFansUserList(userId, tokenUserId);
+    public Page<UserVo> selectFansUserList(Page<UserVo> page,Long userId, Long loginUserId) {
+        return userMapper.selectFansUserList(page, userId, loginUserId);
     }
 
     @Override

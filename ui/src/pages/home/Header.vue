@@ -37,16 +37,18 @@
     <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round @click.prevent="writeArticle">写文章</el-button>
     <div class="btn-r" style="height:60px"></div>
   </div>
-</template> 
+</template>
 <script lang="ts" setup>
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 import {checkUserStatus} from '../../api/user'
+
+const reload: Function = inject('reload')
 
 const store = useStore()
 const logIn = computed(
@@ -79,7 +81,7 @@ const checkToken = () => {
         path: '/login'
       })
     }).catch(() => {
-    
+
     })
     return false
   }
@@ -90,6 +92,8 @@ const toUser = () => {
     const userId = user.value.token?.split(',')[0]
     router.push({
       path: `/user/${userId}`
+    }).then(_ => {
+      reload()
     })
   }
 }
@@ -105,7 +109,6 @@ const logOut = () => {
   router.push({
     path: '/home'
   })
-  // location.reload()
 }
 const toChange = () => {
   router.push({

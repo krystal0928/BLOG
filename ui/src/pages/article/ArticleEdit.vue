@@ -147,6 +147,7 @@ const headers = reactive({
 
 
 const checkArticle = () => {
+  console.log(form.value.title)
   if (form.value.title.length < 2) {
     ElMessage({
       showClose: true,
@@ -167,7 +168,7 @@ const checkArticle = () => {
 }
 const toSaveDraft = () => {
   if (checkArticle()) {
-    saveDraft(form).then(res => {
+    saveDraft(form.value).then(res => {
       if (res.code == 200) {
         dialogFormVisible.value = false
         ElMessage({
@@ -193,8 +194,8 @@ const PublishArticle = () => {
     })
     return;
   }
-  publishArticle(form).then(res => {
-    if (res.code ==200) {
+  publishArticle(form.value).then(res => {
+    if (res.code == 200) {
       dialogFormVisible.value = false
       ElMessage({
         showClose: true,

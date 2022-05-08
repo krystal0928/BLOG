@@ -77,6 +77,8 @@ import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleL
 
 const props = defineProps(['permission', 'userId'])
 
+const emit = defineEmits(['update'])
+
 const router = useRouter()
 const store = useStore()
 
@@ -94,7 +96,7 @@ const checkEditAble = () => {
 
 const pagination = reactive({
   pageNo: 1,
-  pageSize: 3,
+  pageSize: 10,
   total: 0,
   loginUserId: logInUserId,
   userId: props.userId || 0
@@ -165,6 +167,8 @@ const tochangeLike = (articleId) =>{
             if (res.code == 200) {
               element.liked = 1;
               element.likeCount++;
+              // 通知父组件
+              emit('update')
             }
           })
         }
@@ -173,6 +177,8 @@ const tochangeLike = (articleId) =>{
             if (res.code == 200) {
               element.liked = 0;
               element.likeCount--;
+              // 通知父组件
+              emit('update')
             }
           })
         }
@@ -190,14 +196,18 @@ const tochangeCollect = (articleId) =>{
             if (res.code == 200) {
               element.collected = 1;
               element.collectCount++;
+              // 通知父组件
+              emit('update')
             }
           })
-        } 
+        }
         if (element.collected != 0){
           deleteArticleCollect(articleId).then(res => {
             if (res.code == 200) {
               element.collected = 0;
               element.collectCount--;
+              // 通知父组件
+              emit('update')
             }
           })
         }

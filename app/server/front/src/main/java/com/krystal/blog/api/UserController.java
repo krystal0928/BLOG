@@ -3,11 +3,13 @@ package com.krystal.blog.api;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.annotation.NoNeedLogIn;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.model.ArticleLike;
 import com.krystal.blog.common.model.UserFocus;
+import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.model.vo.UserVo;
 import com.krystal.blog.common.service.EmailService;
 import com.krystal.blog.common.service.UserFocusService;
@@ -355,44 +357,52 @@ public class UserController {
 
     /**
      * 关注列表
-     * @param tokenUserId
-     * @param UserId
+     * @param loginUserId
+     * @param userId
      * @return
      */
     @NoNeedLogIn
     @PostMapping(value="/api/user/gettFocusUserList")
-    public R gettFocusUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
-                           Long UserId) {
+    public R gettFocusUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                               Long userId,
+                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         User user = userService.lambdaQuery()
-                .eq(User::getId, UserId)
+                .eq(User::getId, userId)
                 .one();
         if (null == user)
             return R.error(400,"用户已不存在！");
 
-        List<UserVo> userVo = userService.selectFocusUserList(user.getId(), tokenUserId);
+        Page<UserVo> page = new Page<>(pageNo, pageSize);
+        Page<UserVo> userVo = userService.selectFocusUserList(page, user.getId(), loginUserId);
 
-        return R.okData("关注列表查询成功!",userVo);
+        return R.okData("关注列表查询成功!",userVo.getRecords())
+                .put("total", userVo.getTotal());
     }
 
     /**
      * 粉丝列表
-     * @param tokenUserId
-     * @param UserId
+     * @param loginUserId
+     * @param userId
      * @return
      */
     @NoNeedLogIn
     @PostMapping(value="/api/user/gettFansUserList")
-    public R gettFansUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
-                               Long UserId) {
+    public R gettFansUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                              Long userId,
+                              @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         User user = userService.lambdaQuery()
-                .eq(User::getId, UserId)
+                .eq(User::getId, userId)
                 .one();
         if (null == user)
             return R.error(400,"用户已不存在！");
 
-        List<UserVo> userVo = userService.selectFansUserList(user.getId(), tokenUserId);
+        Page<UserVo> page = new Page<>(pageNo, pageSize);
+        Page<UserVo> userVo = userService.selectFansUserList(page, user.getId(), loginUserId);
 
-        return R.okData("粉丝列表查询成功!",userVo);
+        return R.okData("粉丝列表查询成功!",userVo.getRecords())
+                .put("total", userVo.getTotal());
     }
 
 }

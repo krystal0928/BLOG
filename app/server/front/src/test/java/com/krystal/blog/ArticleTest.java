@@ -22,8 +22,8 @@ public class ArticleTest extends BlogApplicationTests {
 
     @Test
     public void selectArticleList() {
-        Page<ArticleVo> view = articleService.selectArticleListPublic(new Page<>(1, 1), 1l);
-        log.info("{}", view.getSize());
+//        Page<ArticleVo> view = articleService.selectArticleListPublic(new Page<>(1, 1), 1l);
+//        log.info("{}", view.getSize());
     }
 
     @Test
