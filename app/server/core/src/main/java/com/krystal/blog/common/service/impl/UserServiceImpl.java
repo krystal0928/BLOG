@@ -11,6 +11,7 @@ import com.krystal.blog.common.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements UserService {
@@ -29,6 +30,11 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
     @Override
     public UserVo selectUser(Long userId,Long focusId) {
         return userMapper.selectUser(userId, focusId);
+    }
+
+    @Override
+    public List<UserVo> selectFocusUserList(Long userId, Long tokenUserId) {
+        return userMapper.selectFocusUserList(userId, tokenUserId);
     }
 
     @Override
