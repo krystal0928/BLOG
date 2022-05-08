@@ -7,8 +7,8 @@
           <a href="javascript:void(0)" class="name one-line" @click="toUser(user.id)">{{ user.username }}</a>
           <span class="motto one-line">{{ user.motto }}</span>
         </div>
-        <el-button :disabled="!editAble" class="btn" v-if="user.focused == 0" type="primary" @click="follow(user)" >关注</el-button>
-        <el-button class="btn" v-if="user.focused == 1" type="primary" @click="follow(user)">取消关注</el-button>
+        <el-button :disabled="user.id==logInUserId" class="btn" v-if="user.focused == 0" type="primary" @click="follow(user)" >关注</el-button>
+        <el-button :disabled="user.id==logInUserId" class="btn" v-if="user.focused == 1" type="primary" @click="follow(user)">取消关注</el-button>
       </div>
     </li>
     <el-pagination
@@ -42,11 +42,6 @@ const user: any = computed(
 
 
 const logInUserId = user.value.token?.split(',')[0]
-let editAble = ref(false)
-const checkEditAble = () => {
-  editAble.value = (logInUserId == props.userId)
-}
-
 const pagination = reactive({
   pageNo: 1,
   pageSize: 10,
@@ -79,7 +74,6 @@ const checkToken = () => {
 }
 
 onMounted(() => {
-  checkEditAble()
   loadUserList()
 })
 
