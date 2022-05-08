@@ -107,9 +107,9 @@
 </template>
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus';
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex';
+import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getPublishArticleById } from '../../api/article'
 import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
 import router from '../../router/router';
@@ -126,19 +126,20 @@ onMounted(() => {
       article.value = res.data
     }
   })
-  getUserVoById(route.query.userId).then(res => {
+  const userId = user.value.token?.split(',')[0]
+  getUserVoById(userId, route.query.userId).then(res => {
     if (res.code == 200) {
       reader.value = res.data
     }
   })
 })
 const store = useStore()
-const headers = reactive({
-  'token': store.getters.getUser?.token || ''
-})
+const user:any = computed(
+  mapGetters(['getUser']).getUser.bind({ $store: store })
+)
 
 const checkToken = () => {
-  if (headers.token == '') {
+  if (!user.value.token) {
     ElMessageBox.confirm('登录已过期，请重新登录！',
       '警告！',
       {
@@ -159,7 +160,6 @@ const checkToken = () => {
 }
 
 const toChangeFocus = (articleUserId) => {
- 
   if (checkToken()) {
     if(reader.value.Id != articleUserId) {
       if (reader.value.focused == 0) {
@@ -169,7 +169,7 @@ const toChangeFocus = (articleUserId) => {
             reader.value.focusCount++;
           }
         })
-      } 
+      }
       if (reader.value.focused == 1){
         deleteUserFocus(articleUserId).then(res => {
           if (res.code == 200) {

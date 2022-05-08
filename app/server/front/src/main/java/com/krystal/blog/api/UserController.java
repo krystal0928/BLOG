@@ -20,6 +20,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -332,23 +333,22 @@ public class UserController {
 
     /**
      * 根据用户id获取用户信息
-     * @param token
+     * @param userId
      * @param focusId
      * @return
      */
+    @NoNeedLogIn
     @PostMapping(value="/api/user/getUserVoById")
-    public R getUserVoById(@RequestHeader("token") String token, Long focusId) {
-        User user = userService.getUserByToken(token);
+    public R getUserVoById(@RequestParam(value = "userId", defaultValue = "0") Long userId,
+                           Long focusId) {
         User focusUser = userService.lambdaQuery()
-                .eq(User::getId,focusId)
+                .eq(User::getId, focusId)
                 .one();
-        if (null == user)
-            return R.error(400,"用户不存在");
         if (null == focusUser)
             return R.error(400,"关注的用户已不存在！");
-        UserVo userVo = userService.selectUser(user.getId(),focusId);
-        if (user.getId().equals(focusId))
-            userVo.setFocused(2);
+
+        UserVo userVo = userService.selectUser(userId, focusId);
+
         return R.okData("用户查询成功!",userVo);
     }
 
