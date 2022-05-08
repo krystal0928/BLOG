@@ -360,7 +360,7 @@ public class UserController {
      * @return
      */
     @NoNeedLogIn
-    @PostMapping(value="/api/user/getUserVoById")
+    @PostMapping(value="/api/user/gettFocusUserList")
     public R gettFocusUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
                            Long UserId) {
         User user = userService.lambdaQuery()
@@ -381,7 +381,7 @@ public class UserController {
      * @return
      */
     @NoNeedLogIn
-    @PostMapping(value="/api/user/getUserVoById")
+    @PostMapping(value="/api/user/gettFansUserList")
     public R gettFansUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
                                Long UserId) {
         User user = userService.lambdaQuery()

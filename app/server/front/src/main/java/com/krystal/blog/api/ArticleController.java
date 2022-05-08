@@ -103,13 +103,14 @@ public class ArticleController {
      */
     @NoNeedLogIn
     @PostMapping("/api/article/list/public")
-    public R articleListPublic(@RequestParam(value = "userId", defaultValue = "0") Long userId,
+    public R articleListPublic(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
 //        Long userId = userService.getUserIdFromToken(token);
 
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, userId);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, userId);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
@@ -121,13 +122,14 @@ public class ArticleController {
      */
     @NoNeedLogIn
     @PostMapping("/api/article/list/personal")
-    public R articleListPersonal(@RequestParam(value = "userId") Long userId,
+    public R articleListPersonal(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                                 @RequestParam(value = "userId") Long userId,
                                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
 //        Long userId = userService.getUserIdFromToken(token);
 
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListPersonal(page, userId);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPersonal(page, loginUserId, userId);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
@@ -138,15 +140,15 @@ public class ArticleController {
      * @return
      */
     @NoNeedLogIn
-    @PostMapping("/api/article/list/personal")
-    public R getCollectArticle(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
+    @PostMapping("/api/article/list/getCollectArticle")
+    public R getCollectArticle(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                                  @RequestParam(value = "userId") Long userId,
                                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
 //        Long userId = userService.getUserIdFromToken(token);
 
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectCollectArticle(page, tokenUserId, userId);
+        Page<ArticleVo> articleVoList = articleService.selectCollectArticle(page, loginUserId, userId);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
