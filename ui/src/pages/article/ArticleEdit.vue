@@ -128,7 +128,6 @@ onMounted(() => {
   getArticleById(route.query.id).then(res => {
     if (res.code == 200) {
       form.value = res.data
-      console.log(form.value.title)
     }
   })
 })
@@ -147,7 +146,6 @@ const headers = reactive({
 
 
 const checkArticle = () => {
-  console.log(form.value.title)
   if (form.value.title.length < 2) {
     ElMessage({
       showClose: true,

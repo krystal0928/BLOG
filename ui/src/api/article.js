@@ -83,3 +83,12 @@ export function getCollectArticle(param) {
     data: param
   })
 }
+
+// 发布评论
+export function addComment(param) {
+  return axios({
+    url: '/api/article/addComment',
+    method: 'post',
+    data: param
+  })
+}

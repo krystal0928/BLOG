@@ -32,6 +32,8 @@
             </div>
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
+          <!-- 评论 -->
+          <ArticleComment :article-id="article.id"></ArticleComment>
         </div>
         <div class="sidebar">
           <div class="fixed card">
@@ -59,39 +61,38 @@
         </div>
       </div>
 
-      
       <div class="article-suspended-panel">
-        
+
         <div class="panel-btn with-badge" @click="tochangeLike(article.id)" >
           <el-badge :value="article.likeCount" class="badge" type="info">
             <img class="sprite-icon" v-if="article.liked == 1" src="../../assets/like.png"  />
             <img class="sprite-icon" v-else src="../../assets/unlike.png" />
           </el-badge>
-        </div> 
-        
+        </div>
+
         <div class="panel-btn with-badge" @click="tochangeCollect(article.id)" >
           <el-badge :value="article.collectCount" class="badge" type="info">
             <img class="sprite-icon" v-if="article.collected == 1" src="../../assets/collect.png"  />
             <img class="sprite-icon" v-else src="../../assets/uncollect.png" />
           </el-badge>
-        </div> 
-        
+        </div>
+
         <div class="share-btn panel-btn" >
-        <svg class="sprite-icon icon-share" ><use xlink:href="#icon-share"></use></svg> 
+        <svg class="sprite-icon icon-share" ><use xlink:href="#icon-share"></use></svg>
           <div class="share-popup" >
             <ul >
               <li class="share-item wechat" >
                 <svg class="sprite-icon share-icon icon-wechat" ><use xlink:href="#icon-wechat"></use></svg> 
-                <span class="share-item-title" >微信</span> 
+                <span class="share-item-title" >微信</span>
                 <div class="wechat-qrcode" >
                     <img class="wechat-qrcode-img" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fe380776a92b495a9180da916c989846~tplv-k3u1fbpfcp-zoom-crop-mark:1304:1304:1304:734.awebp?"/>
-                    <span class="wechat-qrcode-title" >微信扫码分享</span>  
+                    <span class="wechat-qrcode-title" >微信扫码分享</span>
                   </div>
-              </li> 
+              </li>
               <li class="share-item weibo" >
                 <svg class="sprite-icon share-icon icon-weibo" ><use xlink:href="#icon-weibo"></use></svg> 
                 <span class="share-item-title" >新浪微博</span>
-              </li> 
+              </li>
               <li class="share-item qq" >
                 <svg class="sprite-icon share-icon icon-qq" ><use xlink:href="#icon-qq"></use></svg>
                 <span class="share-item-title" >QQ</span>
@@ -100,7 +101,7 @@
           </div>
         </div>
         <div class="divider" ></div>
-        <el-backtop  class="backtop" visibility-height="180">UP </el-backtop>
+        <el-backtop  class="backtop" :visibility-height="180">UP </el-backtop>
       </div>
     </div>
   </div>
@@ -113,13 +114,13 @@ import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, getPublishArticleById } from '../../api/article'
 import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
 import router from '../../router/router';
+import ArticleComment from './ArticleComment.vue'
 
 const route = useRoute()
 let article:any = ref({
 })
-let reader:any = ref({
+let reader:any = ref({})
 
-})
 onMounted(() => {
   getPublishArticleById(route.params.id).then(res => {
     if (res.code == 200) {
@@ -152,7 +153,7 @@ const checkToken = () => {
         path: '/login'
       })
     }).catch(() => {
-    
+  
     })
     return false
   }
@@ -192,7 +193,7 @@ const tochangeLike = (articleId) =>{
             reader.value.likeCount++;
           }
         })
-      } 
+      }
       if (article.value.liked != 0){
         deleteArticleLike(articleId).then(res => {
           if (res.code == 200) {
@@ -216,7 +217,7 @@ const tochangeCollect = (articleId) =>{
           reader.value.collectCount++;
         }
       })
-    } 
+    }
     if (article.value.collected != 0){
       deleteArticleCollect(articleId).then(res => {
         if (res.code == 200) {
