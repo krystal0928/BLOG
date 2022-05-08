@@ -7,7 +7,8 @@
           <a href="javascript:void(0)" class="name one-line" @click="toUser(user.id)">{{ user.username }}</a>
           <span class="motto one-line">{{ user.motto }}</span>
         </div>
-        <el-button class="btn" type="primary">关注</el-button>
+        <el-button :disabled="!editAble" class="btn" v-if="user.focused == 0" type="primary" @click="follow(user)" >关注</el-button>
+        <el-button class="btn" v-if="user.focused == 1" type="primary" @click="follow(user)">取消关注</el-button>
       </div>
     </li>
     <el-pagination
@@ -23,22 +24,28 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { ElMessageBox } from 'element-plus';
 import { computed, inject, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { gettFocusUserList, gettFansUserList } from '../../api/user'
+import { getFocusUserList, getFansUserList, addUserFocus, deleteUserFocus } from '../../api/user'
 
 const reload: Function = inject('reload')
 
 const props = defineProps(['userId', 'action'])
 const store = useStore()
 const router = useRouter()
-
+const emit = defineEmits(['update'])
 const user: any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+
 const logInUserId = user.value.token?.split(',')[0]
+let editAble = ref(false)
+const checkEditAble = () => {
+  editAble.value = (logInUserId == props.userId)
+}
 
 const pagination = reactive({
   pageNo: 1,
@@ -50,20 +57,42 @@ const pagination = reactive({
 
 const userList = ref([])
 
+const checkToken = () => {
+  if (!user.value.token) {
+    ElMessageBox.confirm('登录已过期，请重新登录！',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({
+        path: '/login'
+      })
+    }).catch(() => {
+    
+    })
+    return false
+  }
+  return true
+}
+
 onMounted(() => {
+  checkEditAble()
   loadUserList()
 })
 
 const loadUserList = () => {
   if (props.action === 'follow') {
-    gettFocusUserList({...pagination}).then(res => {
+    getFocusUserList({...pagination}).then(res => {
       if (res.code === 200) {
         userList.value = res.data
       }
     })
   }
   if (props.action === 'fans') {
-    gettFansUserList({...pagination}).then(res => {
+    getFansUserList({...pagination}).then(res => {
       if (res.code === 200) {
         userList.value = res.data
       }
@@ -82,6 +111,35 @@ const toUser = (userId) => {
   }).then(_ => {
     reload()
   })
+}
+
+// 关注
+const follow = (user:any) => {
+  if (checkToken()) {
+    console.log(user.id)
+    if(logInUserId != user.id) {
+      if (user.focused == 0) {
+        addUserFocus(user.id).then(res => {
+          if (res.code == 200) {
+            user.focused = 1;
+            user.fansCount++;
+            // 通知父组件
+            emit('update')
+          }
+        })
+      }
+      if (user.focused == 1){
+        deleteUserFocus(user.id).then(res => {
+          if (res.code == 200) {
+            user.focused = 0;
+            user.fansCount--;
+            // 通知父组件
+            emit('update')
+          }
+        })
+      }
+    }
+  }
 }
 </script>
 <style scoped>

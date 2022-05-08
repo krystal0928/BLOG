@@ -308,7 +308,12 @@ public class UserController {
         return R.ok("关注成功！");
     }
 
-
+    /**
+     *  取关
+     * @param token
+     * @param focusId
+     * @return
+     */
     @PostMapping(value="/api/user/deleteUserFocus")
     public R deleteUserFocus(@RequestHeader("token") String token, Long focusId) {
         User user = userService.getUserByToken(token);
@@ -362,8 +367,8 @@ public class UserController {
      * @return
      */
     @NoNeedLogIn
-    @PostMapping(value="/api/user/gettFocusUserList")
-    public R gettFocusUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+    @PostMapping(value="/api/user/getFocusUserList")
+    public R getFocusUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                                Long userId,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
@@ -387,8 +392,8 @@ public class UserController {
      * @return
      */
     @NoNeedLogIn
-    @PostMapping(value="/api/user/gettFansUserList")
-    public R gettFansUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+    @PostMapping(value="/api/user/getFansUserList")
+    public R getFansUserList(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                               Long userId,
                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {

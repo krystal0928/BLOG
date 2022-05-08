@@ -20,7 +20,7 @@ public interface UserMapper extends BaseMapper<User> {
             " (select count(id) from user_focus where user_id = #{userId} and focus_id = #{focusId}) as focused ",
             " from user u ",
             " left join user_focus f on u.id = f.focus_id ",
-            " where u.id = #{focusId} "})
+            " where u.id = #{focusId} limit 1 "})
     UserVo selectUser(@Param("userId") Long userId, @Param("focusId") Long focusId);
 
     @Select({" select u.id, u.username, u.motto, u.img , " ,

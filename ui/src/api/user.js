@@ -104,18 +104,18 @@ export function deleteUserFocus(focusId) {
 }
 
 // 关注列表
-export function gettFocusUserList(param) {
+export function getFocusUserList(param) {
   return axios({
-    url: '/api/user/gettFocusUserList',
+    url: '/api/user/getFocusUserList',
     method: 'post',
     data: param
   })
 }
 
 // 粉丝列表
-export function gettFansUserList(param) {
+export function getFansUserList(param) {
   return axios({
-    url: '/api/user/gettFansUserList',
+    url: '/api/user/getFansUserList',
     method: 'post',
     data: param
   })

@@ -76,3 +76,10 @@ export function deleteArticleCollect(articleId) {
     data: { articleId }
   })
 }
+export function getCollectArticle(param) {
+  return axios({
+    url: '/api/article/list/getCollectArticle',
+    method: 'post',
+    data: param
+  })
+}

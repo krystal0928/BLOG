@@ -22,14 +22,16 @@
           <el-tab-pane label="文章" name="first">
             <ArticleItem permission="personal" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
-          <el-tab-pane label="收藏" name="second">收藏</el-tab-pane>
+          <el-tab-pane label="收藏" name="second">
+             <ArticleItem permission="collect" :user-id="userId" @update="loadUserInfo"></ArticleItem>
+          </el-tab-pane>
           <el-tab-pane label="关注" name="third">
             <template #label>
               <el-badge :value="userInfo.focusCount" class="badge" type="info">
                 <span>关注</span>
               </el-badge>
             </template>
-            <UserItem action="follow" :user-id="userId"></UserItem>
+            <UserItem action="follow" :user-id="userId" @update="loadUserInfo"></UserItem>
           </el-tab-pane>
           <el-tab-pane label="粉丝" name="fouth">
             <template #label>
@@ -37,7 +39,7 @@
                 <span>粉丝</span>
               </el-badge>
             </template>
-            <UserItem action="fans" :user-id="userId"></UserItem>
+            <UserItem action="fans" :user-id="userId" @update="loadUserInfo"></UserItem>
           </el-tab-pane>
         </el-tabs>
       </div>
