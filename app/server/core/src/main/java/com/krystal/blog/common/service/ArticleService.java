@@ -13,6 +13,8 @@ public interface ArticleService extends IService<Article> {
 
     Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long userId);
 
+    Page<ArticleVo> selectCollectArticle(Page<ArticleVo> page, Long tokenUserId, Long userId);
+
     /**
      * 发布文章
      * @param info

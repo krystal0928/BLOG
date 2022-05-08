@@ -35,6 +35,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     }
 
     @Override
+    public Page<ArticleVo> selectCollectArticle(Page<ArticleVo> page,Long tokenUserId, Long userId) {
+        return articleMapper.selectCollectArticle(page, tokenUserId, userId);
+    }
+
+    @Override
     public boolean publish(Article info) {
         // 修改摘要
         info.setPubDescription(info.getDescription());

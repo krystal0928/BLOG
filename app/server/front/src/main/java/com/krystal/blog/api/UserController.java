@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 
 // 接口
 @RestController
@@ -352,5 +353,46 @@ public class UserController {
         return R.okData("用户查询成功!",userVo);
     }
 
+    /**
+     * 关注列表
+     * @param tokenUserId
+     * @param UserId
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping(value="/api/user/getUserVoById")
+    public R gettFocusUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
+                           Long UserId) {
+        User user = userService.lambdaQuery()
+                .eq(User::getId, UserId)
+                .one();
+        if (null == user)
+            return R.error(400,"用户已不存在！");
+
+        List<UserVo> userVo = userService.selectFocusUserList(user.getId(), tokenUserId);
+
+        return R.okData("关注列表查询成功!",userVo);
+    }
+
+    /**
+     * 粉丝列表
+     * @param tokenUserId
+     * @param UserId
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping(value="/api/user/getUserVoById")
+    public R gettFansUserList(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
+                               Long UserId) {
+        User user = userService.lambdaQuery()
+                .eq(User::getId, UserId)
+                .one();
+        if (null == user)
+            return R.error(400,"用户已不存在！");
+
+        List<UserVo> userVo = userService.selectFansUserList(user.getId(), tokenUserId);
+
+        return R.okData("粉丝列表查询成功!",userVo);
+    }
 
 }

@@ -15,6 +15,8 @@ public interface UserService  extends IService<User> {
 
     List<UserVo> selectFocusUserList(Long userId, Long tokenUserId);
 
+    List<UserVo> selectFansUserList(Long userId, Long tokenUserId);
+
 
     Long getUserIdFromToken(String token);
 }

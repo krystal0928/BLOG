@@ -38,6 +38,11 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
     }
 
     @Override
+    public List<UserVo> selectFansUserList(Long userId, Long tokenUserId) {
+        return userMapper.selectFansUserList(userId, tokenUserId);
+    }
+
+    @Override
     public Long getUserIdFromToken(String token) {
         if (!StrUtil.isEmpty(token)) {
             User user = this.getUserByToken(token);

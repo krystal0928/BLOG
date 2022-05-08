@@ -29,4 +29,12 @@ public interface UserMapper extends BaseMapper<User> {
             " order by u.create_time desc "})
     List<UserVo> selectFocusUserList(@Param("userId") Long userId,@Param("tokenUserId") Long tokenUserId);
 
+
+    @Select({" select u.id, u.username, u.motto, u.img , " ,
+            "  (select count(id) from user_focus where user_id = #{tokenUserId} and focus_id = u.id) as focused " ,
+            " FROM user u " ,
+            " where u.id in (select user_id from user_focus where focus_id = #{userId} ) " ,
+            " order by u.create_time desc "})
+    List<UserVo> selectFansUserList(@Param("userId") Long userId,@Param("tokenUserId") Long tokenUserId);
+
 }

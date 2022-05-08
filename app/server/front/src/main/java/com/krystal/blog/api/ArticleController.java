@@ -134,6 +134,27 @@ public class ArticleController {
     }
 
     /**
+     * 加载用户关注文章
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping("/api/article/list/personal")
+    public R getCollectArticle(@RequestParam(value = "tokenUserId", defaultValue = "0") Long tokenUserId,
+                                 @RequestParam(value = "userId") Long userId,
+                                 @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                 @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+//        Long userId = userService.getUserIdFromToken(token);
+
+        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleVo> articleVoList = articleService.selectCollectArticle(page, tokenUserId, userId);
+
+        return R.okData("文章查询成功!", articleVoList.getRecords())
+                .put("total", articleVoList.getTotal());
+    }
+
+
+
+    /**
      * 获取数据库存储文章信息
      * @param id
      * @return
@@ -340,5 +361,7 @@ public class ArticleController {
             return R.error(400,"评论发布失败，请重新尝试！");
         return R.ok("评论发布成功！");
     }
+
+
 
 }
