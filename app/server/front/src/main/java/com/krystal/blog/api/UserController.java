@@ -151,6 +151,25 @@ public class UserController {
         return R.ok("密码修改成功！");
     }
 
+
+    //修改用户信息
+    @PostMapping(value="/api/user/updateInfo")
+    public R updateInfo(@RequestHeader("token") String token,User userInfo){
+        User user = userService.getUserByToken(token);
+        if (null == user)
+            return R.error(400,"该用户不存在！");
+        if (!user.getId().equals(userInfo.getId()))
+            return R.error(400,"不可修改其他用户信息！");
+
+        if (!userService.lambdaUpdate()
+                .set(User::getMotto,userInfo.getMotto())
+                .set(User::getImg,userInfo.getImg())
+                .eq(User::getId,user.getId())
+                .update())
+            return R.error(400,"用户信息修改失败！");
+
+        return R.ok("用户信息修改成功！");
+    }
     /**
      * 发送注册验证码
      * @param email

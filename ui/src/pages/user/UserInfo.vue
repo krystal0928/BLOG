@@ -4,7 +4,7 @@
       <div class="left">
         <div class="user-info card">
           <div class="user-img">
-            <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+            <img :src="userInfo.img">
           </div>
           <div class="user-text">
             <h1>{{ userInfo.username }}</h1>
@@ -63,14 +63,14 @@
       </div>
     </div>
     <el-dialog v-model="dialogFormVisible" title="编辑资料">
-      <el-form :model="userInfo">
+      <el-form :model="changeInfo">
         <el-form-item label="头像" :label-width="formLabelWidth">
-          <el-radio-group v-model="userInfo.imgFlag">
-            <el-radio :label="0">不添加</el-radio>
-            <el-radio :label="1">添加</el-radio>
+          <el-radio-group v-model="changeInfo.imgFlag">
+            <el-radio :label="0">不修改</el-radio>
+            <el-radio :label="1">修改</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="userInfo.imgFlag == 1" label="" :label-width="formLabelWidth">
+        <el-form-item v-if="changeInfo.imgFlag == 1" label="" :label-width="formLabelWidth">
           <el-upload
             class="avatar-uploader"
             :action="uploadUrl"
@@ -85,13 +85,13 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="座右铭" :label-width="formLabelWidth">
-          <el-input v-model="userInfo.motto" placeholder="请输入内容！"  autocomplete="off" :rows="2" type="textarea" />
+          <el-input v-model="changeInfo.motto" placeholder="请输入内容！"  autocomplete="off" :rows="2" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="">确认</el-button>
+          <el-button type="primary" @click="toUpdateUserInfo">确认</el-button>
         </span>
       </template>
     </el-dialog>
@@ -99,10 +99,10 @@
 </template>
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, TabsPaneContext, UploadProps } from 'element-plus'
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addUserFocus, deleteUserFocus, getUserVoById } from '../../api/user';
+import { addUserFocus, deleteUserFocus, getUserVoById, updateInfo } from '../../api/user';
 import { uploadUrl } from '../../api/article'
 import ArticleItem from '../article/ArticleItem.vue';
 import UserItem from './UserItem.vue';
@@ -133,7 +133,7 @@ const checkEditAble = () => {
 }
 
 const userInfo:any = ref({})
-
+const changeInfo:any = ref({})
 // 加载用户信息
 const loadUserInfo = () => {
   const logInUserId = user.value.token?.split(',')[0] || 0
@@ -168,7 +168,23 @@ const checkToken = () => {
 
 // 编辑资料
 const toEditUserInfo = () => {
+  let {...changeInfo} = userInfo.value
+  changeInfo.imgFlag = 0
+  console.log(changeInfo)
   dialogFormVisible.value = true
+}
+
+const toUpdateUserInfo = () =>{
+  updateInfo(changeInfo.value).then(res => {
+    if (res.code == 200) {
+      dialogFormVisible.value = false
+      ElMessage({
+        showClose: true,
+        message: "信息修改成功!",
+        type: 'success',
+      })
+    }
+  })
 }
 
 // 关注
@@ -211,7 +227,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
   img.value = URL.createObjectURL(uploadFile.raw!)
   if(response.code == 200) {
-    userInfo.value.img = response.data[0]
+    changeInfo.value.img = response.data[0]
   } else {
     ElMessage({
       showClose: true,

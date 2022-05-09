@@ -17,6 +17,14 @@ export function register(param) {
   })
 }
 
+export function updateInfo(param) {
+  return axios({
+    url: '/api/user/updateInfo',
+    method: 'post',
+    data: param
+  })
+}
+
 export function sendRegisterEmail(email) {
   return axios({
     url: '/api/user/sendRegisterEmail',
