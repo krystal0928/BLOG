@@ -93,11 +93,20 @@ export function addComment(param) {
   })
 }
 
-// 评论列表
-export function getCommentList(articleId) {
+// 一级评论列表
+export function getCommentList(param) {
   return axios({
     url: '/api/article/getCommentList',
     method: 'post',
-    data: {articleId}
+    data: param
+  })
+}
+
+// 二级评论列表
+export function getSecondLevelCommentList(param) {
+  return axios({
+    url: '/api/article/second-level-comment-list',
+    method: 'post',
+    data: param
   })
 }

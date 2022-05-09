@@ -6,7 +6,7 @@
       <el-input v-model="comment.content" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="请留言..." @keydown="checkToken"></el-input>
     </div>
     <el-button class="btn" type="primary" @click="sendComment" :disabled="!logIn">发送</el-button>
-    <el-divider />
+    <el-divider style="margin: 10px 0;" />
     <span class="title">评论列表</span>
     <div class="comment-list">
       <div class="level1" v-for="comment in commentList">
@@ -14,26 +14,26 @@
         <div class="context">
           <div class="box">
             <div class="user">
-              <span class="name">{{ comment.userId }}</span>
+              <span class="name">{{ comment.userName }}</span>
               <time class="time">{{ comment.createTime }}</time>
             </div>
             <p class="content">{{ comment.content }}</p>
             <div class="action">
-              <el-button>回复评论</el-button>
+              <el-button @click="toReply(comment.id)">回复评论</el-button>
             </div>
           </div>
-          <div class="level2">
+          <div class="level2" v-for="comment2 in comment.list">
             <img class="comment-head-img2" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
             <div class="context">
               <div class="box">
                 <div class="user">
-                  <span class="name">名称</span>
-                  <time class="time">时间</time>
+                  <span class="name">{{ comment2.userName }}</span>
+                  <time class="time">{{ comment2.createTime }}</time>
                 </div>
-                <p class="content">评论内容.......</p>
-                <p class="parent">引用内容（父级评论）</p>
+                <p class="content">{{ comment2.content }}</p>
+                <p class="parent">{{ comment2.parentContent }}</p>
                 <div class="action">
-                  <el-button>回复评论</el-button>
+                  <el-button @click="toReply(comment2.id)">回复评论</el-button>
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addComment, getCommentList } from '../../api/article';
+import { addComment, getCommentList, getSecondLevelCommentList } from '../../api/article';
 
 const props = defineProps(['articleId'])
 const router = useRouter()
@@ -61,11 +61,17 @@ const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+const pagination:any = ref({
+  pageNo: 1,
+  pageSize: 10
+})
+
 const comment: any = ref({})
 const commentList: any = ref([])
 
 watchEffect(() => {
   comment.value.articleId = props.articleId
+  pagination.value.articleId = props.articleId
 
   if (props.articleId) {
     loadCommentList()
@@ -108,11 +114,47 @@ const sendComment = () => {
   })
 }
 
+// 回复评论
+const toReply = (pid) => {
+  ElMessageBox.prompt('回复评论', 'Tip', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+  }).then(({ value }) => {
+    const param = {
+      articleId: props.articleId,
+      content: value,
+      pid: pid
+    }
+    addComment(param).then(res => {
+      if (res.code == 200) {
+        // 评论成功, 刷新评论列表
+        ElMessage.success(res.msg)
+        loadCommentList()
+      }
+    })
+  }).catch(() => {
+    ElMessage({
+      type: 'info',
+      message: '取消回复评论',
+    })
+  })
+}
+
 // 刷新评论列表
 const loadCommentList = () => {
-  getCommentList(props.articleId).then(res => {
+  getCommentList(pagination.value).then(res => {
     if (res.code == 200) {
       commentList.value = res.data
+      commentList.value.forEach(element => {
+        let param: any = {...pagination.value}
+        param.pid = element.id
+        // 加载子级评论
+        getSecondLevelCommentList(param).then(res2 => {
+          if (res2.code == 200) {
+            element.list = res2.data
+          }
+        })
+      })
     }
   })
 }
@@ -165,9 +207,9 @@ const loadCommentList = () => {
 .box {
   display: inline-flex;
   flex-direction: column;
-  flex-wrap: wrap;
 }
 .user {
+  flex-wrap: wrap;
   display: inline-flex;
 }
 .name {
