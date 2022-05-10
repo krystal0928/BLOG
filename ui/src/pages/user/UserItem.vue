@@ -111,7 +111,6 @@ const toUser = (userId) => {
 // 关注
 const follow = (user:any) => {
   if (checkToken()) {
-    console.log(user.id)
     if(logInUserId != user.id) {
       if (user.focused == 0) {
         addUserFocus(user.id).then(res => {

@@ -57,7 +57,6 @@ const logIn = computed(
   mapGetters(['getLogIn']).getLogIn.bind({ $store: store })
 )
 const checkToken = () => {
-  console.log(logIn.value)
   if (!logIn.value) {
     ElMessageBox.confirm('登录之后才可以查看关注哦！',
       '警告！',
@@ -101,7 +100,6 @@ const showTab2 = () => {
 }
 
 watchEffect(() => {
-  console.log(route.query.title)
   if (route.query.title) {
     tabIndex.value = -1
     setTimeout(_ => {
