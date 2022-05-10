@@ -8,7 +8,7 @@
               <a :class="tabIndex === 0 ? 'tab-active' : ''" href="/" >推荐</a>
             </li>
             <li class="nav-item">
-              <a :class="tabIndex === 1 ? 'tab-active' : ''" href="/?sort=newest" >最新</a>
+              <a :class="tabIndex === 1 ? 'tab-active' : ''" href="" >最新</a>
             </li>
             <li class="nav-item" >
               <a :class="tabIndex === 2 ? 'tab-active' : ''" @click="showTab2">关注</a>
@@ -21,6 +21,7 @@
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
             <ArticleItem v-if="tabIndex === 0" :permission="permission"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 1" :permission="permission"></ArticleItem>
             <ArticleItem v-if="tabIndex === 2" :permission="permission"></ArticleItem>
           </div>
         </div>
@@ -40,17 +41,41 @@
 
 
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
+import { computed, inject, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { mapGetters, useStore } from 'vuex';
 import ArticleItem from '../article/ArticleItem.vue';
-const reload: Function = inject('reload')
-
+const store = useStore()
+const router = useRouter()
 const permission = ref('public')
 const tabIndex = ref(0)
 
-const toChangePermission = (type) =>{
-  permission.value = type
-  reload()
+const logIn = computed(
+  mapGetters(['getLogIn']).getLogIn.bind({ $store: store })
+)
+const checkToken = () => {
+  console.log(logIn.value)
+  if (!logIn.value) {
+    ElMessageBox.confirm('登录之后才可以查看关注哦！',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({
+        path: '/login'
+      })
+    }).catch(() => {
+
+    })
+    return false
+  }
+  return true
 }
+
 
 onMounted(()=> {
   showTab0()
@@ -62,8 +87,10 @@ const showTab0 = () => {
 }
 
 const showTab2 = () => {
+  if (checkToken())  {
   permission.value = 'focus'
   tabIndex.value = 2
+  }
 }
 
 </script>

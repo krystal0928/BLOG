@@ -75,7 +75,7 @@ import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus } from '../../api/article';
 
-const props = defineProps(['permission', 'userId'])
+const props = defineProps(['permission', 'userId', 'orderFlag'])
 
 const emit = defineEmits(['update'])
 
@@ -98,6 +98,7 @@ const pagination = reactive({
   pageNo: 1,
   pageSize: 10,
   total: 0,
+  orderFlag: props.orderFlag || 'likeCount',
   loginUserId: logInUserId,
   userId: props.userId || 0
 })
