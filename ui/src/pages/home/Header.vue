@@ -27,14 +27,12 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="toUser">个人中心</el-dropdown-item>
-          <el-dropdown-item>文章管理</el-dropdown-item>
           <el-dropdown-item @click="toChange">修改密码</el-dropdown-item>
           <el-dropdown-item @click="toBindTFA">二次验证绑定</el-dropdown-item>
           <el-dropdown-item @click="logOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <el-button v-if="logIn" type="primary" class="btn-r" round>收藏</el-button>
     <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round @click.prevent="writeArticle">写文章</el-button>
     <div class="btn-r" style="height:60px"></div>
   </div>
