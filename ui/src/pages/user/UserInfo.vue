@@ -20,13 +20,13 @@
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
           <el-tab-pane label="文章" name="article">
-            <ArticleItem permission="personal" :user-id="userId" @update="loadUserInfo"></ArticleItem>
+            <ArticleItem v-if="activeName == 'article'" permission="personal" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="收藏" name="collect">
-             <ArticleItem permission="collect" :user-id="userId" @update="loadUserInfo"></ArticleItem>
+            <ArticleItem v-if="activeName == 'collect'" permission="collect" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="草稿箱" name="draft">
-             <ArticleItem permission="draft" :user-id="userId" @update="loadUserInfo"></ArticleItem>
+            <ArticleItem v-if="activeName == 'draft'" permission="draft" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
           <el-tab-pane label="关注" name="focus">
             <template #label>
@@ -34,7 +34,7 @@
                 <span>关注</span>
               </el-badge>
             </template>
-            <UserItem action="follow" :user-id="userId" @update="loadUserInfo"></UserItem>
+            <UserItem v-if="activeName == 'focus'" action="follow" :user-id="userId" @update="loadUserInfo"></UserItem>
           </el-tab-pane>
           <el-tab-pane label="粉丝" name="fans">
             <template #label>
@@ -42,7 +42,7 @@
                 <span>粉丝</span>
               </el-badge>
             </template>
-            <UserItem action="fans" :user-id="userId" @update="loadUserInfo"></UserItem>
+            <UserItem v-if="activeName == 'fans'" action="fans" :user-id="userId" @update="loadUserInfo"></UserItem>
           </el-tab-pane>
         </el-tabs>
       </div>

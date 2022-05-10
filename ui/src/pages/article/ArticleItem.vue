@@ -73,7 +73,7 @@ import { ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus } from '../../api/article';
+import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle } from '../../api/article';
 
 const props = defineProps(['permission', 'userId', 'orderFlag'])
 
@@ -136,7 +136,7 @@ const loadArticclelList = () => {
     })
   }
   if (props.permission === 'draft') {
-    pagination.status = 1
+    pagination.status = 0
     articleListPersonal({...pagination}).then(res => {
       if (res.code == 200) {
         articleList.value = res.data
@@ -253,9 +253,24 @@ const toEditArticle = (id) => {
 
 // 删除文章
 const toDeleteArticle = (id) => {
-  console.log('删除文章' + id)
+   ElMessageBox.confirm('是否确认删除文章？',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      deleteArticle(id).then(res => {
+        if (res.code == 200) {
+          // 重新加载文章信息
+          loadArticclelList()
+          // 通知父组件
+          emit('update')
+        }
+      })
+    }).catch(() => {})
 }
-
 </script>
 <style scoped>
 

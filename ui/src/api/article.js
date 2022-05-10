@@ -16,6 +16,16 @@ export function publishArticle(param) {
     data: param
   })
 }
+
+// 删除文章
+export function deleteArticle(id) {
+  return axios({
+    url: '/api/article/delete',
+    method: 'post',
+    data: {id}
+  })
+}
+
 export function articleListPublic(param) {
   return axios({
     url: '/api/article/list/public',

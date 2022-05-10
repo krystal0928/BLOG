@@ -7,6 +7,7 @@ import com.krystal.blog.common.annotation.NoNeedLogIn;
 import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
+import com.krystal.blog.common.enums.ArticleDeletedEnum;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.model.*;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
@@ -99,6 +100,29 @@ public class ArticleController {
     }
 
     /**
+     * 删除文章
+     * @param id
+     * @return
+     */
+    @PostMapping("/api/article/delete")
+    public R publishArticle (Long id) {
+        Assert.notNull(id, "文章 ID 不能为空！");
+
+        // 查询文章是否存在
+        Article article = articleService.getById(id);
+        if (null == article) {
+            return R.error(400 ,"文章不存在！");
+        }
+
+        // 设置为删除
+        article.setDeleted(ArticleDeletedEnum.STATUS1.getCode());
+        if (!articleService.saveOrUpdate(article)) {
+            return R.error(400, "文章删除失败！");
+        }
+        return R.error(200, "文章删除成功！");
+    }
+
+    /**
      * 首页加载文章
      * @return
      */
@@ -165,8 +189,6 @@ public class ArticleController {
                                  @RequestParam(value = "userId") Long userId,
                                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-//        Long userId = userService.getUserIdFromToken(token);
-
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleVo> articleVoList = articleService.selectCollectArticle(page, loginUserId, userId);
 

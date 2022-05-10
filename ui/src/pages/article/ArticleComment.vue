@@ -19,7 +19,7 @@
             </div>
             <p class="content">{{ comment.content }}</p>
             <div class="action">
-              <el-button @click="toReply(comment.id)">回复评论</el-button>
+              <a href="javascript:void(0)" @click="toReply(comment.id)">回复评论</a>
             </div>
           </div>
           <div class="level2" v-for="comment2 in comment.list">
@@ -33,7 +33,7 @@
                 <p class="content">{{ comment2.content }}</p>
                 <p class="parent">回复：“ {{ comment2.parentContent }} ”</p>
                 <div class="action">
-                  <el-button @click="toReply(comment2.id)">回复评论</el-button>
+                  <a href="javascript:void(0)" @click="toReply(comment2.id)">回复评论</a>
                 </div>
               </div>
             </div>
