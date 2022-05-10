@@ -74,7 +74,7 @@ import {
 } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle } from '../../api/article';
 
@@ -83,6 +83,7 @@ const props = defineProps(['permission', 'userId', 'orderFlag'])
 const emit = defineEmits(['update'])
 
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 
 const user: any = computed(
@@ -103,7 +104,8 @@ const pagination: any = reactive({
   total: 0,
   orderFlag: props.orderFlag || 'likeCount',
   loginUserId: logInUserId,
-  userId: props.userId || 0
+  userId: props.userId || 0,
+  title: route.query.title
 })
 const articleList: any = ref([])
 

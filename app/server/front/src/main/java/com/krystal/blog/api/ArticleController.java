@@ -133,7 +133,7 @@ public class ArticleController {
     @NoNeedLogIn
     @PostMapping("/api/article/list/public")
     public R articleListPublic(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
-                               @RequestParam(value = "title") String title,
+                               String title,
                                @RequestParam(value = "orderFlag") String orderFlag,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){

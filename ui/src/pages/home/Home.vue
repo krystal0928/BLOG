@@ -42,12 +42,14 @@
 
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus';
-import { computed, inject, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, inject, onMounted, ref, watchEffect } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import ArticleItem from '../article/ArticleItem.vue';
+
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 const permission = ref('public')
 const tabIndex = ref(0)
 
@@ -97,6 +99,16 @@ const showTab2 = () => {
   tabIndex.value = 2
   }
 }
+
+watchEffect(() => {
+  console.log(route.query.title)
+  if (route.query.title) {
+    tabIndex.value = -1
+    setTimeout(_ => {
+      showTab0()
+    }, 1000)
+  }
+})
 
 </script>
 

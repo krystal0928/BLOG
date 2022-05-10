@@ -84,7 +84,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             >
-            <img v-if="img" :src="img" class="avatar" />
+            <img v-if="changeInfo.img" :src="changeInfo.img" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -173,9 +173,8 @@ const checkToken = () => {
 
 // 编辑资料
 const toEditUserInfo = () => {
-  let {...changeInfo} = userInfo.value
-  changeInfo.imgFlag = 0
-  console.log(changeInfo)
+  changeInfo.value = {...userInfo.value}
+  changeInfo.value.imgFlag = 0
   dialogFormVisible.value = true
 }
 
@@ -188,6 +187,8 @@ const toUpdateUserInfo = () =>{
         message: "信息修改成功!",
         type: 'success',
       })
+      store.commit('updateImg', changeInfo.value.img)
+      loadUserInfo()
     }
   })
 }

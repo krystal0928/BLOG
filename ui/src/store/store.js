@@ -27,7 +27,12 @@ const store = createStore({
       state.user = user
       state.logIn = true
       localStorage.setItem('user', JSON.stringify(user))
-    }, 
+    },
+    updateImg(state, img) {
+      let user = state.user
+      user.img = img
+      localStorage.setItem('user', JSON.stringify(user))
+    },
     logOut(state) {
       state.user = {}
       state.logIn = false

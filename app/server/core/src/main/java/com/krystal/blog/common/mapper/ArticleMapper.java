@@ -12,17 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
-//    @Select({" select a.*, u.username userName,  ",
-//            " ifnull(count(distinct al.id), 0) likeCount, ifnull(count(distinct ac.id), 0) commentCount, ifnull(count(distinct acl.id), 0) collectCount, ",
-//            " (select count(id) from article_like where article_id = a.id and user_id = #{loginUserId}) as liked, ",
-//            " (select count(id) from article_collection where article_id = a.id and user_id = #{loginUserId}) as collected ",
-//            " from article a left join user u on u.id = a.user_id ",
-//            " left join article_like al on al.article_id = a.id ",
-//            " left join article_comment ac on ac.article_id = a.id ",
-//            " left join article_collection acl on acl.article_id = a.id ",
-//            " where (a.status = 1 or a.status = 2) and a.deleted = 0 and a.permission = 0 ",
-//            " GROUP BY a.id ",
-//            " order by ${orderFlag} desc "})
+
     Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page,
                                             @Param("loginUserId") Long loginUserId,
                                             @Param("title") String title,

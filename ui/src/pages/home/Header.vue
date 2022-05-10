@@ -9,7 +9,7 @@
       class="w-50 m-2"
       placeholder="Please Input" >
       <template #append>
-      <el-button :icon="Search" />
+      <el-button :icon="Search" @click="toSeach" />
       </template>
     </el-input>
   </div>
@@ -65,6 +65,13 @@ const onHome = () => {
   router.push('/home')
 }
 
+const toSeach = () => {
+  router.push({
+    query: {
+      title: input.value
+    }
+  })
+}
 
 const checkToken = () => {
   if (!user.value.token) {
