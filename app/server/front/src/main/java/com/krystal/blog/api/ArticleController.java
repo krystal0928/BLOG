@@ -55,10 +55,14 @@ public class ArticleController {
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
+        if (null == info.getId()) {
+            info.setId(snowFlakeTemplate.getIdLong());
+            info.setStatus(ArticleStatusEnum.STATUS0.getCode());
+        } else {
+            info.setStatus(ArticleStatusEnum.STATUS2.getCode());
+        }
         info.setUserId(user.getId());
-        info.setId(snowFlakeTemplate.getIdLong());
-        info.setStatus(ArticleStatusEnum.STATUS0.getCode());
-        if (!articleService.save(info))
+        if (!articleService.saveOrUpdate(info))
             return R.error(400,"文章保存失败！");
         return R.ok("文章已保存至草稿箱！");
     }

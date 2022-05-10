@@ -2,7 +2,8 @@
   <div>
     <li v-for="user in userList">
       <div class="item">
-        <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp" />
+        <img v-if="!user.img" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da">
+            <img v-if="user.img" :src="user.img">
         <div class="text">
           <a href="javascript:void(0)" class="name one-line" @click="toUser(user.id)">{{ user.username }}</a>
           <span class="motto one-line">{{ user.motto }}</span>
@@ -146,6 +147,7 @@ const follow = (user:any) => {
 }
 img {
   height: 50px;
+  width: 50px;
   border-radius: 50%;
 }
 .one-line {

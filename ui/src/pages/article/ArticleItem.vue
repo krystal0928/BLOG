@@ -14,7 +14,10 @@
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
           <div class="content-main">
             <div class="title-row">
-              <a :href="`/article/${article.id}?userId=${article.userId}`" :title="article.title" class="title">{{article.title}}</a>
+              <a :href="`/article/${article.id}?userId=${article.userId}`" :title="article.title" class="title">{{article.title}}
+              <span v-if="article.permission==1">（仅自己可见）</span>
+              <span v-if="article.permission==2">（仅粉丝可见）</span>
+              </a>
               </div>
             <div class="abstract">
               <a :href="`/article/${article.id}?userId=${article.userId}`" >

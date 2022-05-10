@@ -4,7 +4,8 @@
       <div class="left">
         <div class="user-info card">
           <div class="user-img">
-            <img :src="userInfo.img">
+            <img v-if="!userInfo.img" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da">
+            <img v-if="userInfo.img" :src="userInfo.img">
           </div>
           <div class="user-text">
             <h1>{{ userInfo.username }}</h1>
