@@ -62,10 +62,13 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " left join article_like al on al.article_id = a.id ",
             " left join article_comment ac on ac.article_id = a.id ",
             " left join article_collection acl on acl.article_id = a.id ",
-            " where a.status = 1 and a.user_id =#{userId} ",
+            " where a.status = #{status} and a.user_id =#{userId} ",
             " GROUP BY a.id ",
             " order by a.create_time desc "})
-    Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page,@Param("loginUserId") Long loginUserId,  @Param("userId") Long userId);
+    Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page,
+                                              @Param("loginUserId") Long loginUserId,
+                                              @Param("userId") Long userId,
+                                              @Param("status") Integer status);
 
 
     @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,u.username userName, u.id userId, " ,

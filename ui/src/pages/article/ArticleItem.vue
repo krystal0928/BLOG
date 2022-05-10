@@ -94,7 +94,7 @@ const checkEditAble = () => {
   editAble.value = (logInUserId == props.userId)
 }
 
-const pagination = reactive({
+const pagination: any = reactive({
   pageNo: 1,
   pageSize: 10,
   total: 0,
@@ -126,6 +126,16 @@ const loadArticclelList = () => {
     })
   }
   if (props.permission === 'personal') {
+    pagination.status = 1
+    articleListPersonal({...pagination}).then(res => {
+      if (res.code == 200) {
+        articleList.value = res.data
+        pagination.total = Number(res.total)
+      }
+    })
+  }
+  if (props.permission === 'draft') {
+    pagination.status = 1
     articleListPersonal({...pagination}).then(res => {
       if (res.code == 200) {
         articleList.value = res.data

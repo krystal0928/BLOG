@@ -19,13 +19,16 @@
           </div>
         </div>
         <el-tabs v-model="activeName" class="user-tabs card" @tab-click="handleClick">
-          <el-tab-pane label="文章" name="first">
+          <el-tab-pane label="文章" name="article">
             <ArticleItem permission="personal" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
-          <el-tab-pane label="收藏" name="second">
+          <el-tab-pane label="收藏" name="collect">
              <ArticleItem permission="collect" :user-id="userId" @update="loadUserInfo"></ArticleItem>
           </el-tab-pane>
-          <el-tab-pane label="关注" name="third">
+          <el-tab-pane label="草稿箱" name="draft">
+             <ArticleItem permission="draft" :user-id="userId" @update="loadUserInfo"></ArticleItem>
+          </el-tab-pane>
+          <el-tab-pane label="关注" name="focus">
             <template #label>
               <el-badge :value="userInfo.focusCount" class="badge" type="info">
                 <span>关注</span>
@@ -33,7 +36,7 @@
             </template>
             <UserItem action="follow" :user-id="userId" @update="loadUserInfo"></UserItem>
           </el-tab-pane>
-          <el-tab-pane label="粉丝" name="fouth">
+          <el-tab-pane label="粉丝" name="fans">
             <template #label>
               <el-badge :value="userInfo.fansCount" class="badge" type="info">
                 <span>粉丝</span>
@@ -53,10 +56,10 @@
           </div>
         </div>
         <div class="follow card">
-          <a href="javascript:void(0)" class="border-r" @click="tabPannel('third')">
+          <a href="javascript:void(0)" class="border-r" @click="tabPannel('focus')">
             关注<span class="follow-text">{{ userInfo.focusCount }}</span>
           </a>
-          <a href="javascript:void(0)" @click="tabPannel('fouth')">
+          <a href="javascript:void(0)" @click="tabPannel('fans')">
             粉丝<span class="follow-text">{{ userInfo.fansCount }}</span>
           </a>
         </div>
@@ -80,7 +83,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             >
-            <img v-if="changeInfo.img" :src="changeInfo.img" class="avatar" />
+            <img v-if="img" :src="img" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -106,7 +109,6 @@ import { addUserFocus, deleteUserFocus, getUserVoById, updateInfo } from '../../
 import { uploadUrl } from '../../api/article'
 import ArticleItem from '../article/ArticleItem.vue';
 import UserItem from './UserItem.vue';
-import { Plus } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -123,7 +125,7 @@ const headers = reactive({
 })
 const userId = route.params.id
 
-const activeName = ref('first')
+const activeName = ref('article')
 
 let editAble = ref(false)
 
@@ -169,8 +171,9 @@ const checkToken = () => {
 
 // 编辑资料
 const toEditUserInfo = () => {
-  changeInfo.value = {...userInfo.value}
-  changeInfo.value.imgFlag = 0
+  let {...changeInfo} = userInfo.value
+  changeInfo.imgFlag = 0
+  console.log(changeInfo)
   dialogFormVisible.value = true
 }
 
@@ -183,7 +186,6 @@ const toUpdateUserInfo = () =>{
         message: "信息修改成功!",
         type: 'success',
       })
-      loadUserInfo()
     }
   })
 }
@@ -226,7 +228,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
-  // img.value = URL.createObjectURL(uploadFile.raw!)
+  img.value = URL.createObjectURL(uploadFile.raw!)
   if(response.code == 200) {
     changeInfo.value.img = response.data[0]
   } else {

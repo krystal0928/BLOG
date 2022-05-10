@@ -31,7 +31,7 @@
                   <time class="time">{{ comment2.createTime }}</time>
                 </div>
                 <p class="content">{{ comment2.content }}</p>
-                <p class="parent">{{ comment2.parentContent }}</p>
+                <p class="parent">回复：“ {{ comment2.parentContent }} ”</p>
                 <div class="action">
                   <el-button @click="toReply(comment2.id)">回复评论</el-button>
                 </div>
