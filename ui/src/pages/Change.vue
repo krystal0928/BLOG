@@ -22,7 +22,7 @@
           <el-form-item>
         <el-button type="primary" @click.prevent="onSubmit">修改密码</el-button>
       </el-form-item>
-      <el-link href="#/" class="home-text">返回首页</el-link>
+      <el-link href="/" class="home-text">返回首页</el-link>
     </el-form>
   </div>
 </template>

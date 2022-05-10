@@ -20,8 +20,8 @@
       <div class="article-card card">
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
-            <ArticleItem v-if="tabIndex === 0" :permission="permission"></ArticleItem>
-            <ArticleItem v-if="tabIndex === 1" :permission="permission"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 0" :permission="permission" orderFlag="likeCount"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 1" :permission="permission" orderFlag="create_time"></ArticleItem>
             <ArticleItem v-if="tabIndex === 2" :permission="permission"></ArticleItem>
           </div>
         </div>

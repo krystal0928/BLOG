@@ -22,8 +22,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " left join article_collection acl on acl.article_id = a.id ",
             " where a.status = 1 and a.deleted = 0 and permission = 0 ",
             " GROUP BY a.id ",
-            " order by a.create_time desc "})
-    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, @Param("loginUserId") Long loginUserId,  @Param("userId") Long userId);
+            " order by ${orderFlag} desc "})
+    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, @Param("loginUserId") Long loginUserId,  @Param("orderFlag") String orderFlag);
 
 
     @Select({" select a.*, u.username userName,  ",
@@ -35,7 +35,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " left join article_comment ac on ac.article_id = a.id ",
             " left join article_collection acl on acl.article_id = a.id ",
             " left join user_focus uf on uf.focus_id = a.user_id ",
-            " where a.permission = 2 and a.deleted = 0 ",
+            " where a.permission = 2 and and a.status =1 a.deleted = 0 ",
             " GROUP BY a.id ",
             " order by a.create_time desc "})
     Page<ArticleVo> selectArticleListUserFocus(Page<ArticleVo> page, @Param("loginUserId") Long loginUserId,  @Param("userId") Long userId);
@@ -79,9 +79,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " left join article_like al on al.article_id = a.id ",
             " left join article_comment ac on ac.article_id = a.id ",
             " left join article_collection acl on acl.article_id = a.id ",
-            " where a.id = #{id} and a.deleted = 0 ",
+            " where a.id = #{id} and a.status = 1 and a.deleted = 0 ",
             " GROUP BY a.id "})
     ArticleVo selectArticle(@Param("id")Long id, @Param("userId") Long userId);
-
 
 }

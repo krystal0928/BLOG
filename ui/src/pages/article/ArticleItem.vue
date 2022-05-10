@@ -3,7 +3,7 @@
     <li v-for="article in articleList" data-growing-title="entryList" class="item">
       <div class="entry" style="margin-bottom: 10px;">
         <div  class="meta-container">
-          <a :href="`#/user/${article.userId}`" class="user-message">
+          <a :href="`/user/${article.userId}`" class="user-message">
             <div class="popover-box user-popover">{{article.userName}}</div>
           </a>
           <div class="date">{{article.createTime}}</div>
@@ -14,10 +14,10 @@
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
           <div class="content-main">
             <div class="title-row">
-              <a :href="`#/article/${article.id}?userId=${article.userId}`" :title="article.title" class="title">{{article.title}}</a>
+              <a :href="`/article/${article.id}?userId=${article.userId}`" :title="article.title" class="title">{{article.title}}</a>
               </div>
             <div class="abstract">
-              <a :href="`#/article/${article.id}?userId=${article.userId}`" >
+              <a :href="`/article/${article.id}?userId=${article.userId}`" >
                 <div >{{article.description}}</div>
               </a>
               </div>

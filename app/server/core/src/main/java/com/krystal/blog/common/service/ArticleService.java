@@ -7,7 +7,7 @@ import com.krystal.blog.common.model.vo.ArticleVo;
 
 public interface ArticleService extends IService<Article> {
 
-    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, Long userId);
+    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String orderFlag);
 
     Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long loginUserId, Long userId, Integer status);
 

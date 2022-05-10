@@ -8,12 +8,12 @@
               {{article.title}}
             </h1>
             <div class="author-info-block">
-              <a :href="`#/user/${article.userId}`" class="avatar-link">
+              <a :href="`/user/${article.userId}`" class="avatar-link">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" loading="lazy" class="lazy avatar avatar">
               </a>
               <div class="author-info-box">
                 <div class="author-name">
-                  <a :href="`#/user/${article.userId}`" class="username ellipsis">
+                  <a :href="`/user/${article.userId}`" class="username ellipsis">
                     <span class="name" style="max-width: 128px;">{{article.userName}}</span> 
                   </a>
                 </div>
@@ -27,21 +27,21 @@
                   </span>
                 </div>
               </div>
-              <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
-              <el-button class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
+              <el-button :disabled="reader.id==article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
+              <el-button :disabled="reader.id==article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
             </div>
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
           <!-- 评论 -->
-          <ArticleComment :article-id="article.id"></ArticleComment>
+          <ArticleComment id="comment" :article-id="article.id"></ArticleComment>
         </div>
         <div class="sidebar">
           <div class="fixed card">
             <div class="sidebar-block author-block">
-              <a :href="`#/user/${article.userId}`" class="user-item item">
+              <a :href="`/user/${article.userId}`" class="user-item item">
                 <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
                 <div class="info-box" >
-                  <a :href="`#/user/${article.userId}`" class="username">
+                  <a :href="`/user/${article.userId}`" class="username">
                     <span class="name" style="max-width: 128px;">{{reader.username}}</span>
                   </a>
                   <div :title="reader.motto" class="motto" >{{reader.motto}}</div>
@@ -74,6 +74,13 @@
           <el-badge :value="article.collectCount" class="badge" type="info">
             <img class="sprite-icon" v-if="article.collected == 1" src="../../assets/collect.png"  />
             <img class="sprite-icon" v-else src="../../assets/uncollect.png" />
+          </el-badge>
+        </div>
+        <div class="panel-btn with-badge"  >
+          <el-badge :value="article.commentCount" class="badge" type="info">
+            <a  href="#comment">
+              <img class="sprite-icon" src="../../assets/comment.png"  />
+            </a>
           </el-badge>
         </div>
 

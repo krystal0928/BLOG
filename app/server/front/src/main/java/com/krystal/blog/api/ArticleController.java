@@ -129,11 +129,11 @@ public class ArticleController {
     @NoNeedLogIn
     @PostMapping("/api/article/list/public")
     public R articleListPublic(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
-                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
+                               @RequestParam(value = "orderFlag") String orderFlag,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, userId);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, orderFlag);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
@@ -146,7 +146,7 @@ public class ArticleController {
     @NoNeedLogIn
     @PostMapping("/api/article/list/focus")
     public R articleListFocus(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
-                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
+                              @RequestParam(value = "userId", defaultValue = "0") Long userId,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
@@ -186,7 +186,7 @@ public class ArticleController {
     @NoNeedLogIn
     @PostMapping("/api/article/list/getCollectArticle")
     public R getCollectArticle(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
-                                 @RequestParam(value = "userId") Long userId,
+                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
                                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
