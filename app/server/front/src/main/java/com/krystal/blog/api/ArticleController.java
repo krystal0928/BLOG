@@ -412,6 +412,28 @@ public class ArticleController {
     }
 
     /**
+     * 删除评论
+     * @param token
+     * @param commentId
+     * @return
+     */
+    @PostMapping("/api/article/deleteComment")
+    public R deleteComment(@RequestHeader("token") String token, Long commentId) {
+        ArticleComment articleComment = articleCommentService.getById(commentId);
+        if (null == articleComment)
+            return  R.error(400,"该评论 目前已不存在！");
+        if (articleComment.getPid() == null) {
+            if(!articleCommentService.remove(articleCommentService.lambdaQuery()
+                    .eq(ArticleComment::getPid,commentId)
+                    .getWrapper()))
+                return R.error(400,"评论删除失败！");
+        }
+        if(!articleCommentService.removeById(commentId))
+            return R.error(400,"评论删除失败！");
+        return R.ok("评论删除成功！");
+    }
+
+    /**
      * 查询一级评论
      * @param articleId
      * @return
