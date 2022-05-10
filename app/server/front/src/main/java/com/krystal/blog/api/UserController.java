@@ -58,6 +58,19 @@ public class UserController {
     }
 
     /**
+     * 获取用户信息
+     * @return
+     */
+    @PostMapping(value = "/api/user/getUserInfo")
+    public R getUserInfo(@RequestHeader("token") String token)  {
+        User user = userService.getUserByToken(token);
+        if (null == user) {
+            return R.error(400, "用户不存在");
+        }
+        return R.okData("登录成功！",user);
+    }
+
+    /**
      * 登录
      * @param username
      * @param password
@@ -90,6 +103,7 @@ public class UserController {
         map.put("username",user.getUsername());
         map.put("token",token);
         map.put("email",user.getEmail());
+        map.put("img",user.getImg());
         return R.okData("登录成功！",map);
     }
 
@@ -327,7 +341,12 @@ public class UserController {
         return R.ok("关注成功！");
     }
 
-
+    /**
+     * 取消关注
+     * @param token
+     * @param focusId
+     * @return
+     */
     @PostMapping(value="/api/user/deleteUserFocus")
     public R deleteUserFocus(@RequestHeader("token") String token, Long focusId) {
         User user = userService.getUserByToken(token);

@@ -4,14 +4,14 @@
       <header class="list-header card" style="display:;">
         <nav role="navigation" class="list-nav">
           <ul class="nav-list left">
-            <li class="nav-item active">
-              <a href="/" >推荐</a>
+            <li class="nav-item">
+              <a :class="tabIndex === 0 ? 'tab-active' : ''" href="/" >推荐</a>
             </li>
             <li class="nav-item">
-              <a href="/?sort=newest" >最新</a>
+              <a :class="tabIndex === 1 ? 'tab-active' : ''" href="/?sort=newest" >最新</a>
             </li>
             <li class="nav-item" >
-              <a href="/?sort=three_days_hottest" >热榜</a>
+              <a :class="tabIndex === 2 ? 'tab-active' : ''" @click="showTab2">关注</a>
             </li>
           </ul>
           <div class="dorp-down-area"></div>
@@ -20,7 +20,8 @@
       <div class="article-card card">
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
-            <ArticleItem permission="public"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 0" :permission="permission"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 2" :permission="permission"></ArticleItem>
           </div>
         </div>
       </div>
@@ -39,7 +40,31 @@
 
 
 <script lang="ts" setup>
+import { inject, onMounted, ref } from 'vue';
 import ArticleItem from '../article/ArticleItem.vue';
+const reload: Function = inject('reload')
+
+const permission = ref('public')
+const tabIndex = ref(0)
+
+const toChangePermission = (type) =>{
+  permission.value = type
+  reload()
+}
+
+onMounted(()=> {
+  showTab0()
+})
+
+const showTab0 = () => {
+  permission.value = 'public'
+  tabIndex.value = 0
+}
+
+const showTab2 = () => {
+  permission.value = 'focus'
+  tabIndex.value = 2
+}
 
 </script>
 
@@ -79,6 +104,11 @@ import ArticleItem from '../article/ArticleItem.vue';
   padding: 0 1.2rem;
   font-size: 1.16rem;
   border-right: 1px solid hsla(0,0%,59.2%,.2);
+}
+
+.tab-active {
+  color: #409eff;
+  font-weight: 600;
 }
 .entry-list {
   width: 100%;

@@ -7,6 +7,7 @@ const store = createStore({
         username: JSON.parse(localStorage.getItem('user'))?.username || '',
         token: JSON.parse(localStorage.getItem('user'))?.token || '',
         email: JSON.parse(localStorage.getItem('user'))?.email || '',
+        img: JSON.parse(localStorage.getItem('user'))?.img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpmcY7L1pv0ViLQUKnDEA0eQ8NP-qgLrSjZg&usqp=CAU',
       },
       logIn: false
     }

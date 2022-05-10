@@ -9,6 +9,14 @@ export function login(param) {
   })
 }
 
+export function getUserInfo(param) {
+  return axios({
+    url: '/api/user/getUserInfo',
+    method: 'post',
+    data: param
+  })
+}
+
 export function register(param) {
   return axios({
     url: '/api/user/register',

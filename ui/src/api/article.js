@@ -23,6 +23,13 @@ export function articleListPublic(param) {
     data: param
   })
 }
+export function articleListFocus(param) {
+  return axios({
+    url: '/api/article/list/focus',
+    method: 'post',
+    data: param
+  })
+}
 
 export function articleListPersonal(param) {
   return axios({

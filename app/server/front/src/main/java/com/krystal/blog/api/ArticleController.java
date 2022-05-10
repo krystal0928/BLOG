@@ -118,6 +118,25 @@ public class ArticleController {
     }
 
     /**
+     * 首页加载关注用户发表的文章
+     * @return
+     */
+    @NoNeedLogIn
+    @PostMapping("/api/article/list/focus")
+    public R articleListFocus(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
+                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+//        Long userId = userService.getUserIdFromToken(token);
+
+        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListUserFocus(page, loginUserId, userId);
+
+        return R.okData("文章查询成功!", articleVoList.getRecords())
+                .put("total", articleVoList.getTotal());
+    }
+
+    /**
      * 加载个人文章
      * @return
      */

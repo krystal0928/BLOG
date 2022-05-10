@@ -34,6 +34,20 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " left join article_like al on al.article_id = a.id ",
             " left join article_comment ac on ac.article_id = a.id ",
             " left join article_collection acl on acl.article_id = a.id ",
+            " left join user_focus uf on uf.focus_id = a.user_id ",
+            " where a.permission = 2 ",
+            " GROUP BY a.id ",
+            " order by a.create_time desc "})
+    Page<ArticleVo> selectArticleListUserFocus(Page<ArticleVo> page, @Param("loginUserId") Long loginUserId,  @Param("userId") Long userId);
+
+    @Select({" select a.*, u.username userName,  ",
+            " ifnull(count(distinct al.id), 0) likeCount, ifnull(count(distinct ac.id), 0) commentCount, ifnull(count(distinct acl.id), 0) collectCount, ",
+            " (select count(id) from article_like where article_id = a.id and user_id = #{loginUserId}) as liked, ",
+            " (select count(id) from article_collection where article_id = a.id and user_id = #{loginUserId}) as collected ",
+            " from article a left join user u on u.id = a.user_id ",
+            " left join article_like al on al.article_id = a.id ",
+            " left join article_comment ac on ac.article_id = a.id ",
+            " left join article_collection acl on acl.article_id = a.id ",
             " where a.status = 1 and acl.user_id =#{userId} ",
             " GROUP BY a.id ",
             " order by a.create_time desc "})

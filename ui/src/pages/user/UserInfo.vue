@@ -80,7 +80,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             >
-            <img v-if="img" :src="img" class="avatar" />
+            <img v-if="changeInfo.img" :src="changeInfo.img" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -106,6 +106,7 @@ import { addUserFocus, deleteUserFocus, getUserVoById, updateInfo } from '../../
 import { uploadUrl } from '../../api/article'
 import ArticleItem from '../article/ArticleItem.vue';
 import UserItem from './UserItem.vue';
+import { Plus } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -168,9 +169,8 @@ const checkToken = () => {
 
 // 编辑资料
 const toEditUserInfo = () => {
-  let {...changeInfo} = userInfo.value
-  changeInfo.imgFlag = 0
-  console.log(changeInfo)
+  changeInfo.value = {...userInfo.value}
+  changeInfo.value.imgFlag = 0
   dialogFormVisible.value = true
 }
 
@@ -183,6 +183,7 @@ const toUpdateUserInfo = () =>{
         message: "信息修改成功!",
         type: 'success',
       })
+      loadUserInfo()
     }
   })
 }
@@ -225,7 +226,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
-  img.value = URL.createObjectURL(uploadFile.raw!)
+  // img.value = URL.createObjectURL(uploadFile.raw!)
   if(response.code == 200) {
     changeInfo.value.img = response.data[0]
   } else {

@@ -73,7 +73,7 @@ import { ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle } from '../../api/article';
+import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus } from '../../api/article';
 
 const props = defineProps(['permission', 'userId'])
 
@@ -111,6 +111,14 @@ onMounted(() => {
 const loadArticclelList = () => {
   if (props.permission === 'public') {
     articleListPublic({...pagination}).then(res => {
+      if (res.code == 200) {
+        articleList.value = res.data
+        pagination.total = Number(res.total)
+      }
+    })
+  }
+  if (props.permission === 'focus') {
+    articleListFocus({...pagination}).then(res => {
       if (res.code == 200) {
         articleList.value = res.data
         pagination.total = Number(res.total)

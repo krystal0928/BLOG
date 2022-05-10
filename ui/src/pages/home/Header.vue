@@ -21,7 +21,8 @@
         effect="dark"
         :content="user.username"
         placement="left-start">
-        <el-avatar class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+        <!-- <el-avatar class="avatar">{{user.username?.substring(0,1)}}</el-avatar> -->
+        <el-avatar class="avatar" :src="user.img"></el-avatar>
       </el-tooltip>
       <template #dropdown>
         <el-dropdown-menu>
@@ -57,7 +58,6 @@ const logIn = computed(
 const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
-
 const input = ref('')
 const router = useRouter()
 const onLogin = () => {
@@ -66,6 +66,7 @@ const onLogin = () => {
 const onHome = () => {
   router.push('/home')
 }
+
 
 const checkToken = () => {
   if (!user.value.token) {
@@ -200,7 +201,7 @@ const writeArticle = () => {
   line-height: 60px;
 }
 .avatar {
-  margin: 0 10px;
+  margin: 10px 10px;
 }
 .btn-r {
   font-size: 15px;

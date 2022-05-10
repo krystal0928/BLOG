@@ -32,6 +32,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     @Override
     public Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long loginUserId, Long userId) {
         return articleMapper.selectArticleListPersonal(page, loginUserId, userId);
+
+    }
+
+    @Override
+    public Page<ArticleVo> selectArticleListUserFocus(Page<ArticleVo> page, Long loginUserId, Long userId) {
+        return articleMapper.selectArticleListUserFocus(page, loginUserId, userId);
     }
 
     @Override
