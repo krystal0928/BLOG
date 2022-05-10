@@ -5,10 +5,10 @@
         <nav role="navigation" class="list-nav">
           <ul class="nav-list left">
             <li class="nav-item">
-              <a :class="tabIndex === 0 ? 'tab-active' : ''" href="/" >推荐</a>
+              <a :class="tabIndex === 0 ? 'tab-active' : ''" @click="showTab0" >推荐</a>
             </li>
             <li class="nav-item">
-              <a :class="tabIndex === 1 ? 'tab-active' : ''" href="" >最新</a>
+              <a :class="tabIndex === 1 ? 'tab-active' : ''" @click="showTab1" >最新</a>
             </li>
             <li class="nav-item" >
               <a :class="tabIndex === 2 ? 'tab-active' : ''" @click="showTab2">关注</a>
@@ -84,6 +84,11 @@ onMounted(()=> {
 const showTab0 = () => {
   permission.value = 'public'
   tabIndex.value = 0
+}
+
+const showTab1 = () => {
+  permission.value = 'public'
+  tabIndex.value = 1
 }
 
 const showTab2 = () => {
