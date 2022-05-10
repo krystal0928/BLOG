@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krystal.blog.common.mapper.ArticleMapper">
+
+    <select id="selectArticleListPublic" resultType="com.krystal.blog.common.model.Article">
+        select a.*, u.username userName,
+            ifnull(count(distinct al.id), 0) likeCount,
+            ifnull(count(distinct ac.id), 0) commentCount,
+            ifnull(count(distinct acl.id), 0) collectCount,
+            (select count(id) from article_like where article_id = a.id and user_id = #{loginUserId}) as liked,
+            (select count(id) from article_collection where article_id = a.id and user_id = #{loginUserId}) as collected
+        from article a left join user u on u.id = a.user_id
+            left join article_like al on al.article_id = a.id
+            left join article_comment ac on ac.article_id = a.id
+            left join article_collection acl on acl.article_id = a.id
+        where (a.status = 1 or a.status = 2) and a.deleted = 0 and a.permission = 0
+        <if test="title != '''">
+            and a.title like concat('%', #{title}, '%')
+        </if>
+        GROUP BY a.id
+        order by ${orderFlag} desc
+    </select>
+</mapper>

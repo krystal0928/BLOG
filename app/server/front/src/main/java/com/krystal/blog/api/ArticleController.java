@@ -133,11 +133,12 @@ public class ArticleController {
     @NoNeedLogIn
     @PostMapping("/api/article/list/public")
     public R articleListPublic(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
+                               @RequestParam(value = "title") String title,
                                @RequestParam(value = "orderFlag") String orderFlag,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, orderFlag);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, title, orderFlag);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
