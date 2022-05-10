@@ -25,8 +25,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     private ApplicationTemplate applicationTemplate;
 
     @Override
-    public Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String orderFlag) {
-        return articleMapper.selectArticleListPublic(page, loginUserId, orderFlag);
+    public Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String title, String orderFlag) {
+        return articleMapper.selectArticleListPublic(page, loginUserId, title,  orderFlag);
     }
 
     @Override
