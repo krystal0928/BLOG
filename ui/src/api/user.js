@@ -1,6 +1,6 @@
 import axios from './request.js'
 
-// login
+// 登录
 export function login(param) {
   return axios({
     url: '/api/user/login',
@@ -9,6 +9,7 @@ export function login(param) {
   })
 }
 
+// 获取用户信息
 export function getUserInfo(param) {
   return axios({
     url: '/api/user/getUserInfo',
@@ -17,6 +18,7 @@ export function getUserInfo(param) {
   })
 }
 
+// 注册
 export function register(param) {
   return axios({
     url: '/api/user/register',
@@ -25,6 +27,7 @@ export function register(param) {
   })
 }
 
+// 更新用户信息
 export function updateInfo(param) {
   return axios({
     url: '/api/user/updateInfo',
@@ -33,6 +36,7 @@ export function updateInfo(param) {
   })
 }
 
+// 发送邮件-注册
 export function sendRegisterEmail(email) {
   return axios({
     url: '/api/user/sendRegisterEmail',
@@ -40,6 +44,8 @@ export function sendRegisterEmail(email) {
     data: {email}
   })
 }
+
+// 发送邮件-忘记密码
 export function sendForgetEmail(email) {
   return axios({
     url: '/api/user/sendForgetEmail',
@@ -48,6 +54,7 @@ export function sendForgetEmail(email) {
   })
 }
 
+// 校验验证码
 export function confirmEmail(param) {
   return axios({
     url: '/api/user/confirmEmail',
@@ -56,6 +63,7 @@ export function confirmEmail(param) {
   })
 }
 
+// 修改密码
 export function change(param) {
   return axios({
     url: '/api/user/change',
@@ -64,6 +72,7 @@ export function change(param) {
   })
 }
 
+// 生成密钥
 export function generateCode(param) {
   return axios({
     url: '/api/user/generateCode',
@@ -72,6 +81,7 @@ export function generateCode(param) {
   })
 }
 
+// 二次验证绑定
 export function bindTFA(param) {
   return axios({
     url: '/api/user/bindTFA',
@@ -80,6 +90,7 @@ export function bindTFA(param) {
   })
 }
 
+// ？查看用户状态
 export function checkUserStatus() {
   return axios({
     url: '/api/user/checkUserStatus',
@@ -103,6 +114,7 @@ export function getUserVoById(userId, focusId) {
   })
 }
 
+// 关注
 export function addUserFocus(focusId) {
   return axios({
     url: '/api/user/addUserFocus',
@@ -111,6 +123,7 @@ export function addUserFocus(focusId) {
   })
 }
 
+// 取消关注
 export function deleteUserFocus(focusId) {
   return axios({
     url: '/api/user/deleteUserFocus',

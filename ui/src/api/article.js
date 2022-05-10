@@ -1,6 +1,6 @@
 import axios from './request.js'
 
-
+// 保存草稿
 export function saveDraft(param) {
   return axios({
     url: '/api/article/saveDraft',
@@ -9,6 +9,7 @@ export function saveDraft(param) {
   })
 }
 
+// 发布文章
 export function publishArticle(param) {
   return axios({
     url: '/api/article/publishArticle',
@@ -26,6 +27,7 @@ export function deleteArticle(id) {
   })
 }
 
+// 查询文章-公开
 export function articleListPublic(param) {
   return axios({
     url: '/api/article/list/public',
@@ -33,6 +35,8 @@ export function articleListPublic(param) {
     data: param
   })
 }
+
+// 查询文章-关注
 export function articleListFocus(param) {
   return axios({
     url: '/api/article/list/focus',
@@ -41,6 +45,7 @@ export function articleListFocus(param) {
   })
 }
 
+// 查询文章-用户个人页面
 export function articleListPersonal(param) {
   return axios({
     url: '/api/article/list/personal',
@@ -49,6 +54,17 @@ export function articleListPersonal(param) {
   })
 }
 
+
+// 获取用户收藏的文章
+export function getCollectArticle(param) {
+  return axios({
+    url: '/api/article/list/getCollectArticle',
+    method: 'post',
+    data: param
+  })
+}
+
+// 获取文章信息
 export function getArticleById(id) {
   return axios({
     url: `/api/article/${id}`,
@@ -65,6 +81,7 @@ export function getPublishArticleById(id) {
 
 export const uploadUrl = 'http://localhost:8080/blog/api/file/upload'
 
+// 点赞
 export function addArticleLike(articleId) {
   return axios({
     url: '/api/article/addArticleLike',
@@ -72,6 +89,8 @@ export function addArticleLike(articleId) {
     data: {articleId}
   })
 }
+
+// 取消点赞
 export function deleteArticleLike(articleId) {
   return axios({
     url: '/api/article/deleteArticleLike',
@@ -79,6 +98,8 @@ export function deleteArticleLike(articleId) {
     data: { articleId }
   })
 }
+
+// 收藏
 export function addArticleCollect(articleId) {
   return axios({
     url: '/api/article/addArticleCollection',
@@ -86,6 +107,8 @@ export function addArticleCollect(articleId) {
     data: { articleId }
   })
 }
+
+// 取消收藏
 export function deleteArticleCollect(articleId) {
   return axios({
     url: '/api/article/deleteArticleCollection',
@@ -93,13 +116,7 @@ export function deleteArticleCollect(articleId) {
     data: { articleId }
   })
 }
-export function getCollectArticle(param) {
-  return axios({
-    url: '/api/article/list/getCollectArticle',
-    method: 'post',
-    data: param
-  })
-}
+
 
 // 发布评论
 export function addComment(param) {
@@ -125,5 +142,14 @@ export function getSecondLevelCommentList(param) {
     url: '/api/article/second-level-comment-list',
     method: 'post',
     data: param
+  })
+}
+
+// 删除评论
+export function deleteComment(commentId) {
+  return axios({
+    url: '/api/article/deleteComment',
+    method: 'post',
+    data: {commentId}
   })
 }

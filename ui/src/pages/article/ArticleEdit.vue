@@ -125,11 +125,14 @@ const store = useStore()
 const form: any = ref({})
 
 onMounted(() => {
-  getArticleById(route.query.id).then(res => {
-    if (res.code == 200) {
-      form.value = res.data
-    }
-  })
+  if (route.query.id){
+    getArticleById(route.query.id).then(res => {
+      if (res.code == 200) {
+        form.value = res.data
+      }
+    })
+  }
+  
 })
 
 const onTitle = (valueTitle) => {
