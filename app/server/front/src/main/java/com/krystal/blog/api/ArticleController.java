@@ -9,6 +9,7 @@ import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.beans.SnowFlakeTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.model.*;
+import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.*;
 import com.krystal.blog.common.util.FileUtil;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -385,18 +385,43 @@ public class ArticleController {
     }
 
     /**
-     * 查询评论
+     * 查询一级评论
      * @param articleId
      * @return
      */
     @PostMapping("/api/article/getCommentList")
-    public R getCommentList(Long articleId){
+    public R getCommentList(Long articleId,
+                            @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         if (null == articleService.getById(articleId))
             return R.error(400,"该文章目前已不存在！");
-        List<ArticleComment> articleComment = articleCommentService.lambdaQuery()
-                .eq(ArticleComment::getArticleId,articleId)
-                .list();
-        return R.okData("查询评论成功",articleComment);
+
+        Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleCommentVo> list = articleCommentService.getFirstLevelList(page, articleId);
+
+        return R.okData("查询评论成功", list.getRecords())
+                .put("total", list.getTotal());
+    }
+
+    /**
+     * 查询二级评论
+     * @param articleId
+     * @param pid
+     * @return
+     */
+    @PostMapping("/api/article/second-level-comment-list")
+    public R getSecondLevelCommentList(Long articleId,
+                                       Long pid,
+                                       @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                       @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        if (null == articleService.getById(articleId))
+            return R.error(400,"该文章目前已不存在！");
+
+        Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleCommentVo> list = articleCommentService.getSecondLevelList(page, articleId, pid);
+
+        return R.okData("查询评论成功", list.getRecords())
+                .put("total", list.getTotal());
     }
 
 }
