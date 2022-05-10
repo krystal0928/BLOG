@@ -19,7 +19,7 @@
       <el-form-item>
         <el-button type="primary" @click.prevent="onConfirm" >确认</el-button>
       </el-form-item>
-      <el-link href="#/" class="home-text">返回首页</el-link>
+      <el-link href="/" class="home-text">返回首页</el-link>
     </el-form>
     <!-- 绑定弹窗 -->
     <el-dialog

@@ -32,7 +32,7 @@
       <el-form-item>
         <el-button type="primary" :disabled="form.disabledRegister" @click.prevent="onSubmit" >注册</el-button>
       </el-form-item>
-      <el-link href="#/login" class="home-text">返回登录</el-link>
+      <el-link href="/login" class="home-text">返回登录</el-link>
     </el-form>
   </div>
 </template>

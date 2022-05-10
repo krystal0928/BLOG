@@ -23,7 +23,7 @@
       <el-form-item>
         <el-button  @click.prevent="toChange" >下一步</el-button>
       </el-form-item>
-      <el-link href="#/login" class="home-text">返回登录</el-link>
+      <el-link href="/login" class="home-text">返回登录</el-link>
     </el-form>
   </div>
 </template>

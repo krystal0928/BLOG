@@ -21,7 +21,7 @@
         <el-button type="primary" @click.prevent="toNextorSubmit">登录</el-button>
         <el-button @click.prevent="onRegister">注册</el-button>
       </el-form-item>
-      <el-link href="#/" class="home-text">返回首页</el-link>
+      <el-link href="/" class="home-text">返回首页</el-link>
     </el-form>
     <el-dialog
       v-model="dialogVisible"
