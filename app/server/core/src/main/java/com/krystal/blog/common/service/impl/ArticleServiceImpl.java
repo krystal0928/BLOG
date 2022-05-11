@@ -6,6 +6,7 @@ import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.mapper.ArticleMapper;
 import com.krystal.blog.common.model.Article;
+import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.ArticleService;
 import com.krystal.blog.common.util.Const;
@@ -73,5 +74,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     @Override
     public ArticleVo selectArticle(Long id, Long userId) {
         return articleMapper.selectArticle(id,userId);
+    }
+
+    @Override
+    public Page<ArticleCommentVo> getArticleList(Page<ArticleCommentVo> page, Article info) {
+        return articleMapper.getArticleList(page, info);
     }
 }

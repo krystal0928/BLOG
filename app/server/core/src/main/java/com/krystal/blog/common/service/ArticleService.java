@@ -3,6 +3,7 @@ package com.krystal.blog.common.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.krystal.blog.common.model.Article;
+import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 
 public interface ArticleService extends IService<Article> {
@@ -24,4 +25,6 @@ public interface ArticleService extends IService<Article> {
 
     ArticleVo selectArticle(Long id, Long userId);
 
+
+    Page<ArticleCommentVo> getArticleList(Page<ArticleCommentVo> page, Article info);
 }

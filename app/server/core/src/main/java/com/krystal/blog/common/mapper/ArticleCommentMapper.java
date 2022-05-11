@@ -2,6 +2,7 @@ package com.krystal.blog.common.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.ArticleCollection;
 import com.krystal.blog.common.model.ArticleComment;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
@@ -30,4 +31,7 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
     Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page,
                                               @Param("articleId") Long articleId,
                                               @Param("pid") Long pid);
+
+    @Select("select * from article_comment")
+    Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, Article info);
 }

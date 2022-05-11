@@ -14,11 +14,11 @@
               <div class="author-info-box">
                 <div class="author-name">
                   <a :href="`/user/${article.userId}`" class="username ellipsis">
-                    <span class="name" style="max-width: 128px;">{{article.userName}}</span> 
+                    <span class="name" style="max-width: 128px;">{{article.userName}}</span>
                   </a>
                 </div>
                 <div class="meta-box">
-                  <time datetime="2021-11-26T02:56:50.000Z" class="time">{{article.creatTime}}</time> 
+                  <time datetime="2021-11-26T02:56:50.000Z" class="time">{{article.creatTime}}</time>
                   <span class="views-count">
                     &nbsp;点赞 {{article.likeCount}}
                   </span>

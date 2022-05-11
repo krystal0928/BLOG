@@ -3,6 +3,7 @@ package com.krystal.blog.common.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.model.Article;
+import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -69,4 +70,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " GROUP BY a.id "})
     ArticleVo selectArticle(@Param("id")Long id, @Param("userId") Long userId);
 
+    @Select("select * from article")
+    Page<ArticleCommentVo> getArticleList(Page<ArticleCommentVo> page, Article info);
 }
