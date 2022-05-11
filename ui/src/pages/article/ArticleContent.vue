@@ -33,7 +33,7 @@
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
           <!-- 评论 -->
-          <ArticleComment id="comment" :article-id="article.id"></ArticleComment>
+          <ArticleComment id="comment" :article-id="article.id" @update="reloadArticle"></ArticleComment>
         </div>
         <div class="sidebar">
           <div class="fixed card">
@@ -128,12 +128,16 @@ let article:any = ref({
 })
 let reader:any = ref({})
 
-onMounted(() => {
+const reloadArticle = () => {
   getPublishArticleById(route.params.id).then(res => {
     if (res.code == 200) {
       article.value = res.data
     }
   })
+}
+
+onMounted(() => {
+  reloadArticle()
   const userId = user.value.token?.split(',')[0]
   getUserVoById(userId, route.query.userId).then(res => {
     if (res.code == 200) {

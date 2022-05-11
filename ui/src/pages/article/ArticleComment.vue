@@ -19,7 +19,8 @@
             </div>
             <p class="content">{{ comment.content }}</p>
             <div class="action">
-              <a href="javascript:void(0)" @click="toReply(comment.id)">回复评论</a>
+              <a class="reply" href="javascript:void(0)" @click="toReply(comment.id)">回复评论</a>
+              <a v-if="comment.userId == logInUserId" class="remove" href="javascript:void(0)" @click="toRemove(comment.id)">删除评论</a>
             </div>
           </div>
           <div class="level2" v-for="comment2 in comment.list">
@@ -33,7 +34,8 @@
                 <p class="content">{{ comment2.content }}</p>
                 <p class="parent">回复：“ {{ comment2.parentContent }} ”</p>
                 <div class="action">
-                  <a href="javascript:void(0)" @click="toReply(comment2.id)">回复评论</a>
+                  <a class="reply" href="javascript:void(0)" @click="toReply(comment2.id)">回复评论</a>
+                  <a v-if="comment2.userId == logInUserId" class="remove" href="javascript:void(0)" @click="toRemove(comment2.id)">删除评论</a>
                 </div>
               </div>
             </div>
@@ -48,9 +50,10 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addComment, getCommentList, getSecondLevelCommentList } from '../../api/article';
+import { addComment, deleteComment, getCommentList, getSecondLevelCommentList } from '../../api/article';
 
 const props = defineProps(['articleId'])
+const emit = defineEmits(['update'])
 const router = useRouter()
 const store = useStore()
 
@@ -61,6 +64,8 @@ const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+const logInUserId = user.value.token?.split(',')[0]
+
 const pagination:any = ref({
   pageNo: 1,
   pageSize: 10
@@ -68,15 +73,6 @@ const pagination:any = ref({
 
 const comment: any = ref({})
 const commentList: any = ref([])
-
-watchEffect(() => {
-  comment.value.articleId = props.articleId
-  pagination.value.articleId = props.articleId
-
-  if (props.articleId) {
-    loadCommentList()
-  }
-})
 
 // 检查用户是否登录
 const checkToken = () => {
@@ -116,7 +112,7 @@ const sendComment = () => {
 
 // 回复评论
 const toReply = (pid) => {
-  ElMessageBox.prompt('回复评论', 'Tip', {
+  ElMessageBox.prompt('请输入评论内容', '回复评论', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
   }).then(({ value }) => {
@@ -158,6 +154,37 @@ const loadCommentList = () => {
     }
   })
 }
+
+// 删除评论
+const toRemove = (commentId) => {
+  ElMessageBox.confirm('是否确认删除该评论',
+    '警告！',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+    deleteComment(commentId).then(res => {
+      if (res.code == 200) {
+        ElMessage.success(res.msg)
+        loadCommentList()
+        emit('update')
+      }
+    })
+  }).catch(() => {
+
+  })
+}
+
+watchEffect(() => {
+  comment.value.articleId = props.articleId
+  pagination.value.articleId = props.articleId
+
+  if (props.articleId) {
+    loadCommentList()
+  }
+})
 </script>
 <style scoped>
 .comment-wrap {
@@ -254,5 +281,14 @@ const loadCommentList = () => {
   font-size: 14px;
   color: #8a919f;
   margin: 0 0 8px;
+}
+.action {
+  display: flex;
+}
+.reply {
+  flex: 1 0 auto;
+}
+.remove {
+  flex: 0 0 auto;
 }
 </style>

@@ -73,10 +73,11 @@ import {
   MoreFilled,
 } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle } from '../../api/article';
+import bus from '../../bus';
 
 const props = defineProps(['permission', 'userId', 'orderFlag'])
 
@@ -276,6 +277,18 @@ const toDeleteArticle = (id) => {
       })
     }).catch(() => {})
 }
+
+const refresh = (title) => {
+  pagination.title = title
+  loadArticclelList()
+}
+
+// 启用监听
+bus.on('refresh', refresh);
+
+watchEffect(() => {
+  pagination.title = route.query.title
+})
 </script>
 <style scoped>
 

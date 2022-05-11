@@ -5,7 +5,7 @@
   </div>
   <div class="search">
     <el-input
-      v-model="input"
+      v-model="title"
       class="w-50 m-2"
       placeholder="Please Input" >
       <template #append>
@@ -39,13 +39,14 @@
 </template>
 <script lang="ts" setup>
 import { Search } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
-import { inject, ref } from 'vue'
+import { inject, ref, watchEffect } from 'vue'
 import { computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import { ElMessageBox } from 'element-plus'
 import {checkUserStatus} from '../../api/user'
+import bus from '../../bus'
 
 const reload: Function = inject('reload')
 
@@ -56,8 +57,11 @@ const logIn = computed(
 const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
-const input = ref('')
 const router = useRouter()
+const route = useRoute()
+
+const title = ref(route.query.title)
+
 const onLogin = () => {
   router.push('/login')
 }
@@ -68,9 +72,11 @@ const onHome = () => {
 const toSeach = () => {
   router.push({
     query: {
-      title: input.value
+      title: title.value
     }
   })
+  // 调用refresh事件
+  bus.emit('refresh', title.value)
 }
 
 const checkToken = () => {
@@ -106,12 +112,6 @@ const toUser = () => {
 
 const logOut = () => {
   store.commit('logOut')
-  // ElMessage({
-  //   showClose: true,
-  //   message: '退出成功！',
-  //   type: 'success',
-  // })
-  
   router.push({
     path: '/home'
   })
@@ -129,7 +129,7 @@ const toBindTFA = () =>{
     if (res.code==200 ) {
       if (res.data==1) {
         ElMessageBox.confirm('您已绑定二次验证码，点击确认重新绑定',
-          '警告！', 
+          '警告！',
           {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
@@ -143,7 +143,6 @@ const toBindTFA = () =>{
             }
           })
         }).catch(() => {
-        
         })
       } else {
         router.push({
@@ -167,7 +166,7 @@ const writeArticle = () => {
 .container{
   float: left;
   display: flex;
-} 
+}
 .container>*{
   padding: 0px 5px 0px 5px ;
   font-size: 1.33rem;

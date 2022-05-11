@@ -45,7 +45,10 @@ import { ElMessageBox } from 'element-plus';
 import { computed, inject, onMounted, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
+import bus from '../../bus';
 import ArticleItem from '../article/ArticleItem.vue';
+
+const reload: Function = inject('reload')
 
 const store = useStore()
 const router = useRouter()
@@ -77,7 +80,6 @@ const checkToken = () => {
   return true
 }
 
-
 onMounted(()=> {
   showTab0()
 })
@@ -94,20 +96,10 @@ const showTab1 = () => {
 
 const showTab2 = () => {
   if (checkToken())  {
-  permission.value = 'focus'
-  tabIndex.value = 2
+    permission.value = 'focus'
+    tabIndex.value = 2
   }
 }
-
-watchEffect(() => {
-  if (route.query.title) {
-    tabIndex.value = -1
-    setTimeout(_ => {
-      showTab0()
-    }, 1000)
-  }
-})
-
 </script>
 
 <style scoped>

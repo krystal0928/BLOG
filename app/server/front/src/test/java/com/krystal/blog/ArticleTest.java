@@ -22,9 +22,9 @@ public class ArticleTest extends BlogApplicationTests {
 
     @Test
     public void selectArticleList() {
-        Page<ArticleVo> page = new Page<>(1, 1);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListUserFocus(page, 1513538791300796417L, 1513538791300796418L);
-        log.info(articleVoList.toString());
+//        Page<ArticleVo> page = new Page<>(1, 1);
+//        Page<ArticleVo> articleVoList = articleService.selectArticleListUserFocus(page, 1513538791300796417L, 1513538791300796418L, null);
+//        log.info(articleVoList.toString());
     }
 
     @Test

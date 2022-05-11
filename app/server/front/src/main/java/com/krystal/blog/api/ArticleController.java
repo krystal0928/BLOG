@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -152,10 +153,11 @@ public class ArticleController {
     @PostMapping("/api/article/list/focus")
     public R articleListFocus(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                               @RequestParam(value = "userId", defaultValue = "0") Long userId,
-                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+                              String title,
+                              @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                              @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListUserFocus(page, loginUserId, userId);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListUserFocus(page, loginUserId, userId, title);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
@@ -192,8 +194,8 @@ public class ArticleController {
     @PostMapping("/api/article/list/getCollectArticle")
     public R getCollectArticle(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                                @RequestParam(value = "userId", defaultValue = "0") Long userId,
-                                 @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                                 @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+                               @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleVo> articleVoList = articleService.selectCollectArticle(page, loginUserId, userId);
 
@@ -423,10 +425,15 @@ public class ArticleController {
         if (null == articleComment)
             return  R.error(400,"该评论 目前已不存在！");
         if (articleComment.getPid() == null) {
-            if(!articleCommentService.remove(articleCommentService.lambdaQuery()
+            List<ArticleComment> list = articleCommentService.lambdaQuery()
                     .eq(ArticleComment::getPid,commentId)
-                    .getWrapper()))
-                return R.error(400,"评论删除失败！");
+                    .list();
+            if (!list.isEmpty()) {
+                if(!articleCommentService.remove(articleCommentService.lambdaQuery()
+                        .eq(ArticleComment::getPid,commentId)
+                        .getWrapper()))
+                    return R.error(400,"评论删除失败！");
+            }
         }
         if(!articleCommentService.removeById(commentId))
             return R.error(400,"评论删除失败！");
@@ -438,6 +445,7 @@ public class ArticleController {
      * @param articleId
      * @return
      */
+    @NoNeedLogIn
     @PostMapping("/api/article/getCommentList")
     public R getCommentList(Long articleId,
                             @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
@@ -458,6 +466,7 @@ public class ArticleController {
      * @param pid
      * @return
      */
+    @NoNeedLogIn
     @PostMapping("/api/article/second-level-comment-list")
     public R getSecondLevelCommentList(Long articleId,
                                        Long pid,

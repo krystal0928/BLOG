@@ -36,12 +36,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     }
 
     @Override
-    public Page<ArticleVo> selectArticleListUserFocus(Page<ArticleVo> page, Long loginUserId, Long userId) {
-        return articleMapper.selectArticleListUserFocus(page, loginUserId, userId);
+    public Page<ArticleVo> selectArticleListUserFocus(Page<ArticleVo> page,
+                                                      Long loginUserId,
+                                                      Long userId,
+                                                      String title) {
+        return articleMapper.selectArticleListUserFocus(page, loginUserId, userId, title);
     }
 
     @Override
-    public Page<ArticleVo> selectCollectArticle(Page<ArticleVo> page, Long loginUserId, Long userId) {
+    public Page<ArticleVo> selectCollectArticle(Page<ArticleVo> page,
+                                                Long loginUserId,
+                                                Long userId) {
         return articleMapper.selectCollectArticle(page, loginUserId, userId);
     }
 
