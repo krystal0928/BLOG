@@ -110,7 +110,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/api/article/delete")
-    public R publishArticle (Long id) {
+    public R deleteArticle (Long id) {
         Assert.notNull(id, "文章 ID 不能为空！");
 
         // 查询文章是否存在

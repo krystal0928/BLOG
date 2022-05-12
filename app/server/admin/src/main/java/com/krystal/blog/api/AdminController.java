@@ -55,7 +55,7 @@ public class AdminController {
      */
     @NoNeedLogIn
     @PostMapping(value = "/api/admin/login")
-    public R login(String username, String password, String code) {
+    public R login(String username, String password) {
         // 1. find User by username
         Admin admin = adminService.lambdaQuery()
                 .eq(Admin::getUsername, username.trim())
@@ -68,8 +68,8 @@ public class AdminController {
         if ( !admin.getPassword().equals(DigestUtil.md5Hex(password)) ) {
             return R.error(404, "用户名或者密码错误");
         }
-        if (StrUtil.isBlank(code) && admin.getStatus()==1)
-            return R.error(400,"验证码不能为空");
+//        if (StrUtil.isBlank(code) && admin.getStatus()==1)
+//            return R.error(400,"验证码不能为空");
         String token = admin.getId() + "," + System.currentTimeMillis();
         HashMap<String,String> map = new HashMap<>();
         map.put("username",admin.getUsername());

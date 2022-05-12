@@ -44,4 +44,18 @@ public class ArticleController {
                 .put("total", list.getTotal());
     }
 
+
+    /**
+     * 删除文章
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/api/article/deleteArticle")
+    public R deleteArticle(Long id){
+        if(!articleService.removeById(id))
+            return R.error(400,"文章删除失败！");
+        return R.ok("文章删除成功！");
+    }
+
+
 }
