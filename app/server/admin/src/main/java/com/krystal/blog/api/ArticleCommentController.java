@@ -5,7 +5,6 @@ import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.service.ArticleCommentService;
-import com.krystal.blog.common.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
