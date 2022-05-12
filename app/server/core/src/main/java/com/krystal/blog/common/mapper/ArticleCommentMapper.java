@@ -32,6 +32,6 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
                                               @Param("articleId") Long articleId,
                                               @Param("pid") Long pid);
 
-    @Select("select * from article_comment")
+    
     Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, Article info);
 }
