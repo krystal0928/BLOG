@@ -18,6 +18,7 @@ public class ArticleVo extends Article {
 
     private String userName;
     private Long userId;
+    private String userImg;
     private Integer collectCount;
     private Integer commentCount;
     private Integer likeCount;

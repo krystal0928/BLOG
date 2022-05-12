@@ -9,7 +9,9 @@
             </h1>
             <div class="author-info-block">
               <a :href="`/user/${article.userId}`" class="avatar-link">
-                <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" loading="lazy" class="lazy avatar avatar">
+                <img v-if="!article.userImg" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da" class="avatar">
+                <img v-if="article.userImg" :src="article.userImg" class="avatar">
+                <!-- <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" data-src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" loading="lazy" class="lazy avatar avatar"> -->
               </a>
               <div class="author-info-box">
                 <div class="author-name">
@@ -27,8 +29,8 @@
                   </span>
                 </div>
               </div>
-              <el-button :disabled="reader.id==article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
-              <el-button :disabled="reader.id==article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
+              <el-button :disabled="loginUserId == article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 0">关注</el-button>
+              <el-button :disabled="loginUserId == article.userId" class="follow-button" @click="toChangeFocus(article.userId)" v-if="reader.focused == 1">取消关注</el-button>
             </div>
             <div v-html="article.content" class="editor-content-view"></div>
           </article>
@@ -39,7 +41,10 @@
           <div class="fixed card">
             <div class="sidebar-block author-block">
               <a :href="`/user/${article.userId}`" class="user-item item">
-                <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy">
+
+                <img v-if="!article.userImg" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da" class="avatar">
+                <img v-if="article.userImg" :src="article.userImg" class="avatar">
+                <!-- <img src="https://p9-passport.byteacctimg.com/img/user-avatar/fc7d615744af612d3010a85f7db27f6f~300x300.image" class="lazy avatar avatar" loading="lazy"> -->
                 <div class="info-box" >
                   <a :href="`/user/${article.userId}`" class="username">
                     <span class="name" style="max-width: 128px;">{{reader.username}}</span>
@@ -84,30 +89,7 @@
           </el-badge>
         </div>
 
-        <div class="share-btn panel-btn" >
-        <svg class="sprite-icon icon-share" ><use xlink:href="#icon-share"></use></svg>
-          <div class="share-popup" >
-            <ul >
-              <li class="share-item wechat" >
-                <svg class="sprite-icon share-icon icon-wechat" ><use xlink:href="#icon-wechat"></use></svg> 
-                <span class="share-item-title" >微信</span>
-                <div class="wechat-qrcode" >
-                    <img class="wechat-qrcode-img" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fe380776a92b495a9180da916c989846~tplv-k3u1fbpfcp-zoom-crop-mark:1304:1304:1304:734.awebp?"/>
-                    <span class="wechat-qrcode-title" >微信扫码分享</span>
-                  </div>
-              </li>
-              <li class="share-item weibo" >
-                <svg class="sprite-icon share-icon icon-weibo" ><use xlink:href="#icon-weibo"></use></svg> 
-                <span class="share-item-title" >新浪微博</span>
-              </li>
-              <li class="share-item qq" >
-                <svg class="sprite-icon share-icon icon-qq" ><use xlink:href="#icon-qq"></use></svg>
-                <span class="share-item-title" >QQ</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="divider" ></div>
+
         <el-backtop  class="backtop" :visibility-height="180">UP </el-backtop>
       </div>
     </div>
@@ -128,6 +110,13 @@ let article:any = ref({
 })
 let reader:any = ref({})
 
+const store = useStore()
+const user:any = computed(
+  mapGetters(['getUser']).getUser.bind({ $store: store })
+)
+
+const loginUserId = user.value.token?.split(',')[0]
+
 const reloadArticle = () => {
   getPublishArticleById(route.params.id).then(res => {
     if (res.code == 200) {
@@ -138,17 +127,12 @@ const reloadArticle = () => {
 
 onMounted(() => {
   reloadArticle()
-  const userId = user.value.token?.split(',')[0]
-  getUserVoById(userId, route.query.userId).then(res => {
+  getUserVoById(loginUserId, route.query.userId).then(res => {
     if (res.code == 200) {
       reader.value = res.data
     }
   })
 })
-const store = useStore()
-const user:any = computed(
-  mapGetters(['getUser']).getUser.bind({ $store: store })
-)
 
 const checkToken = () => {
   if (!user.value.token) {
