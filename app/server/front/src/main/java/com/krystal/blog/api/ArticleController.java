@@ -59,7 +59,9 @@ public class ArticleController {
         if (null == info.getId()) {
             info.setId(snowFlakeTemplate.getIdLong());
             info.setStatus(ArticleStatusEnum.STATUS0.getCode());
-        } else {
+        }
+        // 如果是已发布文章，保存草稿
+        if (ArticleStatusEnum.STATUS1.getCode().equals(info.getStatus())) {
             info.setStatus(ArticleStatusEnum.STATUS2.getCode());
         }
         info.setUserId(user.getId());
@@ -119,9 +121,33 @@ public class ArticleController {
             return R.error(400 ,"文章不存在！");
         }
 
+        // 判断文章状态，为 2：已修改 特殊处理
+        if (ArticleStatusEnum.STATUS2.getCode().equals(article.getStatus())) {
+            // 先从已发布文件里面读取内容，还原到数据库
+            String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
+            if (!cn.hutool.core.io.FileUtil.exist(filePath)) {
+                return R.error(400, "文章发布信息不存在");
+            }
+            // 读取文件
+            FileReader reader = new FileReader(filePath);
+            String content = reader.readString();
+            // 还原发布时的信息
+            article.setContent(content);
+            article.setDescription(article.getPubDescription());
+            // 设置文章状态为发布中
+            article.setStatus(ArticleStatusEnum.STATUS1.getCode());
+        } else if (ArticleStatusEnum.STATUS1.getCode().equals(article.getStatus())) {
+            // 如果文章状态是 1：已发布 需要删除已发布文件
+            // 先从已发布文件里面读取内容，还原到数据库
+            String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
+            if (cn.hutool.core.io.FileUtil.exist(filePath)) {
+                cn.hutool.core.io.FileUtil.del(filePath);
+            }
+        }
+
         // 设置为删除
         article.setDeleted(ArticleDeletedEnum.STATUS1.getCode());
-        if (!articleService.saveOrUpdate(article)) {
+        if (!articleService.updateById(article)) {
             return R.error(400, "文章删除失败！");
         }
         return R.error(200, "文章删除成功！");
