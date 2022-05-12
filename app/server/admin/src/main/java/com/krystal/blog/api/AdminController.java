@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
 // 接口
 @RestController
@@ -32,20 +33,6 @@ import java.util.HashMap;
 public class AdminController {
     @Resource
     private AdminService adminService;
-
-    /**
-     * 获取用户信息
-     * @return
-     */
-    @PostMapping(value = "/api/admin/getUserInfo")
-    public R getUserInfo(@RequestHeader("token") String token)  {
-//        Admin user = adminService.getUserByToken(token);
-//        if (null == user) {
-//            return R.error(400, "用户不存在");
-//        }
-//        return R.okData("登录成功！",user);
-        return null;
-    }
 
     /**
      * 登录
@@ -75,6 +62,21 @@ public class AdminController {
         map.put("username",admin.getUsername());
         map.put("token",token);
         return R.okData("登录成功！",map);
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @PostMapping(value = "/api/admin/info")
+    public R getUserInfo(@RequestHeader("token") String token)  {
+        Admin admin = adminService.getUserByToken(token);
+        if (null == admin) {
+            return R.error(400, "用户不存在");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("username", admin.getUsername());
+        return R.okData("登录成功！", map);
     }
 
 }

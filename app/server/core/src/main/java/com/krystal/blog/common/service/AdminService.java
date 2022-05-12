@@ -8,4 +8,5 @@ import com.krystal.blog.common.model.vo.UserVo;
 
 public interface AdminService extends IService<Admin> {
 
+    Admin getUserByToken(String token);
 }

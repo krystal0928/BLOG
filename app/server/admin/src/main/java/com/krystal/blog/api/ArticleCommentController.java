@@ -27,7 +27,7 @@ public class ArticleCommentController {
      * @param pageSize
      * @return
      */
-    @PostMapping(value = "/api/article/list")
+    @PostMapping(value = "/api/comment/list")
     public R articleList(Article info,
                          @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                          @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {

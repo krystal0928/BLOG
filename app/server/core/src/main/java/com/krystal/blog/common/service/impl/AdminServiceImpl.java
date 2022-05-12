@@ -20,4 +20,11 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Resource
     private AdminMapper adminMapper;
 
+    @Override
+    public Admin getUserByToken(String token) {
+        Long id = Long.parseLong(token.split(",")[0]);
+        Admin admin = this.lambdaQuery()
+                .eq(Admin::getId, id).one();
+        return admin;
+    }
 }
