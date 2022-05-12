@@ -70,7 +70,7 @@ export const constantRoutes = [
       {
         path: 'comment',
         name: 'article-comment',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/comment/index'),
         meta: { title: '评论列表', icon: 'tree' }
       }
     ]

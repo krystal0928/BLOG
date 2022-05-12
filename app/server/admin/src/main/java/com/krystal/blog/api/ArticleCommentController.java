@@ -33,7 +33,7 @@ public class ArticleCommentController {
         Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleCommentVo> list = articleCommentService.getArticleCommentList(page, info);
 
-        return R.okData("查询文章成功", list.getRecords())
+        return R.okData("查询评论成功", list.getRecords())
                 .put("total", list.getTotal());
     }
 
