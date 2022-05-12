@@ -70,6 +70,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
             " GROUP BY a.id "})
     ArticleVo selectArticle(@Param("id")Long id, @Param("userId") Long userId);
 
-    @Select("select * from article")
+    @Select("select a.*, u.username userName from article a left join user u on a.user_id = u.id")
     Page<ArticleVo> getArticleList(Page<ArticleVo> page, Article info);
 }

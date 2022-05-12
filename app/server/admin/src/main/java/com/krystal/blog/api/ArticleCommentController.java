@@ -5,7 +5,6 @@ import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.service.ArticleCommentService;
-import com.krystal.blog.common.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +33,7 @@ public class ArticleCommentController {
         Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleCommentVo> list = articleCommentService.getArticleCommentList(page, info);
 
-        return R.okData("查询文章成功", list.getRecords())
+        return R.okData("查询评论成功", list.getRecords())
                 .put("total", list.getTotal());
     }
 

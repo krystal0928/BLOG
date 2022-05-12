@@ -56,7 +56,7 @@ const actions = {
         const { username, avatar } = data
 
         commit('SET_NAME', username)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
         resolve(data)
       }).catch(error => {
         reject(error)
