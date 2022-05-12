@@ -8,6 +8,7 @@ import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.model.Admin;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
+import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.AdminService;
 import com.krystal.blog.common.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,8 @@ public class ArticleController {
     public R articleList(Article info,
                          @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                          @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleCommentVo> list = articleService.getArticleList(page, info);
+        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
+        Page<ArticleVo> list = articleService.getArticleList(page, info);
 
         return R.okData("查询文章成功", list.getRecords())
                 .put("total", list.getTotal());
