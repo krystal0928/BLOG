@@ -58,7 +58,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
                                               @Param("status") Integer status);
 
 
-    @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,a.permission,u.username userName, u.id userId, " ,
+    @Select({"select a.id id, a.title title, a.filepath filepath, a.create_time createTime,a.permission,u.username userName, u.id userId, u.img as userImg, " ,
             " ifnull(count(distinct al.id), 0) likeCount, ifnull(count(distinct ac.id), 0) commentCount, ifnull(count(distinct acl.id), 0) collectCount, ",
             " (select count(id) from article_like where article_id = a.id and user_id = #{userId}) as liked, ",
             " (select count(id) from article_collection where article_id = a.id and user_id = #{userId}) as collected ",

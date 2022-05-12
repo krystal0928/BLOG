@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
 
-    @Select({" select ac.*, u.username userName, acp.content parentContent ",
+    @Select({" select ac.*, u.username userName, u.img userImg, acp.content parentContent ",
             " from article_comment ac ",
             " left join user u on ac.user_id = u.id ",
             " left join article_comment acp on acp.id = ac.pid ",
@@ -22,12 +22,12 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
     Page<ArticleCommentVo> getFirstLevelList(Page<ArticleCommentVo> page,
                                              @Param("articleId") Long articleId);
 
-    @Select({" select ac.*, u.username userName, acp.content parentContent ",
+    @Select({" select ac.*, u.username userName, u.img userImg, acp.content parentContent ",
             " from article_comment ac ",
             " left join user u on ac.user_id = u.id ",
             " left join article_comment acp on acp.id = ac.pid ",
             " where ac.article_id = #{articleId} ",
-            " and ac.pid != '' and ac.pid is not null "})
+            " and ac.pid = #{pid} "})
     Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page,
                                               @Param("articleId") Long articleId,
                                               @Param("pid") Long pid);

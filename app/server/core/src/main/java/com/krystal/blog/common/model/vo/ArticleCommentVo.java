@@ -17,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ArticleCommentVo extends ArticleComment {
     private String userName;
+    private String userImg;
     private String parentContent;
 }
 

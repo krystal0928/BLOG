@@ -2,7 +2,9 @@
   <div class="comment-wrap card">
     <span class="title">评论</span>
     <div class="comment">
-      <img class="head-img" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+      <img v-if="!user.img" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da" class="head-img" >
+      <img v-if="user.img" :src="user.img" class="head-img" >
+      <!-- <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp"> -->
       <el-input v-model="comment.content" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" placeholder="请留言..." @keydown="checkToken"></el-input>
     </div>
     <el-button class="btn" type="primary" @click="sendComment" :disabled="!logIn">发送</el-button>
@@ -10,7 +12,8 @@
     <span class="title">评论列表</span>
     <div class="comment-list">
       <div class="level1" v-for="comment in commentList">
-        <img class="comment-head-img1" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+        <img v-if="!comment.userImg" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da" class="comment-head-img1" >
+        <img v-if="comment.userImg" :src="comment.userImg" class="comment-head-img1" >
         <div class="context">
           <div class="box">
             <div class="user">
@@ -24,7 +27,9 @@
             </div>
           </div>
           <div class="level2" v-for="comment2 in comment.list">
-            <img class="comment-head-img2" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp">
+            <img v-if="!comment2.userImg" src="https://i03piccdn.sogoucdn.com/cafc10742b9b77da" class="comment-head-img2" >
+            <img v-if="comment2.userImg" :src="comment2.userImg" class="comment-head-img2" >
+            <!-- <img class="comment-head-img2" src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/mirror-assets/1697148e7969d916ec3~tplv-t2oaga2asx-no-mark:180:180:180:180.awebp"> -->
             <div class="context">
               <div class="box">
                 <div class="user">
@@ -65,7 +70,6 @@ const user:any = computed(
 )
 
 const logInUserId = user.value.token?.split(',')[0]
-
 const pagination:any = ref({
   pageNo: 1,
   pageSize: 10
@@ -105,6 +109,7 @@ const sendComment = () => {
     if (res.code == 200) {
       // 评论成功, 刷新评论列表
       ElMessage.success(res.msg)
+      emit("update")
       loadCommentList()
     }
   })
@@ -126,6 +131,7 @@ const toReply = (pid) => {
         // 评论成功, 刷新评论列表
         ElMessage.success(res.msg)
         loadCommentList()
+        emit('update')
       }
     })
   }).catch(() => {
@@ -201,6 +207,7 @@ watchEffect(() => {
 }
 .head-img {
   flex: 0 0 auto;
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   place-self: center;
@@ -222,6 +229,7 @@ watchEffect(() => {
 
 .comment-head-img1 {
   flex: 0 0 auto;
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
@@ -266,6 +274,7 @@ watchEffect(() => {
 }
 .comment-head-img2 {
   flex: 0 0 auto;
+  width: 30px;
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
