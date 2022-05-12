@@ -17,11 +17,8 @@ import lombok.experimental.SuperBuilder;
 public class ArticleVo extends Article {
 
     private String userName;
-<<<<<<< HEAD
     private Long userId;
     private String userImg;
-=======
->>>>>>> 9a524fa6a6c0a0e9a4899cd8e19d19e027441340
     private Integer collectCount;
     private Integer commentCount;
     private Integer likeCount;
