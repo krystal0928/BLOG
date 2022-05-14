@@ -14,7 +14,7 @@
     </el-input>
   </div>
   <div class="container_right">
-    <el-button v-if="!logIn" type="primary" class="btn-r" @click="onLogin" round>登录/注册</el-button>
+    <el-button v-if="!logIn" type="primary" class="btn-r btn" @click="onLogin" round>登录/注册</el-button>
     <el-dropdown v-if="logIn">
       <el-tooltip
         class="box-item"
@@ -33,7 +33,7 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r" round @click.prevent="writeArticle">写文章</el-button>
+    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r btn" round @click.prevent="writeArticle">写文章</el-button>
     <div class="btn-r" style="height:60px"></div>
   </div>
 </template>
@@ -196,7 +196,6 @@ const writeArticle = () => {
   padding: 0px 5px 0px 5px ;
   font-size: 1.33rem;
   line-height: 60px;
-  margin-right: 20px;
   display: flex;
 }
 .container_right>*{
@@ -210,5 +209,8 @@ const writeArticle = () => {
 .btn-r {
   font-size: 15px;
   margin: auto 5px;
+}
+.btn {
+  width: 100px;
 }
 </style>

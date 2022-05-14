@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.krystal.blog.common.mapper.ArticleTypeMapper">
+
+    <!--  查询文章分类信息  -->
+    <select id="getArticleType" resultType="com.krystal.blog.common.model.vo.ArticleTypeVo">
+        select art.*,
+               count(a.id) articleCount
+        from article_type art
+            left join article a on art.id = a.type_id
+        where art.id = #{id}
+        GROUP BY art.id
+    </select>
+
+</mapper>

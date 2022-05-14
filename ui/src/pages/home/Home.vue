@@ -27,9 +27,9 @@
         </div>
       </div>
     </div>
-
+    <!-- 文章分类 -->
     <div class="right-card">
-      <ArticleType></ArticleType>
+      <ArticleTypeItem></ArticleTypeItem>
     </div>
   </div>
 </template>
@@ -37,12 +37,11 @@
 
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus';
-import { computed, inject, onMounted, ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { articleTypeList } from '../../api/articleType';
 import ArticleItem from '../article/ArticleItem.vue';
-import ArticleType from '../article/ArticleType.vue';
+import ArticleTypeItem from '../article/ArticleTypeItem.vue';
 
 const store = useStore()
 const router = useRouter()
