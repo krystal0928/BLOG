@@ -68,7 +68,7 @@ onMounted(() => {
 <style scoped>
 .wapper {
   margin: 20px auto 10px;
-  width: 70%;
+  width: 60%;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;

@@ -294,7 +294,7 @@ const tochangeCollect = (articleId) =>{
 .container {
   position: relative;
   margin: 20px auto;
-  width: 70%;
+  width: 60%;
 }
 .column-view {
   padding: 0 0 8rem;

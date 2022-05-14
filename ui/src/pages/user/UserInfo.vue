@@ -281,7 +281,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   display: block;
 }
 .user-wrap {
-  width: 70%;
+  width: 60%;
   margin: 20px auto;
 }
 .context {
