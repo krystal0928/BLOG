@@ -8,7 +8,7 @@
           </a>
           <div class="date">{{article.createTime}}</div>
           <div class="tag_list">
-            <a href="/tag/Flutter" rel="" class="tag">Flutter</a>
+            <a href="/tag/Flutter" rel="" class="tag">{{article.typeName}}</a>
           </div>
         </div>
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
@@ -72,7 +72,7 @@
 import {
   MoreFilled,
 } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
@@ -198,6 +198,7 @@ const tochangeLike = (articleId) =>{
         if (element.liked == 0) {
           addArticleLike(articleId).then(res => {
             if (res.code == 200) {
+              ElMessage.success(res.msg)
               element.liked = 1;
               element.likeCount++;
               // 通知父组件
@@ -208,6 +209,7 @@ const tochangeLike = (articleId) =>{
         if (element.liked != 0){
           deleteArticleLike(articleId).then(res => {
             if (res.code == 200) {
+              ElMessage.success(res.msg)
               element.liked = 0;
               element.likeCount--;
               // 通知父组件
@@ -227,6 +229,7 @@ const tochangeCollect = (articleId) =>{
         if (element.collected == 0) {
           addArticleCollect(articleId).then(res => {
             if (res.code == 200) {
+              ElMessage.success(res.msg)
               element.collected = 1;
               element.collectCount++;
               // 通知父组件
@@ -237,6 +240,7 @@ const tochangeCollect = (articleId) =>{
         if (element.collected != 0){
           deleteArticleCollect(articleId).then(res => {
             if (res.code == 200) {
+              ElMessage.success(res.msg)
               element.collected = 0;
               element.collectCount--;
               // 通知父组件
@@ -269,6 +273,7 @@ const toDeleteArticle = (id) => {
     ).then(() => {
       deleteArticle(id).then(res => {
         if (res.code == 200) {
+          ElMessage.success(res.msg)
           // 重新加载文章信息
           loadArticclelList()
           // 通知父组件

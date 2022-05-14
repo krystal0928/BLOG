@@ -96,7 +96,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { ref, onMounted, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { mapGetters, useStore } from 'vuex';
@@ -148,7 +148,6 @@ const checkToken = () => {
         path: '/login'
       })
     }).catch(() => {
-  
     })
     return false
   }
@@ -161,6 +160,7 @@ const toChangeFocus = (articleUserId) => {
       if (reader.value.focused == 0) {
         addUserFocus(articleUserId).then(res => {
           if (res.code == 200) {
+            ElMessage.success(res.msg)
             reader.value.focused = 1;
             reader.value.focusCount++;
           }
@@ -169,6 +169,7 @@ const toChangeFocus = (articleUserId) => {
       if (reader.value.focused == 1){
         deleteUserFocus(articleUserId).then(res => {
           if (res.code == 200) {
+            ElMessage.success(res.msg)
             reader.value.focused = 0;
             reader.value.focusCount--;
           }
@@ -183,6 +184,7 @@ const tochangeLike = (articleId) =>{
       if (article.value.liked == 0) {
         addArticleLike(articleId).then(res => {
           if (res.code == 200) {
+            ElMessage.success(res.msg)
             article.value.liked = 1;
             article.value.likeCount++;
             reader.value.likeCount++;
@@ -192,6 +194,7 @@ const tochangeLike = (articleId) =>{
       if (article.value.liked != 0){
         deleteArticleLike(articleId).then(res => {
           if (res.code == 200) {
+            ElMessage.success(res.msg)
             article.value.liked = 0;
             article.value.likeCount--;
             reader.value.likeCount--;
@@ -207,6 +210,7 @@ const tochangeCollect = (articleId) =>{
     if (article.value.collected == 0) {
       addArticleCollect(articleId).then(res => {
         if (res.code == 200) {
+          ElMessage.success(res.msg)
           article.value.collected = 1;
           article.value.collectCount++;
           reader.value.collectCount++;
@@ -216,6 +220,7 @@ const tochangeCollect = (articleId) =>{
     if (article.value.collected != 0){
       deleteArticleCollect(articleId).then(res => {
         if (res.code == 200) {
+          ElMessage.success(res.msg)
           article.value.collected = 0;
           article.value.collectCount--;
           reader.value.collectCount--;

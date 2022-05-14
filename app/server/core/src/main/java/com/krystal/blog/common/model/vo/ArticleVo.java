@@ -16,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ArticleVo extends Article {
 
+    private String typeName;
     private String userName;
     private Long userId;
     private String userImg;

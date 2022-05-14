@@ -22,15 +22,12 @@
                 effect="dark"
                 :content="user.username"
                 placement="left-start">
-                <el-avatar class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+                <el-avatar v-if="!user.img" class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+                <img v-else :src="user.img" class="img-avatar"/>
               </el-tooltip>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>个人中心</el-dropdown-item>
-                  <el-dropdown-item>文章管理</el-dropdown-item>
-                  <!-- <el-dropdown-item @click="toChange">修改密码</el-dropdown-item>
-                  <el-dropdown-item @click="toBindTFA">二次验证绑定</el-dropdown-item>
-                  <el-dropdown-item @click="logOut">退出登录</el-dropdown-item> -->
+                  <el-dropdown-item @click="toUser">个人中心</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -62,12 +59,6 @@
       <el-dialog v-model="dialogFormVisible" title="发布文章">
         <el-form :model="form">
           <el-form-item label="文章封面：" :label-width="formLabelWidth">
-            <el-radio-group v-model="form.imgFlag">
-              <el-radio :label="0">无</el-radio>
-              <el-radio :label="1">有</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item v-if="form.imgFlag == 1" label="" :label-width="formLabelWidth">
             <el-upload
               class="avatar-uploader"
               :action="uploadUrl"
@@ -77,9 +68,19 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
               >
-              <img v-if="coverImg" :src="coverImg" class="avatar" />
+              <img v-if="form.coverImg" :src="form.coverImg" class="avatar" />
               <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
             </el-upload>
+          </el-form-item>
+          <el-form-item label="文章分类：" :label-width="formLabelWidth">
+            <el-select v-model="form.typeId" placeholder="请选择分类！">
+            <el-option
+              v-for="item in typeList"
+              :key="item.id"
+              :label="item.typeName"
+              :value="item.id"
+            />
+            </el-select>
           </el-form-item>
           <el-form-item label="文章摘要：" :label-width="formLabelWidth">
             <el-input v-model="form.description" placeholder="请输入内容！"  autocomplete="off" :rows="2" type="textarea" />
@@ -112,10 +113,10 @@ import { ElMessage,  UploadProps } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { getArticleById, publishArticle, saveDraft, uploadUrl } from '../../api/article'
 import WangEditor from '../../components/WangEditor.vue'
+import { articleTypeList } from '../../api/articleType';
 
 const dialogFormVisible = ref(false)
 const backVisible = ref(false)
-const coverImg = ref('')
 const formLabelWidth = '140px'
 
 const router = useRouter()
@@ -124,7 +125,23 @@ const store = useStore()
 
 const form: any = ref({})
 
+const typeList: any = ref({})
+
+// 加载文章分类
+const loadArticleTypeList = () => {
+  const param = {
+    pageNo: 1,
+    pageSize: 20
+  }
+  articleTypeList(param).then(res => {
+    if (res.code === 200) {
+      typeList.value = res.data
+    }
+  })
+}
+
 onMounted(() => {
+  loadArticleTypeList()
   if (route.query.id){
     getArticleById(route.query.id).then(res => {
       if (res.code == 200) {
@@ -132,7 +149,6 @@ onMounted(() => {
       }
     })
   }
-  
 })
 
 const onTitle = (valueTitle) => {
@@ -149,7 +165,7 @@ const headers = reactive({
 
 
 const checkArticle = () => {
-  if (form.value.title.length < 2) {
+  if (form.value.title?.length < 2) {
     ElMessage({
       showClose: true,
       message: "文章标题最少2个字!",
@@ -157,7 +173,7 @@ const checkArticle = () => {
     })
     return false;
   }
-  if (form.value.content == '<p><br></p>') {
+  if (form.value?.content == '<p><br></p>') {
     ElMessage({
       showClose: true,
       message: "文章内容不能为空",
@@ -187,7 +203,15 @@ const toPublishArticle = () =>{
   }
 }
 const PublishArticle = () => {
-  if (form.value.description == null) {
+  if (!form.value?.typeId) {
+    ElMessage({
+      showClose: true,
+      message: "文章分类不能为空!",
+      type: 'error',
+    })
+    return;
+  }
+  if (!form.value?.description) {
     ElMessage({
       showClose: true,
       message: "摘要不能为空!",
@@ -210,7 +234,7 @@ const PublishArticle = () => {
   })
 }
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile ) => {
-  coverImg.value = URL.createObjectURL(uploadFile.raw!)
+  // form.value.coverImg = URL.createObjectURL(uploadFile.raw!)
   if(response.code == 200) {
     form.value.coverImg = response.data[0]
   } else {
@@ -238,6 +262,7 @@ const user:any = computed(
   mapGetters(['getUser']).getUser.bind({ $store: store })
 )
 
+const logInUserId = user.value.token?.split(',')[0]
 
 const toHome = () => {
   router.push({
@@ -245,7 +270,11 @@ const toHome = () => {
   })
 }
 
-
+const toUser = () => {
+  router.push({
+    path: `/user/${logInUserId}`
+  })
+}
 </script>
 
 <style>
@@ -276,6 +305,14 @@ const toHome = () => {
   width: 178px;
   height: 178px;
   display: block;
+}
+.img-avatar {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 50%;
+  line-height: 60px;
+  margin-top: 10px;
 }
 .header {
   height: 60px;

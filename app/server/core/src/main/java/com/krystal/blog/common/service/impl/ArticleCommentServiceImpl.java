@@ -23,8 +23,8 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
     }
 
     @Override
-    public Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page, Long articleId, Long pid) {
-        return articleCommentMapper.getSecondLevelList(page, articleId, pid);
+    public Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page, Long articleId, Long topId) {
+        return articleCommentMapper.getSecondLevelList(page, articleId, topId);
     }
 
     @Override

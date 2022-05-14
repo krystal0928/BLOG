@@ -12,16 +12,17 @@ const BindTFA = () => import('../pages/BindTFA.vue')
 const ArticleEdit = () => import('../pages/article/ArticleEdit.vue')
 const ArticleContent = () => import('../pages/article/ArticleContent.vue')
 const UserInfo = () => import('../pages/user/UserInfo.vue')
+const ArticleType = () => import('../pages/article/ArticleType.vue')
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
 const routes = [
-    { 
-        path: '/', component: Layout, redirect: '/home', children: [
+    { path: '/', component: Layout, redirect: '/home', children: [
         { path: '/home', component: Home },
         { path: '/article/:id', component: ArticleContent },
-        { path: '/user/:id', component: UserInfo}
+        { path: '/user/:id', component: UserInfo},
+        { path: '/article/type/:id', component: ArticleType}
     ]},
     { path: '/article-edit', component: ArticleEdit },
     { path: '/login', component: Login },
