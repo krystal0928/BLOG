@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.krystal.blog.common.mapper.ArticleMapper">
+
+    <!--  分页查询文章信息  -->
+    <select id="getArticleList" resultType="com.krystal.blog.common.model.vo.ArticleVo">
+        select a.*,
+               art.type_name typeName,
+               u.username userName
+        from article a
+            left join article_type art on art.id = a.type_id
+            left join user u on a.user_id = u.id
+    </select>
+</mapper>

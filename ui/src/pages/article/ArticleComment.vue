@@ -22,7 +22,7 @@
             </div>
             <p class="content">{{ comment.content }}</p>
             <div class="action">
-              <a class="reply" href="javascript:void(0)" @click="toReply(comment.id)">回复评论</a>
+              <a class="reply" href="javascript:void(0)" @click="toReplySub(comment.id, comment.id)">回复评论</a>
               <a v-if="comment.userId == logInUserId" class="remove" href="javascript:void(0)" @click="toRemove(comment.id)">删除评论</a>
             </div>
           </div>
@@ -39,7 +39,7 @@
                 <p class="content">{{ comment2.content }}</p>
                 <p class="parent">回复：“ {{ comment2.parentContent }} ”</p>
                 <div class="action">
-                  <a class="reply" href="javascript:void(0)" @click="toReply(comment2.id)">回复评论</a>
+                  <a class="reply" href="javascript:void(0)" @click="toReplySub(comment2.id, comment.id)">回复评论</a>
                   <a v-if="comment2.userId == logInUserId" class="remove" href="javascript:void(0)" @click="toRemove(comment2.id)">删除评论</a>
                 </div>
               </div>
@@ -72,7 +72,7 @@ const user:any = computed(
 const logInUserId = user.value.token?.split(',')[0]
 const pagination:any = ref({
   pageNo: 1,
-  pageSize: 10
+  pageSize: 1000
 })
 
 const comment: any = ref({})
@@ -116,7 +116,7 @@ const sendComment = () => {
 }
 
 // 回复评论
-const toReply = (pid) => {
+const toReplySub = (pid, topId) => {
   ElMessageBox.prompt('请输入评论内容', '回复评论', {
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
@@ -124,7 +124,8 @@ const toReply = (pid) => {
     const param = {
       articleId: props.articleId,
       content: value,
-      pid: pid
+      pid: pid,
+      topId: topId
     }
     addComment(param).then(res => {
       if (res.code == 200) {
@@ -149,7 +150,7 @@ const loadCommentList = () => {
       commentList.value = res.data
       commentList.value.forEach(element => {
         let param: any = {...pagination.value}
-        param.pid = element.id
+        param.topId = element.id
         // 加载子级评论
         getSecondLevelCommentList(param).then(res2 => {
           if (res2.code == 200) {
@@ -225,6 +226,8 @@ watchEffect(() => {
   display: inline-flex;
   width: 100%;
   margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e2e2;
 }
 
 .comment-head-img1 {
@@ -267,7 +270,7 @@ watchEffect(() => {
 }
 .level2 {
   display: inline-flex;
-  margin: 10px 0 20px;
+  margin: 10px 0 10px;
   padding: 16px;
   background: rgba(247,248,250,.7);
   border-radius: 4px;
@@ -286,7 +289,7 @@ watchEffect(() => {
   border-radius: 4px;
   padding: 0 12px;
   line-height: 36px;
-  height: 36px;
+  min-height: 36px;
   font-size: 14px;
   color: #8a919f;
   margin: 0 0 8px;

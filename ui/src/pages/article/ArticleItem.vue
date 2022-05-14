@@ -8,7 +8,7 @@
           </a>
           <div class="date">{{article.createTime}}</div>
           <div class="tag_list">
-            <a href="/tag/Flutter" rel="" class="tag">Flutter</a>
+            <a href="/tag/Flutter" rel="" class="tag">{{article.typeName}}</a>
           </div>
         </div>
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">

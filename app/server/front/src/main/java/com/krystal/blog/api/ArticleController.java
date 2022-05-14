@@ -488,21 +488,21 @@ public class ArticleController {
 
     /**
      * 查询二级评论
-     * @param articleId
-     * @param pid
+     * @param articleId 文章 ID
+     * @param topId 评论一级 ID
      * @return
      */
     @NoNeedLogIn
     @PostMapping("/api/article/second-level-comment-list")
     public R getSecondLevelCommentList(Long articleId,
-                                       Long pid,
+                                       Long topId,
                                        @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                        @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         if (null == articleService.getById(articleId))
             return R.error(400,"该文章目前已不存在！");
 
         Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleCommentVo> list = articleCommentService.getSecondLevelList(page, articleId, pid);
+        Page<ArticleCommentVo> list = articleCommentService.getSecondLevelList(page, articleId, topId);
 
         return R.okData("查询评论成功", list.getRecords())
                 .put("total", list.getTotal());

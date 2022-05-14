@@ -27,10 +27,10 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
             " left join user u on ac.user_id = u.id ",
             " left join article_comment acp on acp.id = ac.pid ",
             " where ac.article_id = #{articleId} ",
-            " and ac.pid = #{pid} "})
+            " and ac.top_id = #{topId} "})
     Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page,
                                               @Param("articleId") Long articleId,
-                                              @Param("pid") Long pid);
+                                              @Param("topId") Long topId);
 
     
     Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, Article info);

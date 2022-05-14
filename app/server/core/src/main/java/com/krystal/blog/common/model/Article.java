@@ -22,15 +22,14 @@ public class Article extends BaseModel {
 
     @TableId(type = IdType.INPUT)
     private Long id;
+    private Long typeId;
     private Long userId;
     private Integer status;
     private String title;
     private String description;
     private String pubDescription;
-//    @TableField(typeHandler = org.apache.ibatis.type.BlobTypeHandler.class)
     private String content;
     private String filepath;
     private String coverImg;
     private Integer permission;
-//    private String contentStr;
 }

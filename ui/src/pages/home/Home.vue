@@ -28,14 +28,9 @@
       </div>
     </div>
 
-    <!-- <div class="right-card">
-      <el-card class="box-card">
-        <div class="signin-tip signin" >
-          <div class="first-line" style="opacity: 1;" >
-          </div>
-        </div>
-      </el-card>
-    </div> -->
+    <div class="right-card">
+      <ArticleType></ArticleType>
+    </div>
   </div>
 </template>
 
@@ -45,20 +40,19 @@ import { ElMessageBox } from 'element-plus';
 import { computed, inject, onMounted, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import bus from '../../bus';
+import { articleTypeList } from '../../api/articleType';
 import ArticleItem from '../article/ArticleItem.vue';
-
-const reload: Function = inject('reload')
+import ArticleType from '../article/ArticleType.vue';
 
 const store = useStore()
 const router = useRouter()
-const route = useRoute()
 const permission = ref('public')
 const tabIndex = ref(0)
 
 const logIn = computed(
   mapGetters(['getLogIn']).getLogIn.bind({ $store: store })
 )
+
 const checkToken = () => {
   if (!logIn.value) {
     ElMessageBox.confirm('登录之后才可以查看关注哦！',
@@ -111,7 +105,7 @@ const showTab2 = () => {
   justify-content: space-between;
 }
 .left-card {
-  flex: 3;
+  flex: 1 0 70%;
   margin-right: 20px;
 }
 .list-header {
@@ -153,7 +147,7 @@ const showTab2 = () => {
   width: 100%;
 }
 .right-card {
-  flex: 1;
+  flex: 0 0 30%;
 }
 .article-card {
   display: flex;
