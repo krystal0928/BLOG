@@ -22,14 +22,12 @@
                 effect="dark"
                 :content="user.username"
                 placement="left-start">
-                <el-avatar class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+                <el-avatar v-if="!user.img" class="avatar">{{user.username?.substring(0,1)}}</el-avatar>
+                <img v-else :src="user.img" class="img-avatar"/>
               </el-tooltip>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="toUser">个人中心</el-dropdown-item>
-                  <!-- <el-dropdown-item @click="toChange">修改密码</el-dropdown-item>
-                  <el-dropdown-item @click="toBindTFA">二次验证绑定</el-dropdown-item>
-                  <el-dropdown-item @click="logOut">退出登录</el-dropdown-item> -->
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -307,6 +305,14 @@ const toUser = () => {
   width: 178px;
   height: 178px;
   display: block;
+}
+.img-avatar {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 50%;
+  line-height: 60px;
+  margin-top: 10px;
 }
 .header {
   height: 60px;
