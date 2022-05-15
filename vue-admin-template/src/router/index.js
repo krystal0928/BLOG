@@ -74,19 +74,19 @@ export const constantRoutes = [
       {
         path: 'comment',
         name: 'article-comment',
-        component: () => import('@/views/comment/index'),
+        component: () => import('@/views/article-comment/index'),
         meta: { title: '评论列表', icon: 'tree' }
       },
       {
         path: 'like',
         name: 'article-like',
-        component: () => import('@/views/comment/index'),
+        component: () => import('@/views/article-like/index'),
         meta: { title: '点赞列表', icon: 'form' }
       },
       {
         path: 'collect',
         name: 'article-collect',
-        component: () => import('@/views/comment/index'),
+        component: () => import('@/views/article-collection/index'),
         meta: { title: '收藏列表', icon: 'link' }
       }
     ]

@@ -96,7 +96,8 @@ export default {
       },
       total: 0,
       dialogVisible: false,
-      form: {},
+      form: {
+      },
       rules: {
         typeName: [
           { required: true, message: '请输入文章分类名称', trigger: 'blur' }
@@ -126,7 +127,7 @@ export default {
       this.dialogVisible = true
     },
     handleEdit(row) {
-      this.form = {...row}
+      this.form = { ...row }
       this.dialogVisible = true
     },
     handleDelete(row) {
@@ -145,8 +146,8 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
-      });
+        })
+      })
     },
     onSubmit() {
       this.$refs['form'].validate((valid) => {
