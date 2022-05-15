@@ -88,14 +88,12 @@ public class ArticleController {
         if (null == info.getUserId()){
             info.setUserId(user.getId());
         }
-
         // 如果不存在 ID 表示新增
         if (null == info.getId()) {
             info.setId(snowFlakeTemplate.getIdLong());
             info.setCreateTime(new Date());
             articleService.save(info);
         }
-
         // 查询数据库
         Article article = articleService.getById(info.getId());
         if (null == article) {
@@ -123,6 +121,41 @@ public class ArticleController {
 
         // 判断文章状态，为 2：已修改 特殊处理
         if (ArticleStatusEnum.STATUS2.getCode().equals(article.getStatus())) {
+            // 设置文章状态为草稿
+            article.setStatus(ArticleStatusEnum.STATUS0.getCode());
+        } else if (ArticleStatusEnum.STATUS1.getCode().equals(article.getStatus())) {
+            // 如果文章状态是 1：已发布 需要删除已发布文件
+            String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
+            if (cn.hutool.core.io.FileUtil.exist(filePath)) {
+                cn.hutool.core.io.FileUtil.del(filePath);
+            }
+            // 设置为删除
+            article.setDeleted(ArticleDeletedEnum.STATUS1.getCode());
+        }
+        if (!articleService.updateById(article)) {
+            return R.error(400, "文章删除失败！");
+        }
+
+        return R.error(200, "文章删除成功！");
+    }
+
+    /**
+     * 删除草稿
+     * @param id
+     * @return
+     */
+    @PostMapping("/api/article/deleteDraft")
+    public R deleteDraft (Long id) {
+        Assert.notNull(id, "文章 ID 不能为空！");
+
+        // 查询文章是否存在
+        Article article = articleService.getById(id);
+        if (null == article) {
+            return R.error(400 ,"文章不存在！");
+        }
+
+        // 判断文章状态，为 2：已修改 特殊处理
+        if (ArticleStatusEnum.STATUS2.getCode().equals(article.getStatus())) {
             // 先从已发布文件里面读取内容，还原到数据库
             String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
             if (!cn.hutool.core.io.FileUtil.exist(filePath)) {
@@ -136,22 +169,19 @@ public class ArticleController {
             article.setDescription(article.getPubDescription());
             // 设置文章状态为发布中
             article.setStatus(ArticleStatusEnum.STATUS1.getCode());
-        } else if (ArticleStatusEnum.STATUS1.getCode().equals(article.getStatus())) {
-            // 如果文章状态是 1：已发布 需要删除已发布文件
-            // 先从已发布文件里面读取内容，还原到数据库
-            String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
-            if (cn.hutool.core.io.FileUtil.exist(filePath)) {
-                cn.hutool.core.io.FileUtil.del(filePath);
+            if (!articleService.updateById(article)) {
+                return R.error(400, "草稿箱删除失败！");
+            }
+        } else if (ArticleStatusEnum.STATUS0.getCode().equals(article.getStatus())) {
+            article.setDeleted(ArticleDeletedEnum.STATUS1.getCode());
+            if (!articleService.updateById(article)) {
+                return R.error(400, "草稿箱删除失败！");
             }
         }
-
-        // 设置为删除
-        article.setDeleted(ArticleDeletedEnum.STATUS1.getCode());
-        if (!articleService.updateById(article)) {
-            return R.error(400, "文章删除失败！");
-        }
-        return R.error(200, "文章删除成功！");
+        return R.error(200, "草稿箱删除成功！");
     }
+
+
 
     /**
      * 首页加载文章
