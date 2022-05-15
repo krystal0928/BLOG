@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.krystal.blog.common.mapper.ArticleMapper">
+
+    <!--  分页查询文章信息  -->
+    <select id="getUserList" resultType="com.krystal.blog.common.model.vo.UserVo">
+        select * from user
+        where 1=1
+        <if test="info.username != null and info.username != ''">
+            and username like concat('%', #{info.username}, '%')
+        </if>
+        <if test="info.email != null and info.email != ''">
+            and email = #{info.email}
+        </if>
+    </select>
+</mapper>

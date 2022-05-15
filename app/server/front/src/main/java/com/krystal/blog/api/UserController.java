@@ -338,6 +338,7 @@ public class UserController {
         if (!userFocusService.save(userFocus)) {
             return R.error(400,"关注失败，请重新尝试！");
         }
+        emailService.sendActionEmail(user.getUsername(), focusUser.getUsername(),"关注了",focusUser.getEmail());
         return R.ok("关注成功！");
     }
 

@@ -35,4 +35,15 @@ public class EmailService {
         String html = String.format("<h1>您的验证码是：%s</h1>", code);
         MailUtil.send(account, mailList, title, html, true);
     }
+
+    /**
+     * 发送邮件
+     */
+    public void sendActionEmail(String from,String to, String action, String email) {
+        MailAccount account = initMailAccount();
+        ArrayList<String> mailList = CollUtil.newArrayList(email);
+        String html = String.format("<h1>%s %s %s</h1>", from, action, to );
+
+        MailUtil.send(account, mailList, "通知", html, true);
+    }
 }

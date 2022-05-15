@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.krystal.blog.common.mapper.UserMapper;
 import com.krystal.blog.common.model.User;
+import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.model.vo.UserVo;
 import com.krystal.blog.common.service.UserService;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,10 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
                 return user.getId();
         }
         return 0L;
+    }
+
+    @Override
+    public Page<ArticleVo> getUserList(Page<ArticleVo> page, User info) {
+        return UserMapper.getUserList(page,info);
     }
 }

@@ -41,7 +41,8 @@ public class ArticleController {
     private ArticleLikeService articleLikeService;
     @Resource
     private ApplicationTemplate applicationTemplate;
-
+    @Resource
+    private EmailService emailService;
 
     /**
      * 草稿保存
@@ -343,6 +344,8 @@ public class ArticleController {
         if (!articleLikeService.save(articleLike)) {
             return R.error(400,"点赞失败，请重新尝试！");
         }
+        User writer = userService.getById(article.getUserId());
+        emailService.sendActionEmail(user.getUsername(), article.getTitle(),"点赞了文章",writer.getEmail());
         return R.ok("点赞成功！");
     }
 
@@ -408,6 +411,8 @@ public class ArticleController {
         if (!articleCollectionService.save(articleCollection)) {
             return R.error(400,"收藏失败，请重新尝试！");
         }
+        User writer = userService.getById(article.getUserId());
+        emailService.sendActionEmail(user.getUsername(), article.getTitle(),"收藏了文章",writer.getEmail());
         return R.ok("收藏成功！");
     }
 
