@@ -14,8 +14,7 @@
       element-loading-text="Loading"
       border
       fit
-      highlight-current-row
-    >
+      highlight-current-row>
       <el-table-column align="center" label="ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.id }}
@@ -23,17 +22,27 @@
       </el-table-column>
       <el-table-column label="评论内容">
         <template slot-scope="scope">
-          {{ scope.row.content }}
+        <el-tooltip
+          effect="dark"
+          :content="scope.row.content"
+          placement="top-start">
+          <span class="text-item">{{ scope.row.content }}</span>
+        </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="引用评论">
         <template slot-scope="scope">
-          {{ scope.row.parentContent }}
+        <el-tooltip
+          effect="dark"
+          :content="scope.row.parentContent"
+          placement="top-start">
+          <span class="text-item">{{ scope.row.parentContent }}</span>
+        </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="回复人" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.userName }}</span>
+          <span class="text-item">{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="创建时间" width="200">
@@ -58,7 +67,7 @@
 </template>
 
 <script>
-import { getCommentList } from '@/api/comment'
+import { getCommentList } from '@/api/article-comment'
 
 export default {
   filters: {

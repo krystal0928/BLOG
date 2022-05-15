@@ -10,6 +10,10 @@
         from article_comment ac
         left join user u on ac.user_id = u.id
         left join article_comment acp on acp.id = ac.pid
+        where 1=1
+        <if test="info.content != null and info.content != ''">
+            and ac.content like concat('%', #{info.content}, '%')
+        </if>
     </select>
 
 </mapper>

@@ -11,4 +11,7 @@ public interface ArticleTypeService extends IService<ArticleType> {
 
     // 查询文章分类信息
     ArticleTypeVo getArticleType(Long id);
+
+    // 分页查询
+    Page<ArticleTypeVo> getArticleTypeList(Page<ArticleTypeVo> page, ArticleType info);
 }

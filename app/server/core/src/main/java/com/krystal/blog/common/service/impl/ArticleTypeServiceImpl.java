@@ -25,4 +25,9 @@ public class ArticleTypeServiceImpl extends ServiceImpl<ArticleTypeMapper, Artic
     public ArticleTypeVo getArticleType(Long id) {
         return articleTypeMapper.getArticleType(id);
     }
+
+    @Override
+    public Page<ArticleTypeVo> getArticleTypeList(Page<ArticleTypeVo> page, ArticleType info) {
+        return articleTypeMapper.getArticleTypeList(page, info);
+    }
 }

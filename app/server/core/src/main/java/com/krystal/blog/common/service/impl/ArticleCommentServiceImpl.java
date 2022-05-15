@@ -3,7 +3,6 @@ package com.krystal.blog.common.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.krystal.blog.common.mapper.ArticleCommentMapper;
-import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.ArticleComment;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.service.ArticleCommentService;
@@ -28,7 +27,7 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
     }
 
     @Override
-    public Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, Article info) {
+    public Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, ArticleComment info) {
         return articleCommentMapper.getArticleCommentList(page, info);
     }
 }

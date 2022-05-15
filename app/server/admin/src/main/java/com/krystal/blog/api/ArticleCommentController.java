@@ -2,7 +2,7 @@ package com.krystal.blog.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.beans.R;
-import com.krystal.blog.common.model.Article;
+import com.krystal.blog.common.model.ArticleComment;
 import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.service.ArticleCommentService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class ArticleCommentController {
      * @return
      */
     @PostMapping(value = "/api/comment/list")
-    public R articleList(Article info,
+    public R articleList(ArticleComment info,
                          @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                          @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);

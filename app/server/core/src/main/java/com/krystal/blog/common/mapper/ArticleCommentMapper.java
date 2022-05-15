@@ -33,5 +33,6 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
                                               @Param("topId") Long topId);
 
     
-    Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, Article info);
+    Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page,
+                                                 @Param("info") ArticleComment info);
 }

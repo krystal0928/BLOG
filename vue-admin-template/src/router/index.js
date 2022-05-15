@@ -36,13 +36,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -62,6 +60,12 @@ export const constantRoutes = [
     meta: { title: '文章管理', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'type-list',
+        name: 'article-type-list',
+        component: () => import('@/views/article-type/index'),
+        meta: { title: '文章分类列表', icon: 'nested' }
+      },
+      {
         path: 'list',
         name: 'article-list',
         component: () => import('@/views/article/index'),
@@ -72,19 +76,48 @@ export const constantRoutes = [
         name: 'article-comment',
         component: () => import('@/views/comment/index'),
         meta: { title: '评论列表', icon: 'tree' }
+      },
+      {
+        path: 'like',
+        name: 'article-like',
+        component: () => import('@/views/comment/index'),
+        meta: { title: '点赞列表', icon: 'form' }
+      },
+      {
+        path: 'collect',
+        name: 'article-collect',
+        component: () => import('@/views/comment/index'),
+        meta: { title: '收藏列表', icon: 'link' }
       }
     ]
   },
-
   {
-    path: '/form',
+    path: '/user',
     component: Layout,
+    redirect: '/user/list',
+    name: 'user',
+    meta: { title: '用户管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'list',
+        name: 'user-list',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/list',
+    name: 'admin',
+    meta: { title: '系统管理', icon: 'el-icon-cogs' },
+    children: [
+      {
+        path: 'list',
+        name: 'admin-list',
+        component: () => import('@/views/user/index'),
+        meta: { title: '管理员列表', icon: 'eye' }
       }
     ]
   },
