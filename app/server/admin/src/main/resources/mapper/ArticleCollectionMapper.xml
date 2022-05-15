@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.krystal.blog.common.mapper.ArticleCollectionMapper">
+
+    <!--  分页查询  -->
+    <select id="getArticleCollectionList" resultType="com.krystal.blog.common.model.vo.ArticleCollectionVo">
+        select
+            ac.*,
+            u.username userName,
+            a.title articleTitle
+        from article_collection ac
+        left join user u on ac.user_id = u.id
+        left join article a on a.id = ac.article_id
+        where 1=1
+        <if test="info.userName != null and info.userName != ''">
+            and u.username like concat('%', #{info.userName}, '%')
+        </if>
+        <if test="info.articleTitle != null and info.articleTitle != ''">
+            and a.title like concat('%', #{info.articleTitle}, '%')
+        </if>
+    </select>
+
+</mapper>
