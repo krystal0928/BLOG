@@ -39,6 +39,7 @@ public interface UserMapper extends BaseMapper<User> {
             " order by u.create_time desc "})
     Page<UserVo> selectFansUserList(Page<UserVo> page, @Param("userId") Long userId,@Param("loginUserId") Long loginUserId);
 
-    Page<ArticleVo> getUserList(Page<ArticleVo> page,@Param("info") User info);
+    Page<User> getUserList(Page<User> page,
+                           @Param("info") User info);
 
 }

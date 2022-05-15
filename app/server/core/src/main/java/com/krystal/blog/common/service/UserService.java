@@ -6,8 +6,6 @@ import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.model.vo.UserVo;
 
-import java.util.List;
-
 public interface UserService  extends IService<User> {
 
     User getUserByToken(String token) ;
@@ -20,6 +18,6 @@ public interface UserService  extends IService<User> {
 
     Long getUserIdFromToken(String token);
 
-    Page<ArticleVo> getUserList(Page<ArticleVo> page, User info);
+    Page<User> getUserList(Page<User> page, User info);
 
 }

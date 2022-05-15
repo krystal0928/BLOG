@@ -6,9 +6,11 @@ import com.krystal.blog.common.model.ArticleCollection;
 import com.krystal.blog.common.model.vo.ArticleCollectionVo;
 import com.krystal.blog.common.model.vo.ArticleLikeVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ArticleCollectionMapper extends BaseMapper<ArticleCollection> {
     // 分页查询
-    Page<ArticleLikeVo> getArticleCollectionList(Page<ArticleLikeVo> page, ArticleCollectionVo info);
+    Page<ArticleLikeVo> getArticleCollectionList(Page<ArticleLikeVo> page,
+                                                 @Param("info") ArticleCollectionVo info);
 }

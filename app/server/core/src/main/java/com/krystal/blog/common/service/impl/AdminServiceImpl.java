@@ -27,4 +27,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
                 .eq(Admin::getId, id).one();
         return admin;
     }
+
+    @Override
+    public Page<Admin> getAdminList(Page<Admin> page, Admin info) {
+        return adminMapper.getAdminList(page, info);
+    }
 }

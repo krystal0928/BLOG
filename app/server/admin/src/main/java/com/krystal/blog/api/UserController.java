@@ -5,6 +5,7 @@ import com.krystal.blog.common.beans.R;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.User;
 import com.krystal.blog.common.model.vo.ArticleVo;
+import com.krystal.blog.common.model.vo.UserVo;
 import com.krystal.blog.common.service.ArticleService;
 import com.krystal.blog.common.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +31,10 @@ public class UserController {
      */
     @PostMapping(value = "/api/user/list")
     public R userList(User info,
-                         @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                         @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> list = userService.getUserList(page, info);
+                      @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                      @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        Page<User> page = new Page<>(pageNo, pageSize);
+        Page<User> list = userService.getUserList(page, info);
 
         return R.okData("用户信息查询成功", list.getRecords())
                 .put("total", list.getTotal());

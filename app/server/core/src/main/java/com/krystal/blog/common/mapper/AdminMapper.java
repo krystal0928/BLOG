@@ -12,5 +12,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface AdminMapper extends BaseMapper<Admin> {
 
-
+    // 分页查询
+    Page<Admin> getAdminList(Page<Admin> page,
+                             @Param("info") Admin info);
 }

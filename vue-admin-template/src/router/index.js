@@ -116,7 +116,7 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'admin-list',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/admin/index'),
         meta: { title: '管理员列表', icon: 'eye' }
       }
     ]

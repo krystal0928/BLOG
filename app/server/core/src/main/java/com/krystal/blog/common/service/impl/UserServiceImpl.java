@@ -11,7 +11,6 @@ import com.krystal.blog.common.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service
 public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements UserService {
@@ -53,7 +52,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper,User> implements Us
     }
 
     @Override
-    public Page<ArticleVo> getUserList(Page<ArticleVo> page, User info) {
-        return UserMapper.getUserList(page,info);
+    public Page<User> getUserList(Page<User> page, User info) {
+        return userMapper.getUserList(page,info);
     }
 }
