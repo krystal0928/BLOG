@@ -45,7 +45,8 @@
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item @click="toEditArticle(article.id)">编辑</el-dropdown-item>
-                      <el-dropdown-item @click="toDeleteArticle(article.id)">删除</el-dropdown-item>
+                      <el-dropdown-item v-if="permission === 'draft'" @click="toDeleteArticleDraft(article.id)">删除</el-dropdown-item>
+                      <el-dropdown-item v-else @click="toDeleteArticle(article.id)">删除</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -76,7 +77,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { computed, onMounted, reactive, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { mapGetters, useStore } from 'vuex';
-import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle } from '../../api/article';
+import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle, deleteDraftArticle } from '../../api/article';
 import bus from '../../bus';
 
 const props = defineProps(['permission', 'userId', 'orderFlag'])
@@ -272,6 +273,29 @@ const toDeleteArticle = (id) => {
       }
     ).then(() => {
       deleteArticle(id).then(res => {
+        if (res.code == 200) {
+          ElMessage.success(res.msg)
+          // 重新加载文章信息
+          loadArticclelList()
+          // 通知父组件
+          emit('update')
+        }
+      })
+    }).catch(() => {})
+}
+
+
+// 删除草稿
+const toDeleteArticleDraft = (id) => {
+   ElMessageBox.confirm('是否确认删除文章？',
+      '警告！',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      deleteDraftArticle(id).then(res => {
         if (res.code == 200) {
           ElMessage.success(res.msg)
           // 重新加载文章信息

@@ -27,6 +27,15 @@ export function deleteArticle(id) {
   })
 }
 
+// 删除草稿
+export function deleteDraftArticle(id) {
+  return axios({
+    url: '/api/article/deleteDraft',
+    method: 'post',
+    data: {id}
+  })
+}
+
 // 查询文章-公开
 export function articleListPublic(param) {
   return axios({
