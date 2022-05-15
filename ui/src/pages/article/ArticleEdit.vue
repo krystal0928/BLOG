@@ -44,6 +44,7 @@
         </div>
       </el-main>
       <el-dialog
+        append-to-body
         v-model="backVisible"
         title="确认是否离开此网站？"
         width="30%"
@@ -199,6 +200,7 @@ const toSaveDraft = () => {
 }
 const toPublishArticle = () =>{
   if (checkArticle()) {
+    loadArticleTypeList()
     dialogFormVisible.value = true
   }
 }
