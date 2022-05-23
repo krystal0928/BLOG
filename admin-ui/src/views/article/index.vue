@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :inline="true" :model="query" label-width="auto">
+      <el-form-item label="ID">
+        <el-input v-model="query.id" />
+      </el-form-item>
       <el-form-item label="标题">
         <el-input v-model="query.title" />
       </el-form-item>
