@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="form" :inline="true" :model="query" label-width="auto">
       <el-form-item label="ID">
-        <el-input v-model="query.id" />
+        <el-input v-model="query.userId" />
       </el-form-item>
       <el-form-item label="分类名称">
         <el-input v-model="query.typeName" />

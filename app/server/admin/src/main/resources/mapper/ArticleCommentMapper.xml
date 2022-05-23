@@ -10,7 +10,7 @@
         from article_comment ac
         left join user u on ac.user_id = u.id
         left join article_comment acp on acp.id = ac.pid
-        left join aricle art on art.id = ac.article_id
+        left join article art on art.id = ac.article_id
         where 1=1
         <if test="info.content != null and info.content != ''">
             and ac.content like concat('%', #{info.content}, '%')
@@ -18,8 +18,8 @@
         <if test="info.userName != null and info.userName != ''">
             and u.username like concat('%', #{info.userName}, '%')
         </if>
-        <if test="info.id != null and info.id != ''">
-            and ac.id like concat('%', #{info.id}, '%')
+        <if test="info.userId != null and info.userId != ''">
+            and u.id like concat('%', #{info.userId}, '%')
         </if>
     </select>
 
