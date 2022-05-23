@@ -19,7 +19,7 @@
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="ID" width="200">
+      <el-table-column  label="ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -34,13 +34,13 @@
         </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="创建时间" width="200">
+      <el-table-column  prop="created_at" label="创建时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_ut" label="修改时间" width="200">
+      <el-table-column  prop="created_ut" label="修改时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.updateTime }}</span>

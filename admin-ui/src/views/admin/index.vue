@@ -19,7 +19,7 @@
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="ID" width="200">
+      <el-table-column label="ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>

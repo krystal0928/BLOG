@@ -1,10 +1,15 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :inline="true" :model="query" label-width="auto">
-      <el-form-item label="User ID">
+      <el-form-item label="用户 ID">
         <el-input v-model="query.userId" />
       </el-form-item>
-      <el-form-item label="回复人">
+      <el-table-column label="用户 ID" width="200">
+        <template slot-scope="scope">
+          {{ scope.row.userId }}
+        </template>
+      </el-table-column>
+      <el-form-item label="用户名">
         <el-input v-model="query.userName" />
       </el-form-item>
       <el-form-item label="评论内容">
@@ -21,7 +26,7 @@
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="ID" width="200">
+      <el-table-column  label="ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -46,12 +51,12 @@
         </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="回复人" width="110" align="center">
+      <el-table-column label="用户名" width="110" >
         <template slot-scope="scope">
           <span class="text-item">{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="创建时间" width="200">
+      <el-table-column  prop="created_at" label="创建时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.createTime }}</span>
