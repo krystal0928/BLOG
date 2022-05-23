@@ -19,5 +19,6 @@ public class ArticleCommentVo extends ArticleComment {
     private String userName;
     private String userImg;
     private String parentContent;
+    private String articleTitle;
 }
 

@@ -6,10 +6,11 @@
     <!--  查询文章评论  -->
     <select id="getArticleCommentList" resultType="com.krystal.blog.common.model.vo.ArticleCommentVo">
         select
-            ac.*, u.username userName, acp.content parentContent
+            ac.*, art.id articleId, art.title articleTitle, u.username userName, u.id userId, acp.content parentContent
         from article_comment ac
         left join user u on ac.user_id = u.id
         left join article_comment acp on acp.id = ac.pid
+        left join aricle art on art.id = ac.article_id
         where 1=1
         <if test="info.content != null and info.content != ''">
             and ac.content like concat('%', #{info.content}, '%')
