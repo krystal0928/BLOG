@@ -10,6 +10,9 @@
         <if test="info.username != null and info.username != ''">
             and username like concat('%', #{info.username}, '%')
         </if>
+        <if test="info.userId != null and info.userId != ''">
+            and u.userId like concat('%', #{info.userId}, '%')
+        </if>
         <if test="info.status != null and info.status != ''">
             and status = #{info.status}
         </if>

@@ -301,7 +301,6 @@ public class ArticleController {
         if (!cn.hutool.core.io.FileUtil.exist(filePath)) {
             return R.error(400, "文章发布信息不存在");
         }
-        // 读取文件
         FileReader reader = new FileReader(filePath);
         String content = reader.readString();
         FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), articleVo.getFilepath());

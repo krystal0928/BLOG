@@ -14,6 +14,13 @@
         <if test="info.content != null and info.content != ''">
             and ac.content like concat('%', #{info.content}, '%')
         </if>
+        <if test="info.userName != null and info.userName != ''">
+            and u.username like concat('%', #{info.userName}, '%')
+        </if>
+        <if test="info.userId != null and info.userId != ''">
+            and u.userId like concat('%', #{info.userId}, '%')
+        </if>
     </select>
+
 
 </mapper>
