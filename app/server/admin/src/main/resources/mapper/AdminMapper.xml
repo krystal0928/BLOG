@@ -11,7 +11,7 @@
             and username like concat('%', #{info.username}, '%')
         </if>
         <if test="info.id != null and info.id != ''">
-            and u.id like concat('%', #{info.id}, '%')
+            and id like concat('%', #{info.id}, '%')
         </if>
         <if test="info.status != null and info.status != ''">
             and status = #{info.status}

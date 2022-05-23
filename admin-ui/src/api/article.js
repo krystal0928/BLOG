@@ -8,6 +8,14 @@ export function getArticleList(params) {
   })
 }
 
+export function editArticle(params) {
+  return request({
+    url: '/api/article/edit',
+    method: 'post',
+    data: params
+  })
+}
+
 export function deleteArticle(id) {
   return request({
     url: '/api/article/deleteArticle',

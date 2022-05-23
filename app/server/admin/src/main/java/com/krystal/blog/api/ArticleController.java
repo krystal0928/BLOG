@@ -1,7 +1,10 @@
 package com.krystal.blog.api;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.krystal.blog.common.beans.R;
+import com.krystal.blog.common.model.Admin;
 import com.krystal.blog.common.model.Article;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.ArticleService;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 // 接口
 @RestController
@@ -35,6 +39,25 @@ public class ArticleController {
 
         return R.okData("查询文章成功", list.getRecords())
                 .put("total", list.getTotal());
+    }
+
+    /**
+     * 编辑
+     * @param info info
+     * @return
+     */
+    @PostMapping(value = "/api/article/edit")
+    public R edit(Article info){
+        Article article = articleService.getById(info.getId());
+        if (null == article) {
+            return R.error(400, "文章信息不存在，不能修改!");
+        }
+
+        info.setUpdateTime(new Date());
+        if (!articleService.updateById(info)) {
+            return R.error(400, "修改文章信息失败!");
+        }
+        return R.error(200, "修改文章信息成功!");
     }
 
 

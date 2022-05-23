@@ -21,8 +21,8 @@
         <if test="info.userName != null and info.userName != ''">
             and u.username like concat('%', #{info.userName}, '%')
         </if>
-        <if test="info.userId != null and info.userId != ''">
-            and u.userId like concat('%', #{info.userId}, '%')
+        <if test="info.id != null and info.id != ''">
+            and a.id like concat('%', #{info.id}, '%')
         </if>
         <if test="info.deleted != null and info.deleted != ''">
             and a.deleted = #{info.deleted}

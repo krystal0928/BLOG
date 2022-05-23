@@ -135,7 +135,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUser(row.id).then(res => {
+        deleteUser(id).then(res => {
           if (res.code === 200) {
             this.$message.success(res.msg)
             this.fetchData()
