@@ -7,3 +7,11 @@ export function getArticleList(params) {
     data: params
   })
 }
+
+export function deleteArticle(id) {
+  return request({
+    url: '/api/article/deleteArticle',
+    method: 'post',
+    data: { id }
+  })
+}

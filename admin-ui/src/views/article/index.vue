@@ -4,6 +4,9 @@
       <el-form-item label="标题">
         <el-input v-model="query.title" />
       </el-form-item>
+      <el-form-item label="作者">
+        <el-input v-model="query.userName" />
+      </el-form-item>
       <el-form-item label="状态">
         <el-select v-model="query.status">
           <el-option label="草稿" value="0" />
@@ -79,11 +82,11 @@
       </el-table-column>
       <el-table-column fixed="right" align="left" label="操作" width="200">
         <template #default="scope">
-          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button> -->
-          <!-- <el-button
+          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button
             size="small"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete</el-button> -->
+            @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,7 +105,7 @@
 </template>
 
 <script>
-import { getArticleList } from '@/api/article'
+import { deleteArticle, getArticleList } from '@/api/article'
 
 export default {
   filters: {
@@ -130,6 +133,7 @@ export default {
         pageNo: 1,
         pageSize: 10,
         title: '',
+        userName: '',
         status: null,
         deleted: null
       },
@@ -161,6 +165,25 @@ export default {
     handleCurrentChange(val) {
       this.query.pageNo = val
       this.fetchData()
+    },
+    handleDelete(id) {
+      this.$confirm('此操作将彻底删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteArticle(id).then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.msg)
+            this.fetchData()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

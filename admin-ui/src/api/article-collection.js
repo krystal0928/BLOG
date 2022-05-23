@@ -8,3 +8,11 @@ export function getArticleCollectionList(params) {
     data: params
   })
 }
+
+export function deleteArticleCollection(id) {
+  return request({
+    url: '/api/article/collection/delete',
+    method: 'post',
+    data: { id }
+  })
+}

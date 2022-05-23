@@ -34,5 +34,5 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
 
     
     Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page,
-                                                 @Param("info") ArticleComment info);
+                                                 @Param("info") ArticleCommentVo info);
 }

@@ -26,5 +26,5 @@ public interface ArticleCommentService extends IService<ArticleComment> {
     Page<ArticleCommentVo> getSecondLevelList(Page<ArticleCommentVo> page, Long articleId, Long pid);
 
 
-    Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, ArticleComment info);
+    Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, ArticleCommentVo info);
 }

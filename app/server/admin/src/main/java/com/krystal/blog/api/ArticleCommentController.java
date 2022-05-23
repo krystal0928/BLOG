@@ -27,14 +27,26 @@ public class ArticleCommentController {
      * @return
      */
     @PostMapping(value = "/api/article/comment/list")
-    public R list(ArticleComment info,
-                         @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                         @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+    public R list(ArticleCommentVo info,
+                  @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                  @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         Page<ArticleCommentVo> page = new Page<>(pageNo, pageSize);
         Page<ArticleCommentVo> list = articleCommentService.getArticleCommentList(page, info);
 
         return R.okData("查询评论成功", list.getRecords())
                 .put("total", list.getTotal());
+    }
+
+    /**
+     * 删除文章
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/api/article/comment/delete")
+    public R deleteArticleComment(Long id){
+        if(!articleCommentService.removeById(id))
+            return R.error(400,"文章评论删除失败！");
+        return R.ok("文章评论删除成功！");
     }
 
 }

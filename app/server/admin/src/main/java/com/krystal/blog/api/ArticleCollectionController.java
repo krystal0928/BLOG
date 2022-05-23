@@ -39,4 +39,16 @@ public class ArticleCollectionController {
                 .put("total", list.getTotal());
     }
 
+    /**
+     * 删除文章
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/api/article/collection/delete")
+    public R deleteArticleCollection(Long id){
+        if(!articleCollectionService.removeById(id))
+            return R.error(400,"文章收藏删除失败！");
+        return R.ok("文章收藏删除成功！");
+    }
+
 }

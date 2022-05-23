@@ -27,7 +27,7 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
     }
 
     @Override
-    public Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, ArticleComment info) {
+    public Page<ArticleCommentVo> getArticleCommentList(Page<ArticleCommentVo> page, ArticleCommentVo info) {
         return articleCommentMapper.getArticleCommentList(page, info);
     }
 }

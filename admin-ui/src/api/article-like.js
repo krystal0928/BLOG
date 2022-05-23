@@ -8,3 +8,11 @@ export function getArticleLikeList(params) {
     data: params
   })
 }
+
+export function deleteArticleLike(id) {
+  return request({
+    url: '/api/article/like/delete',
+    method: 'post',
+    data: { id }
+  })
+}

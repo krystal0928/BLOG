@@ -77,7 +77,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     }
 
     @Override
-    public Page<ArticleVo> getArticleList(Page<ArticleVo> page, Article info) {
+    public Page<ArticleVo> getArticleList(Page<ArticleVo> page, ArticleVo info) {
         return articleMapper.getArticleList(page, info);
     }
 }

@@ -38,5 +38,5 @@ public interface ArticleMapper extends BaseMapper<Article> {
     ArticleVo selectArticle(@Param("id")Long id, @Param("userId") Long userId);
 
     Page<ArticleVo> getArticleList(Page<ArticleVo> page,
-                                   @Param("info") Article info);
+                                   @Param("info") ArticleVo info);
 }

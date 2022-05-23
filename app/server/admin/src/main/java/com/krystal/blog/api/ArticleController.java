@@ -27,7 +27,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping(value = "/api/article/list")
-    public R articleList(Article info,
+    public R articleList(ArticleVo info,
                          @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                          @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
