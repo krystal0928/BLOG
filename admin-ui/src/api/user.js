@@ -8,3 +8,11 @@ export function getUserList(params) {
     data: params
   })
 }
+
+export function deleteUser(id) {
+  return request({
+    url: '/api/user/delete',
+    method: 'post',
+    data: { id }
+  })
+}

@@ -40,7 +40,17 @@ public class UserController {
                 .put("total", list.getTotal());
     }
 
-
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/api/user/delete")
+    public R deleteArticleLike(Long id){
+        if(!userService.removeById(id))
+            return R.error(400,"文章点赞删除失败！");
+        return R.ok("文章点赞删除成功！");
+    }
 
 
 }

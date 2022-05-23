@@ -38,7 +38,7 @@ public class ArticleCommentController {
     }
 
     /**
-     * 删除文章
+     * 删除文章评论
      * @param id
      * @return
      */

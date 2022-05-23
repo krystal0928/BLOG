@@ -41,7 +41,7 @@ public class ArticleLikeController {
     }
 
     /**
-     * 删除文章
+     * 删除文章点赞
      * @param id
      * @return
      */

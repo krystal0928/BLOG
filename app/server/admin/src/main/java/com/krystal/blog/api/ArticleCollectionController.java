@@ -40,7 +40,7 @@ public class ArticleCollectionController {
     }
 
     /**
-     * 删除文章
+     * 删除文章收藏
      * @param id
      * @return
      */

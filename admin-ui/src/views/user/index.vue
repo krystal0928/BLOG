@@ -58,17 +58,17 @@
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column fixed="right" align="left" label="操作" width="200">
+      <el-table-column fixed="right" align="left" label="操作" width="200">
         <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
           <el-button
             size="small"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="handleDelete(scope.row.id)"
             >删除</el-button
           >
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination
       class="pagination"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/user'
+import { getUserList, deleteUser } from '@/api/user'
 
 export default {
   filters: {
@@ -128,6 +128,25 @@ export default {
     handleCurrentChange(val) {
       this.query.pageNo = val
       this.fetchData()
+    },
+    handleDelete(id) {
+      this.$confirm('此操作将彻底删除用户信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser(row.id).then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.msg)
+            this.fetchData()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
