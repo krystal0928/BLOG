@@ -84,7 +84,8 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="是否删除" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag type="info">{{ scope.row.deleted | deletedFilter }}</el-tag>
+          <el-tag v-if="scope.row.status == 0" type="info">{{ scope.row.deleted | deletedFilter }}</el-tag>
+          <el-tag v-if="scope.row.status == 1" type="success">{{ scope.row.deleted | deletedFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="创建时间" width="200">
