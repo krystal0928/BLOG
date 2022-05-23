@@ -75,6 +75,11 @@
           {{ scope.row.userId }}
         </template>
       </el-table-column>
+      <el-table-column label="用户 ID" width="200">
+        <template slot-scope="scope">
+          {{ scope.row.userId }}
+        </template>
+      </el-table-column>
       <el-table-column label="作者" width="110">
         <template slot-scope="scope">
           <span class="text-item">{{ scope.row.userName }}</span>
