@@ -87,15 +87,15 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="状态" width="110" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status == 0" type="info">{{ scope.row.status | statusFilter }}</el-tag>
-          <el-tag v-if="scope.row.status == 1" type="success">{{ scope.row.status | statusFilter }}</el-tag>
-          <el-tag v-if="scope.row.status == 2" type="warning">{{ scope.row.status | statusFilter }}</el-tag>
+          <el-tag v-if="scope.row.status === 0" type="info">{{ scope.row.status | statusFilter }}</el-tag>
+          <el-tag v-if="scope.row.status === 1" type="success">{{ scope.row.status | statusFilter }}</el-tag>
+          <el-tag v-if="scope.row.status === 2" type="warning">{{ scope.row.status | statusFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="是否删除" width="110" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status == 0" type="info">{{ scope.row.deleted | deletedFilter }}</el-tag>
-          <el-tag v-if="scope.row.status == 1" type="success">{{ scope.row.deleted | deletedFilter }}</el-tag>
+          <el-tag v-if="scope.row.deleted === 1" type="info">{{ scope.row.deleted | deletedFilter }}</el-tag>
+          <el-tag v-if="scope.row.deleted === 0" type="success">{{ scope.row.deleted | deletedFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="created_at" label="创建时间" width="200">

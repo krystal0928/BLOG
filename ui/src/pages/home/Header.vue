@@ -32,7 +32,7 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r btn" round @click.prevent="toUser">个人中心</el-button>
+    <el-button v-if="logIn" type="primary" :icon="User" class="btn-r btn" round @click.prevent="toUser">个人中心</el-button>
     <el-button v-if="logIn" type="primary" :icon="Edit" class="btn-r btn" round @click.prevent="writeArticle">写文章</el-button>
     <div class="btn-r" style="height:60px"></div>
   </div>
@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { Search } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Edit } from '@element-plus/icons-vue'
+import { Edit, User } from '@element-plus/icons-vue'
 import { inject, ref, watchEffect } from 'vue'
 import { computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'

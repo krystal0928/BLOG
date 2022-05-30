@@ -8,19 +8,19 @@
           </a>
           <div class="date">{{article.createTime}}</div>
           <div class="tag_list">
-            <a href="/tag/Flutter" rel="" class="tag">{{article.typeName}}</a>
+            <a :href="`/article/type/${article.typeId}`" rel="" class="tag">{{article.typeName}}</a>
           </div>
         </div>
         <div class="content-wrapper" style="border-bottom: 1px solid rgba(228, 230, 235, 0.5);">
           <div class="content-main">
             <div class="title-row">
-              <a :href="`/article/${article.id}?userId=${article.userId}`" :title="article.title" class="title">{{article.title}}
-              <span v-if="article.permission==1">（仅自己可见）</span>
-              <span v-if="article.permission==2">（仅粉丝可见）</span>
+              <a href="javascript:void(0)" @click="toArticlePage(article)" :title="article.title" class="title">{{article.title}}
+                <span v-if="article.permission==1">（仅自己可见）</span>
+                <span v-if="article.permission==2">（仅粉丝可见）</span>
               </a>
               </div>
             <div class="abstract">
-              <a :href="`/article/${article.id}?userId=${article.userId}`" >
+              <a href="javascript:void(0)" @click="toArticlePage(article)" >
                 <div >{{article.description}}</div>
               </a>
               </div>
@@ -80,7 +80,7 @@ import { mapGetters, useStore } from 'vuex';
 import { addArticleCollect, addArticleLike, deleteArticleCollect, deleteArticleLike, articleListPublic, articleListPersonal, getCollectArticle, articleListFocus, deleteArticle, deleteDraftArticle } from '../../api/article';
 import bus from '../../bus';
 
-const props = defineProps(['permission', 'userId', 'orderFlag'])
+const props = defineProps(['permission', 'userId', 'orderFlag', 'typeId'])
 
 const emit = defineEmits(['update'])
 
@@ -107,7 +107,8 @@ const pagination: any = reactive({
   orderFlag: props.orderFlag || 'likeCount',
   loginUserId: logInUserId,
   userId: props.userId || 0,
-  title: route.query.title
+  typeId: props.typeId || null,
+  title: route.query.title,
 })
 const articleList: any = ref([])
 
@@ -156,6 +157,26 @@ const loadArticclelList = () => {
       if (res.code == 200) {
         articleList.value = res.data
         pagination.total = Number(res.total)
+      }
+    })
+  }
+}
+
+const toArticlePage = (article) => {
+  // 文章编辑页面
+  if (props.permission === 'draft') {
+    router.push({
+      path: '/article-edit',
+      query: {
+        id: article.id
+      }
+    })
+  } else {
+    // 文章页面
+    router.push({
+      path: `/article/${article.id}`,
+      query: {
+        userId: article.userId
       }
     })
   }

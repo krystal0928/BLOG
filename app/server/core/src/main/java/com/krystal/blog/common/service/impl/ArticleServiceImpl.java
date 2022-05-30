@@ -6,7 +6,6 @@ import com.krystal.blog.common.beans.ApplicationTemplate;
 import com.krystal.blog.common.enums.ArticleStatusEnum;
 import com.krystal.blog.common.mapper.ArticleMapper;
 import com.krystal.blog.common.model.Article;
-import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 import com.krystal.blog.common.service.ArticleService;
 import com.krystal.blog.common.util.Const;
@@ -26,8 +25,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
     private ApplicationTemplate applicationTemplate;
 
     @Override
-    public Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String title, String orderFlag) {
-        return articleMapper.selectArticleListPublic(page, loginUserId, title,  orderFlag);
+    public Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String title, Long typeId, String orderFlag) {
+        return articleMapper.selectArticleListPublic(page, loginUserId, title, typeId, orderFlag);
     }
 
     @Override
@@ -56,11 +55,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,Article> imple
         // 修改摘要
         info.setPubDescription(info.getDescription());
         // 内容转换成 html 文件
-        String htmlStr = HtmlUtil.templateToHtml("article.html", info.getContent());
+        // String htmlStr = HtmlUtil.templateToHtml("article.html", info.getContent());
         String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory());
         FileUtil.buildFileByPath(filePath);
         String fileName = String.format("%s/%s.html", Const.BLOG_ARTICLE, info.getId());
-        boolean flag = HtmlUtil.htmlToFile(filePath, fileName, htmlStr);
+        boolean flag = HtmlUtil.htmlToFile(filePath, fileName, info.getContent());
         if (!flag) {
             return false;
         }

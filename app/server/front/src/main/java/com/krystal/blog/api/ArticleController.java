@@ -53,13 +53,13 @@ public class ArticleController {
     public R saveDraft (@RequestHeader("token") String token, Article info) {
         Assert.notNull(info.getTitle(),"标题不能为空！");
         Assert.notNull(info.getContent(),"内容不能为空！");
-        Assert.notNull(info.getDescription(),"文章摘要不能为空！");
         User user = userService.getUserByToken(token);
         if (null == user)
             return R.error(400,"该用户不存在！");
         if (null == info.getId()) {
             info.setId(snowFlakeTemplate.getIdLong());
             info.setStatus(ArticleStatusEnum.STATUS0.getCode());
+            info.setDescription(info.getTitle());
         }
         // 如果是已发布文章，保存草稿
         if (ArticleStatusEnum.STATUS1.getCode().equals(info.getStatus())) {
@@ -127,6 +127,7 @@ public class ArticleController {
         } else if (ArticleStatusEnum.STATUS1.getCode().equals(article.getStatus())) {
             // 如果文章状态是 1：已发布 需要删除已发布文件
             String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), article.getFilepath());
+            log.info("filePath: {}", filePath);
             if (cn.hutool.core.io.FileUtil.exist(filePath)) {
                 cn.hutool.core.io.FileUtil.del(filePath);
             }
@@ -192,11 +193,12 @@ public class ArticleController {
     @PostMapping("/api/article/list/public")
     public R articleListPublic(@RequestParam(value = "loginUserId", defaultValue = "0") Long loginUserId,
                                String title,
+                               Long typeId,
                                @RequestParam(value = "orderFlag") String orderFlag,
                                @RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         Page<ArticleVo> page = new Page<>(pageNo, pageSize);
-        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, title, orderFlag);
+        Page<ArticleVo> articleVoList = articleService.selectArticleListPublic(page, loginUserId, title, typeId, orderFlag);
 
         return R.okData("文章查询成功!", articleVoList.getRecords())
                 .put("total", articleVoList.getTotal());
@@ -295,6 +297,7 @@ public class ArticleController {
         if (null == articleVo || StrUtil.isEmpty(articleVo.getFilepath())) {
             return R.error(400, "文章信息不存在");
         }
+
         // 获取发布文章文件内容
         String filePath = FileUtil.addPathSeparate(applicationTemplate.getBaseDirectory(), articleVo.getFilepath());
 
@@ -303,9 +306,11 @@ public class ArticleController {
         }
         FileReader reader = new FileReader(filePath);
         String content = reader.readString();
+        log.info("content: {}", content);
         FileUtil.addPathSeparate(SystemUtil.getServerPath(httpServletRequest), articleVo.getFilepath());
 
         articleVo.setContent(content);
+
         return R.okData("success", articleVo);
     }
 

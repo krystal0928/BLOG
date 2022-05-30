@@ -17,6 +17,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
     Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page,
                                             @Param("loginUserId") Long loginUserId,
                                             @Param("title") String title,
+                                            @Param("typeId") Long typeId,
                                             @Param("orderFlag") String orderFlag);
 
 

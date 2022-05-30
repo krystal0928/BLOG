@@ -3,12 +3,11 @@ package com.krystal.blog.common.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.krystal.blog.common.model.Article;
-import com.krystal.blog.common.model.vo.ArticleCommentVo;
 import com.krystal.blog.common.model.vo.ArticleVo;
 
 public interface ArticleService extends IService<Article> {
 
-    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String title, String orderFlag);
+    Page<ArticleVo> selectArticleListPublic(Page<ArticleVo> page, Long loginUserId, String title, Long typeId, String orderFlag);
 
     Page<ArticleVo> selectArticleListPersonal(Page<ArticleVo> page, Long loginUserId, Long userId, Integer status);
 

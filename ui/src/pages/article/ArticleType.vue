@@ -6,7 +6,7 @@
           <h2>{{ form.typeName }}</h2>
           <span class="text1">
             该分类下一共有
-            <span class="text2">{{ form.articleCount }}</span>
+            <span class="text2">{{ form.articleCount || 0 }}</span>
             篇文章
           </span>
         </div>
@@ -25,8 +25,8 @@
       <div class="article-card card">
         <div class="entry-list-wrap">
           <div name="entry-list" tag="div" class="entry-list list">
-            <ArticleItem v-if="tabIndex === 0" permission="public" orderFlag="likeCount"></ArticleItem>
-            <ArticleItem v-if="tabIndex === 1" permission="public" orderFlag="create_time"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 0" permission="public" orderFlag="likeCount" :type-id="typeId"></ArticleItem>
+            <ArticleItem v-if="tabIndex === 1" permission="public" orderFlag="create_time" :type-id="typeId"></ArticleItem>
           </div>
         </div>
       </div>
@@ -34,17 +34,18 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { articleType } from '../../api/articleType';
 import ArticleItem from  '../article/ArticleItem.vue'
 
 const route = useRoute()
+const typeId = route.params.id
 const tabIndex = ref(0)
 const form: any = ref({})
 
 const loadArticleType = () => {
-  articleType(route.params.id).then(res => {
+  articleType(typeId).then(res => {
     if (res.code === 200) {
       form.value = res.data
     }

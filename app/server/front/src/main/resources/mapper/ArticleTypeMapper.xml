@@ -10,6 +10,7 @@
         from article_type art
             left join article a on art.id = a.type_id
         where art.id = #{id}
+        and (a.status = 1 or a.status = 2) and a.deleted = 0 and a.permission = 0
         GROUP BY art.id
     </select>
 
