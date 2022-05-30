@@ -7,11 +7,6 @@
       <el-form-item label="文章标题">
         <el-input v-model="query.articleTitle" />
       </el-form-item>
-      <el-table-column label="用户 ID" width="200">
-        <template slot-scope="scope">
-          {{ scope.row.userId }}
-        </template>
-      </el-table-column>
       <el-form-item label="用户名">
         <el-input v-model="query.userName" />
       </el-form-item>
@@ -39,6 +34,11 @@
           placement="top-start">
           <span class="text-item">{{ scope.row.articleTitle }}</span>
         </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户 ID" width="200">
+        <template slot-scope="scope">
+          {{ scope.row.userId }}
         </template>
       </el-table-column>
       <el-table-column label="用户名" width="110" >

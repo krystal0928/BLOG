@@ -7,6 +7,12 @@
       <el-form-item label="用户名">
         <el-input v-model="query.userName" />
       </el-form-item>
+      <el-form-item label="文章 ID">
+        <el-input v-model="query.articleId" />
+      </el-form-item>
+      <el-form-item label="文章标题">
+        <el-input v-model="query.articleTitle" />
+      </el-form-item>
       <el-form-item label="评论内容">
         <el-input v-model="query.content" />
       </el-form-item>
@@ -21,9 +27,24 @@
       border
       fit
       highlight-current-row>
-      <el-table-column  label="ID" width="200">
+      <el-table-column label="ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="文章 ID" width="200">
+        <template slot-scope="scope">
+          {{ scope.row.articleId }}
+        </template>
+      </el-table-column>
+      <el-table-column label="文章标题">
+        <template slot-scope="scope">
+        <el-tooltip
+          effect="dark"
+          :content="scope.row.articleTitle"
+          placement="top-start">
+          <span class="text-item">{{ scope.row.articleTitle }}</span>
+        </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="评论内容">
