@@ -21,6 +21,12 @@
         <if test="info.userId != null and info.userId != ''">
             and u.id like concat('%', #{info.userId}, '%')
         </if>
+        <if test="info.articleId != null and info.articleId != ''">
+            and art.id like concat('%', #{info.articleId}, '%')
+        </if>
+        <if test="info.articleTitle != null and info.articleTitle != ''">
+            and art.title like concat('%', #{info.articleTitle}, '%')
+        </if>
     </select>
 
 

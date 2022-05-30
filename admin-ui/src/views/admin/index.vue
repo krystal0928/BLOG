@@ -68,9 +68,9 @@
       @current-change="handleCurrentChange"
     />
     <!-- 编辑区 -->
-    <el-dialog title="编辑文章分类" :visible.sync="dialogVisible">
+    <el-dialog title="编辑管理员" :visible.sync="dialogVisible">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="分类名称" prop="username">
+        <el-form-item label="管理员名称" prop="username">
           <el-input v-model="form.username" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
