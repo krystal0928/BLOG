@@ -53,7 +53,7 @@ public class UserController {
     }
 
     /**
-     * 删除用户
+     * 关闭用户二次验证
      * @param id
      * @return
      */
