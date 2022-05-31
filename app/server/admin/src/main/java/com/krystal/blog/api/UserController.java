@@ -48,9 +48,23 @@ public class UserController {
     @PostMapping(value = "/api/user/delete")
     public R deleteArticleLike(Long id){
         if(!userService.removeById(id))
-            return R.error(400,"文章点赞删除失败！");
-        return R.ok("文章点赞删除成功！");
+            return R.error(400,"用户删除失败！");
+        return R.ok("用户删除成功！");
     }
 
-
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/api/user/unbindTFA")
+    public R unbindTFA(Long id){
+        boolean flag = userService.lambdaUpdate()
+                .set(User::getSecret, null)
+                .eq(User::getId, id)
+                .update();
+        if(!flag)
+            return R.error(400,"关闭二次验证失败！");
+        return R.ok("关闭二次验证成功！");
+    }
 }

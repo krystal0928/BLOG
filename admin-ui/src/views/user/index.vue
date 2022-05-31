@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column fixed="right" align="left" label="操作" width="200">
         <template #default="scope">
-          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button size="small" :disabled="!scope.row.secret" @click="handleEdit(scope.row.id)">关闭二次验证</el-button>
           <el-button
             size="small"
             type="danger"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { getUserList, deleteUser } from '@/api/user'
+import { getUserList, deleteUser, unbindTFA } from '@/api/user'
 
 export default {
   filters: {
@@ -128,6 +128,25 @@ export default {
     handleCurrentChange(val) {
       this.query.pageNo = val
       this.fetchData()
+    },
+    handleEdit(id) {
+      this.$confirm('此操作将关闭用户二次登录验证, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        unbindTFA(id).then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.msg)
+            this.fetchData()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
     },
     handleDelete(id) {
       this.$confirm('此操作将彻底删除用户信息, 是否继续?', '提示', {

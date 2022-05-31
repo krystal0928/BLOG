@@ -16,3 +16,11 @@ export function deleteUser(id) {
     data: { id }
   })
 }
+
+export function unbindTFA(id) {
+  return request({
+    url: '/api/user/unbindTFA',
+    method: 'post',
+    data: { id }
+  })
+}
