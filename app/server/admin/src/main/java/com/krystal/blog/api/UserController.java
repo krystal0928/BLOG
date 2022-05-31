@@ -61,6 +61,7 @@ public class UserController {
     public R unbindTFA(Long id){
         boolean flag = userService.lambdaUpdate()
                 .set(User::getSecret, null)
+                .set(User::getStatus, 0)
                 .eq(User::getId, id)
                 .update();
         if(!flag)
